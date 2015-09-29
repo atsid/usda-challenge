@@ -1,0 +1,13 @@
+body {
+    background-color: black;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+h1 {
+    color: #eee;
+}
+
+#map {
+    width: 1024px;
+    height: 768px;
+}
