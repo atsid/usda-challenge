@@ -1,0 +1,34 @@
+{
+  "name": "usda-challenge",
+  "version": "0.0.1",
+  "description": "ATS + EchoUser submission for USDA Innovation Challenge",
+  "main": "gulpfile.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/atsid/usda-challenge.git"
+  },
+  "scripts": {
+    "test": "node_modules/.bin/gulp lint",
+    "start": "node_modules/.bin/gulp serve"
+  },
+  "authors": [
+    "natoverse",
+    "bryantower"
+  ],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/atsid/usda-challenge/issues"
+  },
+  "homepage": "https://labs.atsid.com/usda-challenge/",
+  "devDependencies": {
+    "bower": "1.4.1",
+    "gulp": "~3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-gh-pages": "~0.5.0",
+    "gulp-jshint": "^1.9.2",
+    "gulp-rename": "^1.2.2",
+    "gulp-webserver": "0.9.1",
+    "rimraf": "^2.4.0",
+    "run-sequence": "^1.1.1"
+  }
+}
