@@ -11,10 +11,10 @@ var ghPages = require('gulp-gh-pages');
 
 var config = {
   src: {
-    all: 'src',
-    siteFiles: 'src/**/*',
+    all: './',
+    siteFiles: ['index.html', 'src/**/*', 'bower_components/**/*'],
     build: 'dist',
-    deploy: 'dist/src/**/*',
+    deploy: 'dist/**/*',
     js: 'src/js/**/*.js'
   }
 };

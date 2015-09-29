@@ -1,0 +1,22 @@
+{
+  "name": "usda-challenge",
+  "version": "0.0.1",
+  "homepage": "https://github.com/atsid/usda-challenge",
+  "authors": [
+    "natoverse",
+    "bryantower"
+  ],
+  "main": "index.html",
+  "license": "Apache-2.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.4",
+    "dcjs": "~1.7.3"
+  }
+}

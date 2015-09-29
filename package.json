@@ -9,7 +9,8 @@
   },
   "scripts": {
     "test": "node_modules/.bin/gulp lint",
-    "start": "node_modules/.bin/gulp serve"
+    "start": "node_modules/.bin/gulp serve",
+    "postinstall": "node_modules/.bin/bower install"
   },
   "authors": [
     "natoverse",
@@ -21,7 +22,7 @@
   },
   "homepage": "https://labs.atsid.com/usda-challenge/",
   "devDependencies": {
-    "bower": "1.4.1",
+    "bower": "1.5.3",
     "gulp": "~3.9.0",
     "gulp-concat": "^2.6.0",
     "gulp-gh-pages": "~0.5.0",

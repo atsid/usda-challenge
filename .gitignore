@@ -3,3 +3,4 @@ dist/
 .publish/
 npm-debug.log
 .idea
+bower_components
