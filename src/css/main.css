@@ -6,3 +6,8 @@ body {
 h1 {
     color: #eee;
 }
+
+#map {
+    width: 1024px;
+    height: 768px;
+}
