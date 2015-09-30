@@ -17,6 +17,7 @@
   ],
   "dependencies": {
     "bootstrap": "~3.3.5",
-    "dcjs": "~1.7.4"
+    "dcjs": "~1.7.4",
+    "jquery": ">= 1.9.1"
   }
 }
