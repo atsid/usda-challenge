@@ -16,7 +16,7 @@
     "tests"
   ],
   "dependencies": {
-    "bootstrap": "~3.3.4",
-    "dcjs": "~1.7.3"
+    "bootstrap": "~3.3.5",
+    "dcjs": "~1.7.4"
   }
 }
