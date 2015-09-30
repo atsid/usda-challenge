@@ -1,17 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>USDA Innovation Challenge</title>
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="src/css/main.css">
 </head>
 <body>
 
-<h1>Here's our submission!</h1>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">ATS + EchoUser USDA Innovation Challenge</a>
+        </div>
+    </div>
+</nav>
 
-<div id="map">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            Sidebar content goes here
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h2 class="sub-header">Dashboard</h2>
 
+            <div class="row placeholders">
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <h4>Graph</h4>
+                    <span class="text-muted">graph goes here</span>
+                </div>
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <h4>Graph</h4>
+                    <span class="text-muted">graph goes here</span>
+                </div>
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <h4>Graph</h4>
+                    <span class="text-muted">graph goes here</span>
+                </div>
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <h4>Graph</h4>
+                    <span class="text-muted">graph goes here</span>
+                </div>
+            </div>
+
+            <h2 class="sub-header">Map</h2>
+            <div id="map">
+            </div>
+        </div>
+    </div>
 </div>
+
 
 <script src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry,visualization"></script>
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
