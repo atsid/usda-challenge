@@ -23,14 +23,17 @@
         if (places.length === 0) {
             return;
         }
-        for (var i = 0, m; m = markers[i]; i++) {
+
+        for (var i = 0, m, l = markers.length; i < l; i++) {
+            m = markers[i];
             m.setMap(null);
         }
 
         // For each place, get the icon, place name, and location.
         markers = [];
         var bounds = new google.maps.LatLngBounds();
-        for (var j = 0, place; place = places[j]; j++) {
+        for (var j = 0, place, l2 = places.length; j < l2; j++) {
+            place = places[j];
             var image = {
                 url: place.icon,
                 size: new google.maps.Size(71, 71),

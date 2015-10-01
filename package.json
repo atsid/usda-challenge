@@ -8,7 +8,7 @@
     "url": "git://github.com/atsid/usda-challenge.git"
   },
   "scripts": {
-    "test": "node_modules/.bin/gulp lint",
+    "test": "node_modules/.bin/gulp test",
     "start": "node_modules/.bin/gulp serve",
     "postinstall": "node_modules/.bin/bower install"
   },
@@ -24,6 +24,7 @@
   "devDependencies": {
     "bower": "1.5.3",
     "gulp": "~3.9.0",
+    "gulp-bootlint": "^0.6.4",
     "gulp-concat": "^2.6.0",
     "gulp-gh-pages": "~0.5.0",
     "gulp-jshint": "^1.9.2",

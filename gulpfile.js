@@ -8,6 +8,7 @@ var rename = require('gulp-rename');
 var rimraf = require('rimraf');
 var runSequence = require('run-sequence');
 var ghPages = require('gulp-gh-pages');
+var bootlint  = require('gulp-bootlint');
 
 var config = {
   src: {
@@ -26,6 +27,11 @@ gulp.task('lint', function () {
   return gulp.src(config.src.js)
       .pipe(jshint({lookup: true}))
       .pipe(jshint.reporter('default'));
+});
+
+gulp.task('bootlint', function() {
+    return gulp.src('./index.html')
+        .pipe(bootlint());
 });
 
 /*
@@ -96,4 +102,6 @@ gulp.task('deploy', function (cb) {
       cb);
 });
 
-gulp.task('default', ['lint', 'serve']);
+gulp.task('test', ['lint', 'bootlint']);
+
+gulp.task('default', ['test', 'serve']);
