@@ -1,6 +1,6 @@
 [![Dependency Status](https://david-dm.org/atsid/usda-challenge.svg)](https://david-dm.org/atsid/usda-challenge)
 [![devDependency Status](https://david-dm.org/atsid/usda-challenge/dev-status.svg)](https://david-dm.org/atsid/usda-challenge#info=devDependencies)
-[![Dependency Status](https://gemnasium.com/atsid/usda-challenge.svg)](https://gemnasium.com/atsid/usda-challenge.js)
+[![Dependency Status](https://gemnasium.com/atsid/usda-challenge.svg)](https://gemnasium.com/atsid/usda-challenge)
 
 # usda-challenge
 ATS + EchoUser submission for USDA Innovation Challenge
