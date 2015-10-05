@@ -11,7 +11,7 @@
                     p.sum += v[key];
                     p.avg = Math.round(p.sum / p.count);
                     return p;
-                }
+                };
             },
             remove: function (key) {
                 return function (p, v) {
@@ -33,14 +33,13 @@
                     ++p.count;
                     p.latitude = v.location.latitude;
                     p.longitude = v.location.longitude;
+                    p.label = v.name; //last one wins
                     return p;
-                }
+                };
             },
             remove: function () {
                 return function (p, v) {
                     --p.count;
-                    p.latitude = v.location.latitude;
-                    p.longitude = v.location.longitude;
                     return p;
                 };
             },

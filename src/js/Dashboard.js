@@ -6,16 +6,17 @@
     var startDate = new Date('2015-01-01');
     var endDate = new Date('2015-12-31');
 
+    var colors = {
+        main: ['orchid'],
+        highTemp: ['orange'],
+        lowTemp: ['lightblue']
+    };
 
     var Dashboard = function (dataUrl) {
-
-        var nameKeys = {}; //map these to IDs for labeling later (there is probably a better crossfilter way to do this)
 
         d3.csv(dataUrl,
             //accessor function cleans up each row as it is read from csv
             function (d) {
-
-                nameKeys[d.id] = d.name;
 
                 var row = {
                     id: d.id,
@@ -42,9 +43,7 @@
                 var locations = index.dimension(function(d) { return d.location; });
 
                 var dateGroup = dates.group();
-                var stationGroup = stations.group();
-
-                var locationsGroup = stations.group().reduce(
+                var stationGroup = stations.group().reduce(
                     util.reducers.location.add(),
                     util.reducers.location.remove(),
                     util.reducers.location.init()
@@ -68,11 +67,14 @@
                     .width($('#stations-chart').innerWidth()-30)
                     .height(200)
                     .margins({top: 10, left:5, right: 10, bottom:20})
-                    .colors(['#339966'])
-                    .group(stations.group())
+                    .colors(colors.main)
+                    .group(stationGroup)
                     .dimension(stations)
-                    .label(function (p) {
-                        return nameKeys[p.key];
+                    .label(function (d) {
+                        return d.value.label;
+                    })
+                    .valueAccessor(function (d) {
+                        return d.value.count;
                     })
                     .elasticX(true)
                     .gap(2)
@@ -85,7 +87,7 @@
                     console.log(stationGroup.all());
                     console.log(locations.top(Infinity));
                     console.log(locations.top(Infinity).length);
-                    console.log(locationsGroup.top(Infinity));
+
                 });
 
 
@@ -95,7 +97,7 @@
                     .height(200)
                     .margins({top: 10, left:30, right: 10, bottom:20})
                     .x(d3.time.scale().domain([startDate, endDate]))
-                    .colors(['#339966'])
+                    .colors(colors.main)
                     .dimension(dates)
                     .group(dateGroup)
                     .renderArea(true);
@@ -112,13 +114,13 @@
                     .compose([
                         dc.lineChart(tempChart)
                             .group(highGroup)
-                            .colors(['orange'])
+                            .colors(colors.highTemp)
                             .valueAccessor(function (d) {
                                 return d.value.avg;
                             }),
                         dc.lineChart(tempChart)
                             .group(lowGroup)
-                            .colors(['blue'])
+                            .colors(colors.lowTemp)
                             .valueAccessor(function (d) {
                                 return d.value.avg;
                             })
