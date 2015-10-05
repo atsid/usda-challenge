@@ -1,21 +1,15 @@
 (function (global) {
 
+    var util = global.usda.util;
+    var dateFormat = d3.time.format("%m/%d/%y");
+    var numeric = ['lat', 'lon', 'high', 'low', 'elevation'];
+    var startDate = new Date('2015-01-01');
+    var endDate = new Date('2015-12-31');
+
+
     var Dashboard = function (dataUrl) {
 
-        //setup dc
-        var stationsChart = dc.rowChart("#stations-chart");
-        var dateChart = dc.lineChart("#date-chart");
-        var tempChart = dc.compositeChart("#temp-chart");
-        var dataTable = dc.dataTable("#data-table");
-
-        global.stationsChart = stationsChart;
-        global.dateChart = dateChart;
-        global.tempChart = tempChart;
-        global.dataTable = dataTable;
-
-        var dateFormat = d3.time.format("%m/%d/%y");
-        var nameKeys = {}; //map these to IDs for labeling later
-        var numeric = ['lat', 'lon', 'high', 'low', 'elevation'];
+        var nameKeys = {}; //map these to IDs for labeling later (there is probably a better crossfilter way to do this)
 
         d3.csv(dataUrl,
             //accessor function cleans up each row as it is read from csv
@@ -39,7 +33,7 @@
                 return row;
             },
             function(err, data) {
-                
+
                 var index = crossfilter(data);
                 var all = index.groupAll();
 
@@ -47,66 +41,29 @@
                 var dates = index.dimension(function(d) { return d3.time.day(d.date); });
                 var locations = index.dimension(function(d) { return d.location; });
 
-                var startDate = new Date('2015-01-01');
-                var endDate = new Date('2015-12-31');
-
                 var dateGroup = dates.group();
                 var stationGroup = stations.group();
 
                 var locationsGroup = stations.group().reduce(
-                    function (p, v) {
-                        ++p.count;
-                        p.latitude = v.location.latitude;
-                        p.longitude = v.location.longitude;
-                        return p;
-                    },
-                    function (p, v) {
-                        --p.count;
-                        p.latitude = v.location.latitude;
-                        p.longitude = v.location.longitude;
-                        return p;
-                    },
-                    function () {
-                        return {count: 0};
-                    }
+                    util.reducers.location.add(),
+                    util.reducers.location.remove(),
+                    util.reducers.location.init()
                 );
 
                 var highGroup = dates.group().reduce(
-                    function (p, v) {
-                        ++p.count;
-                        p.sum += v.high;
-                        p.avg = Math.round(p.sum / p.count);
-                        return p;
-                    },
-                    function (p, v) {
-                        --p.count;
-                        p.sum -= v.high;
-                        p.avg = p.count ? Math.round(p.sum / p.count) : 0;
-                        return p;
-                    },
-                    function () {
-                        return {count: 0, sum: 0, avg: 0};
-                    }
+                    util.reducers.average.add('high'),
+                    util.reducers.average.remove('high'),
+                    util.reducers.average.init()
                 );
+
                 var lowGroup = dates.group().reduce(
-                    function (p, v) {
-                        ++p.count;
-                        p.sum += v.low;
-                        p.avg = Math.round(p.sum / p.count);
-                        return p;
-                    },
-                    function (p, v) {
-                        --p.count;
-                        p.sum -= v.low;
-                        p.avg = p.count ? Math.round(p.sum / p.count) : 0;
-                        return p;
-                    },
-                    function () {
-                        return {count: 0, sum: 0, avg: 0};
-                    }
+                    util.reducers.average.add('low'),
+                    util.reducers.average.remove('low'),
+                    util.reducers.average.init()
                 );
 
 
+                var stationsChart = dc.rowChart("#stations-chart");
                 stationsChart
                     .width($('#stations-chart').innerWidth()-30)
                     .height(200)
@@ -124,11 +81,15 @@
                     .xAxis().ticks(3);
 
                 stationsChart.on("postRedraw", function (e) {
+
+                    console.log(stationGroup.all());
                     console.log(locations.top(Infinity));
                     console.log(locations.top(Infinity).length);
                     console.log(locationsGroup.top(Infinity));
                 });
 
+
+                var dateChart = dc.lineChart("#date-chart");
                 dateChart
                     .width($('#date-chart').innerWidth()-30)
                     .height(200)
@@ -141,6 +102,7 @@
 
 
                 //composite chart - set shared values, then use `compose` to add individual graphs
+                var tempChart = dc.compositeChart("#temp-chart");
                 tempChart
                     .width($('#temp-chart').innerWidth()-30)
                     .height(200)
@@ -163,6 +125,7 @@
                     ]);
 
 
+                var dataTable = dc.dataTable("#data-table");
                 dataTable
                     .dimension(dates)
                     .group(function (d) {
@@ -179,6 +142,12 @@
                     ])
                     .sortBy( function(d) { return d.date; })
                     .order(d3.descending);
+
+                global.stationsChart = stationsChart;
+                global.dateChart = dateChart;
+                global.tempChart = tempChart;
+                global.dataTable = dataTable;
+
 
                 dc.renderAll();
 
