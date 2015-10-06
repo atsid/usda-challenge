@@ -7,7 +7,7 @@
     var map = new usda.Map();
     usda.map = map;
 
-    var dashboard = new usda.Dashboard(url);
+    var dashboard = new usda.Dashboard(url, map);
     usda.dashboard = dashboard;
 
 

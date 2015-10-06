@@ -4,7 +4,7 @@
 
         var map = new google.maps.Map($('#map')[0], {
             center: { lat: 42, lng: -94 },
-            zoom: 5
+            zoom: 7
         });
 
 

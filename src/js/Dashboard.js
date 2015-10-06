@@ -12,7 +12,11 @@
         lowTemp: ['lightblue']
     };
 
-    var Dashboard = function (dataUrl) {
+
+    var Dashboard = function (dataUrl, map) {
+
+        var that = this;
+        this.locations = {}; //TEMP: hold unique stations for compiling list of lat/longs
 
         d3.csv(dataUrl,
             //accessor function cleans up each row as it is read from csv
@@ -30,6 +34,8 @@
                     latitude: row.lat,
                     longitude: row.lon
                 };
+
+                that.locations[d.id] = row.location;
 
                 return row;
             },
@@ -83,10 +89,10 @@
                     .xAxis().ticks(3);
 
                 stationsChart.on("postRedraw", function (e) {
-
                     console.log(stationGroup.all());
+                    console.log(stationGroup.all().length + ' stations');
                     console.log(locations.top(Infinity));
-                    console.log(locations.top(Infinity).length);
+                    console.log(locations.top(Infinity).length + ' locations');
 
                 });
 
@@ -152,6 +158,29 @@
 
 
                 dc.renderAll();
+
+
+                //XXX: connecting these via direct access to the map is a temporary kludge. it also doesn't filter
+                //TODO: event on point clicks to filter dashboard data
+                Object.keys(that.locations).forEach(function (id) {
+                    var location = that.locations[id];
+                    var latLng = new google.maps.LatLng(
+                        location.latitude,
+                        location.longitude
+                    );
+                    var featureOptions = {
+                        geometry: new google.maps.Data.Point(latLng),
+                        properties: {id: id}
+                    };
+                    var feature = new google.maps.Data.Feature(featureOptions);
+                    console.log(feature);
+                    map.map.data.add(feature);
+                });
+
+                map.map.data.addListener('click', function(event) {
+                    console.log('clicked point', event);
+                    console.log('station: ' + event.feature.getProperty('id'));
+                });
 
         });
 
