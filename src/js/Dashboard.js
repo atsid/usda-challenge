@@ -106,7 +106,8 @@
                     .colors(colors.main)
                     .dimension(dates)
                     .group(dateGroup)
-                    .renderArea(true);
+                    .renderArea(true)
+                    .xAxis().ticks(6);
 
 
                 //composite chart - set shared values, then use `compose` to add individual graphs
