@@ -13,7 +13,7 @@ var bootlint  = require('gulp-bootlint');
 var config = {
   src: {
     all: './',
-    siteFiles: ['index.html', 'src/**/*', 'bower_components/**/*'],
+    siteFiles: ['index.html', 'src/**/*', 'bower_components/**/*', 'data/**/*'],
     build: 'dist',
     deploy: 'dist/**/*',
     js: 'src/js/**/*.js'
