@@ -3,4 +3,5 @@ dist/
 .publish/
 npm-debug.log
 .idea
+*.swp
 bower_components
