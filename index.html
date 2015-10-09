@@ -24,53 +24,31 @@
             Sidebar content goes here
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-
             <h2 class="sub-header">Dashboard</h2>
 
-            <div class="row">
-                <div class="col-xs-4" id="stations-chart">
-                    <h4>Stations</h4>
-                    <span class="text-muted">Station location readings</span>
-                    <a class="reset" href="javascript:stationsChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+            <div class="row placeholders">
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <h4>Graph</h4>
+                    <span class="text-muted">graph goes here</span>
                 </div>
-                <div class="col-xs-8" id="date-chart">
-                    <h4>Readings per day</h4>
-                    <span class="text-muted">readings</span>
-                    <a class="reset" href="javascript:dateChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <h4>Graph</h4>
+                    <span class="text-muted">graph goes here</span>
+                </div>
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <h4>Graph</h4>
+                    <span class="text-muted">graph goes here</span>
+                </div>
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <h4>Graph</h4>
+                    <span class="text-muted">graph goes here</span>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-12" id="temp-chart">
-                    <h4>Temperature</h4>
-                    <span class="text-muted">High and low per day, degrees C</span>
-                    <a class="reset" href="javascript:tempChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-                </div>
-            </div>
-
 
             <h2 class="sub-header">Map</h2>
-
             <input id="pac-input" class="search_control" type="text" placeholder="Search">
-            <div id="map"></div>
-
-
-            <h2 class="sub-header">Raw Data</h2>
-            <span class="text-muted">(Last 100 readings)</span>
-            <div class="row">
-                <div class="col-xs-12">
-                    <table class="table table-bordered table-hover table-striped table-condensed" id="data-table">
-                        <thead>
-                        <th class="col-xs-2">Date</th>
-                        <th class="col-xs-1">High T</th>
-                        <th class="col-xs-1">Low T</th>
-                        <th class="col-xs-1">Lat</th>
-                        <th class="col-xs-1">Long</th>
-                        <th class="col-xs-3">Elev</th>
-                        </thead>
-                    </table>
-                </div>
+            <div id="map">
             </div>
-
         </div>
     </div>
 </div>
@@ -79,13 +57,7 @@
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/d3/d3.min.js"></script>
 <script src="bower_components/crossfilter/crossfilter.min.js"></script>
-<script src="bower_components/dcjs/dc.js"></script>
-<script>
-    window.usda = {};
-</script>
-<script src="src/js/util.js"></script>
-<script src="src/js/Map.js"></script>
-<script src="src/js/Dashboard.js"></script>
+<script src="bower_components/dcjs/dc.min.js"></script>
 <script src="src/js/app.js"></script>
 
 </body>

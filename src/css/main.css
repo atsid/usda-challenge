@@ -139,31 +139,3 @@ body {
 #pac-input:focus {
     border-color: #4d90fe;
 }
-
-.dc-chart g.row text {
-    font-size: 9px;
-    fill: white;
-}
-
-.dc-chart rect {
-    fill-opacity: 0.9;
-}
-
-rect.deselected {
-    fill-opacity: 0.4;
-}
-
-#data-table {
-    font-size: 9px;
-}
-
-.extent {
-    color: #777;
-    opacity: 0.3;
-    border: 1px solid black;
-}
-
-.resize {
-    color: #444;
-    opacity: 0.6;
-}
