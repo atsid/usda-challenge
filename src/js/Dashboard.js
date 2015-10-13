@@ -7,7 +7,7 @@
     var endDate = new Date('2015-12-31');
 
     var colors = {
-        main: ['orchid'],
+        main: ['purple'],
         highTemp: ['orange'],
         lowTemp: ['lightblue']
     };
@@ -184,6 +184,68 @@
                 });
 
         });
+
+		d3.csv('data/nass-yield-tons-per-acre.csv', 
+			function (data) {
+				//TODO: remove me
+				console.log("Beginning");
+
+				var yearFormat = d3.time.format("%Y");
+			
+				data.forEach(function (item) {
+					//console.log("item: " + item.Year);
+					//console.log("item: " + item.Commodity);
+					//console.log("item: " + item.State);
+					//console.log("item: " + item.ProdPractice);
+					//item.yeardd = d3.time.year(item.Year);
+					item.yearTime = d3.time.year(new Date(item.Year,1,1)); // coerce to date object
+				});
+
+				var ndx = crossfilter(data);
+				var all = ndx.groupAll();
+
+				var yearlyDim = ndx.dimension(function (d) { 
+					return d.yearTime;
+				});
+				console.log(yearlyDim.top(10));
+
+				var yearlyYieldGroup = yearlyDim.group().reduceSum(function(d)
+					{
+						return d.Value;
+					});
+				console.log(yearlyYieldGroup.all())
+
+				var commodityDim = ndx.dimension(function (d) {
+					return d.Commodity;
+				});
+
+				var stateDim = ndx.dimension(function (d) {
+					return d.State;
+				});
+				var productionPracticeDim = ndx.dimension( function (d) {
+					return d.ProdPractice;
+				});
+
+				var yieldTimeScale = d3.time.scale().domain([new Date(2000,1,1), new Date(2015, 1,1)])
+				//var yieldTimeScale = d3.scale.linear().domain([2000, 2015])
+				yieldTimeScale.ticks(d3.time.year)
+
+				var yieldTonsChart = dc.barChart("#yield-chart");
+					yieldTonsChart
+						.width($('#yield-chart').innerWidth()-30)
+						.height(200)
+						.margins({top: 10, left:90, right: 10, bottom:20})
+						.x(yieldTimeScale)
+						.xUnits(d3.time.years)
+						.colors(colors.main)
+						.dimension(yearlyDim)
+						.group(yearlyYieldGroup)
+						;
+
+                global.yieldTonsChart = yieldTonsChart;
+                dc.renderAll();
+			}		
+			);
 
     };
 
