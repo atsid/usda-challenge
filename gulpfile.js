@@ -49,6 +49,7 @@ gulp.task("webpack", function(callback) {
             factory: 'React.createClass'
         }))
         .pipe(webpack({
+            devtool: "source-map",
             output: {
                 filename: 'bundle.js'
             },
@@ -118,7 +119,7 @@ gulp.task('watch', function() {
  * Live-reload server to make the app available (localhost:8000) and auto-refresh when files change.
  */
 gulp.task('serve', function(cb) {
-    runSequence('watch', 'serve-server');
+    runSequence('build', 'watch', 'serve-server');
 });
 
 /*

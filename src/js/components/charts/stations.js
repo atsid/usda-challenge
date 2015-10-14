@@ -42,6 +42,7 @@ var Stations = React.createClass({
                 .margins({ top: 10, left: 5, right: 10, bottom: 20 })
                 .colors(colors.main)
                 .group(stationGroup)
+                .controlsUseVisibility(false)
                 .dimension(stations)
                 .label(function (d) {
                     return d.value.label;
@@ -56,6 +57,8 @@ var Stations = React.createClass({
                 .xAxis().ticks(3);
 
             dc.renderAll();
+
+            this.state.myChart = stationsChart;
         });
     },
     reset() {

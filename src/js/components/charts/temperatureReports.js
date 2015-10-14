@@ -33,6 +33,7 @@ var TemperatureReports = React.createClass({
                 .x(d3.time.scale().domain([startDate, endDate]))
                 .colors(colors.main)
                 .dimension(dates)
+                .controlsUseVisibility(false)
                 .group(dateGroup)
                 .renderArea(true)
                 .xAxis().ticks(6);
