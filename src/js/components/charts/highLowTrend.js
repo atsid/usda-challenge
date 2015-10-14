@@ -1,7 +1,7 @@
 "use strict";
 
-import dc from 'dc';
-import d3 from 'd3';
+// import dc from 'dc';
+// import d3 from 'd3';
 import React from "react";
 import util from "../../common/util";
 import colors from "./colors";
@@ -71,7 +71,7 @@ var HighLowTrend = React.createClass({
     },
     render() {
         return (
-            <div className={"col-xs-12"}>
+            <div className={"col-xs-12"} id="hilowtrend">
                 <h4>Temperature</h4>
                 <span className={"text-muted"}>High and low per day, degrees C</span>
                 <a className={"reset"} onClick={this.reset} style={{display: "none"}}>reset</a>

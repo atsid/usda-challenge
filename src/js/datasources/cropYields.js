@@ -1,6 +1,6 @@
 "use strict";
 
-import d3 from 'd3';
+// import d3 from 'd3';
 
 /**
  * A datasource wrapping the hi-low data

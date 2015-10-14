@@ -1,7 +1,7 @@
 "use strict";
 
-import dc from 'dc';
-import d3 from 'd3';
+// import dc from 'dc';
+// import d3 from 'd3';
 import React from "react";
 import util from "../../common/util";
 import colors from "./colors";
@@ -33,7 +33,6 @@ var TemperatureReports = React.createClass({
                 .x(d3.time.scale().domain([startDate, endDate]))
                 .colors(colors.main)
                 .dimension(dates)
-                .controlsUseVisibility(false)
                 .group(dateGroup)
                 .renderArea(true)
                 .xAxis().ticks(6);
@@ -50,7 +49,7 @@ var TemperatureReports = React.createClass({
     },
     render() {
         return (
-            <div className={"col-xs-8"}>
+            <div className={"col-xs-8"} id="tempreports">
                 <h4>Readings per day</h4>
                 <span className={"text-muted"}>readings</span>
                 <a className={"reset"} onClick={this.reset} style={{display: "none"}}>reset</a>

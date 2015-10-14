@@ -8,6 +8,7 @@ import HighLowDataSource from "../datasources/highLow.js";
 import TemperatureReports from "./charts/temperatureReports";
 import CropYieldsChart from "./charts/cropYields";
 import CropYieldsDataSource from "../datasources/cropYields";
+import TemperatureReportsDataTable from "./temperatureReportsDataTable";
 import Map from "./map";
 
 let DashboardComponent = React.createClass({
@@ -36,6 +37,7 @@ let DashboardComponent = React.createClass({
                                 <CropYieldsChart dataSource={new CropYieldsDataSource()}/>
                             </div>
                             <Map dataSource={dataSource}/>
+                            <TemperatureReportsDataTable dataSource={dataSource}/>
                         </div>
                     </div>
                 </div>
