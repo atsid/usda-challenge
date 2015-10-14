@@ -1,5 +1,6 @@
+'use strict';
+
 (function (global) {
-    'use strict';
 
     var util = {};
 
@@ -51,6 +52,6 @@
         }
     };
 
-    global.usda.util = util;
+    module.exports = util;
 
 }(this));

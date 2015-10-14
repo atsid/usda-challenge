@@ -3,19 +3,24 @@
 var gulp = require('gulp');
 var path = require('path');
 var webserver = require('gulp-webserver');
-var jshint = require('gulp-jshint');
+var eslint = require('gulp-eslint');
 var rename = require('gulp-rename');
 var rimraf = require('rimraf');
 var runSequence = require('run-sequence');
 var ghPages = require('gulp-gh-pages');
 var bootlint  = require('gulp-bootlint');
+var gutil = require("gulp-util");
+var webpack = require("gulp-webpack");
+var watch = require("gulp-watch");
+var jsx = require("gulp-jsx");
 
 var config = {
   src: {
     all: './',
-    siteFiles: ['index.html', 'src/**/*', 'bower_components/**/*', 'data/**/*'],
-    build: 'dist',
-    deploy: 'dist/**/*',
+    siteFiles: ['index.html', 'data/**/*'],
+    build: 'build',
+    deploy: 'build/**/*',
+    jsDir: 'src/js',
     js: 'src/js/**/*.js'
   }
 };
@@ -25,13 +30,36 @@ var config = {
  */
 gulp.task('lint', function () {
   return gulp.src(config.src.js)
-      .pipe(jshint({lookup: true}))
-      .pipe(jshint.reporter('default'));
+      .pipe(eslint({ useEslintrc: true }))
+      .pipe(eslint.format())
+      .pipe(eslint.failOnError());
 });
 
 gulp.task('bootlint', function() {
     return gulp.src('./index.html')
         .pipe(bootlint());
+});
+
+/**
+ * Packs the UI into a single file
+ */
+gulp.task("webpack", function(callback) {
+    return gulp.src(config.src.js)
+        .pipe(jsx({
+            factory: 'React.createClass'
+        }))
+        .pipe(webpack({
+            output: {
+                filename: 'bundle.js'
+            },
+            module: {
+                loaders: [{
+                    exclude: /(node_modules|bower_components)/,
+                    loader: 'babel'
+                }]
+            }
+        }))
+        .pipe(gulp.dest(config.src.build));
 });
 
 /*
@@ -44,8 +72,8 @@ gulp.task('clean', function (cb) {
 /*
  * Copy static content into a single point for deployment, without the extra cruft.
  */
-gulp.task('site', function () {
-  return gulp.src(config.src.siteFiles, { 'base': '.' }).pipe(gulp.dest(config.src.build));
+gulp.task('site', function (cb) {
+    return gulp.src(config.src.siteFiles, { 'base': '.' }).pipe(gulp.dest(config.src.build));
 });
 
 /*
@@ -53,6 +81,8 @@ gulp.task('site', function () {
  */
 gulp.task('build', function (cb) {
   return runSequence(
+      'lint',
+      'webpack',
       'site',
       cb);
 });
@@ -67,12 +97,28 @@ function serve(reload) {
   });
 }
 
+/**
+ * Starts the server for the "serve" task
+ */
+gulp.task('serve-server', function() {
+  gulp.src(config.src.all)
+      .pipe(serve(true));
+});
+
+/**
+ * Watches the js for file changes and calls build
+ */
+gulp.task('watch', function() {
+    watch(config.src.js, function() {
+        runSequence('build');
+    });
+});
+
 /*
  * Live-reload server to make the app available (localhost:8000) and auto-refresh when files change.
  */
-gulp.task('serve', function() {
-  gulp.src(config.src.all)
-      .pipe(serve(true));
+gulp.task('serve', function(cb) {
+    runSequence('watch', 'serve-server');
 });
 
 /*

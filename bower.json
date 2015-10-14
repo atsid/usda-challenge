@@ -16,8 +16,8 @@
     "tests"
   ],
   "dependencies": {
-    "bootstrap": "~3.3.5",
-    "dcjs": "~1.7.4",
-    "jquery": ">= 1.9.1"
+    "bootstrap": "~3.3.5"
+    // "dcjs": "~2.0.0",
+    // "jquery": ">= 1.9.1"
   }
 }
