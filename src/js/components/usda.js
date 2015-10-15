@@ -5,16 +5,14 @@ import Navbar from "./navbar";
 
 let USDAApp = React.createClass({
     propTypes: {
-        route: React.PropTypes.object.isRequired
+        children: React.PropTypes.node,
     },
-
     render: function() {
-        var ContentComponent = this.props.route.content;
         return (
             <div>
                 <Navbar />
                 <div>
-                    <ContentComponent/>
+                    {this.props.children}
                 </div>
             </div>
         );
