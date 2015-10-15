@@ -6,7 +6,7 @@ import React from "react";
 import util from "../../common/util";
 import colors from "./colors";
 
-let COMMODITIES = ['SUGARBEETS', 'WHEAT', 'TOBACCO', 'OATS', 'SOYBEANS', 'SORGHUM', 'CORN', 'SUGARCANE', 'HAY', 'BEANS', 'BARLEY', 'PEANUTS', 'RICE', 'HAYLAGE', 'COTTON'];
+let COMMODITIES = ['SUGARBEETS', 'CORN', 'SUGARCANE', 'HAY', 'HAYLAGE'];
 
 var CropYields = React.createClass({
 
@@ -65,10 +65,12 @@ var CropYields = React.createClass({
             let tempChart = dc.compositeChart(el);
             tempChart
                 .width($(el).innerWidth()-30)
-                .height(200)
-                .margins({top: 10, left:90, right: 10, bottom:20})
+                .height(250)
+                .margins({top: 10, left:50, right: 10, bottom:40})
                 .x(yieldTimeScale)
                 .xUnits(d3.time.years)
+                .yAxisLabel("Tons / Arce")
+                .xAxisLabel("Survey Year")
                 // .colors(colors.main)
                 .dimension(yearlyDim)
                 .brushOn(false)
