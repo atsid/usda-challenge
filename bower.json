@@ -18,7 +18,7 @@
   "dependencies": {
     "bootstrap": "~3.3.5",
     "dcjs": "~1.7.4",
-    "jquery": ">= 1.9.1"
-
+    "jquery": ">= 1.9.1",
+    "d3-tip": "~0.6.7"
   }
 }
