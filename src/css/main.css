@@ -114,10 +114,6 @@ body {
     min-height: 600px;
 }
 
-.mapContainer {
-    height: 100%;
-}
-
 .search_control {
     margin-top: 10px;
     border: 1px solid transparent;
@@ -192,4 +188,22 @@ h4 {
 
 .reset {
     margin-left: 10px;
+}
+
+.mapPaneHeaderContent {
+    display: inline;
+    padding: 5px;
+    vertical-align: bottom;
+}
+
+.locateMe {
+    margin-left: 2em;
+}
+
+.mapPane {
+    margin: 10px;
+}
+
+.mapContainer {
+    margin: 10px;
 }
