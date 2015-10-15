@@ -5,6 +5,8 @@
 import React from "react";
 import util from "../../common/util";
 import colors from "./colors";
+import debugFactory from "debug";
+const debug = debugFactory('app:components:CropYields');
 
 var CropYields = React.createClass({
 
@@ -22,7 +24,7 @@ var CropYields = React.createClass({
         let endDate = new Date('2015-12-31');
         this.props.dataSource.list().then((results) => {
             //TODO: remove me
-            console.log("Beginning");
+            debug('receiving data');
 
             var yearFormat = d3.time.format("%Y");
             var data = results.data;
@@ -35,10 +37,10 @@ var CropYields = React.createClass({
             var all = ndx.groupAll();
 
             var yearlyDim = ndx.dimension((d) => d.yearTime);
-            console.log(yearlyDim.top(10));
+            debug('yearlyDim', yearlyDim.top(10));
 
             var yearlyYieldGroup = yearlyDim.group().reduceSum((d) => d.Value);
-            console.log(yearlyYieldGroup.all())
+            debug('yearlyYieldGroup: ', yearlyYieldGroup.all());
 
             var commodityDim = ndx.dimension((d) => d.Commodity);
             var stateDim = ndx.dimension((d) => d.State);
