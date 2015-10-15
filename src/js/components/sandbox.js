@@ -17,7 +17,7 @@ import CropYieldsCWTAChart from "./charts/cropYieldsCWTA";
 import CropYieldsCWTADataSource from "../datasources/cropYieldsCWTA";
 import Map from "./map";
 
-let DashboardComponent = React.createClass({
+let SandboxComponent = React.createClass({
 
     render: function() {
         let dataSource = new HighLowDataSource();
@@ -61,4 +61,4 @@ let DashboardComponent = React.createClass({
     }
 });
 
-module.exports = DashboardComponent;
+module.exports = SandboxComponent;
