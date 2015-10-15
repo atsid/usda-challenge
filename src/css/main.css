@@ -190,17 +190,17 @@ h4 {
     margin-left: 10px;
 }
 
-.mapPaneHeaderContent {
+.paneHeaderContent {
     display: inline;
     padding: 5px;
     vertical-align: bottom;
 }
 
-.locateMe {
+.firstAction {
     margin-left: 2em;
 }
 
-.mapPane {
+.pane {
     margin: 10px;
 }
 

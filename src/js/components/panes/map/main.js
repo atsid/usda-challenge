@@ -19,10 +19,10 @@ import Map from "../../map";
 let MapPaneComponent = React.createClass({
     render() {
         return (
-            <div className="mapPane">
-                <div className="mapPaneHeader">
-                    <h4 className="mapPaneHeaderContent">Where's your farm?</h4>
-                    <Button id="locateMe" className="mapPaneHeaderContent locateMe">
+            <div className="pane">
+                <div className="paneHeader">
+                    <h4 className="paneHeaderContent">Where's your farm?</h4>
+                    <Button id="locateMe" className="paneHeaderContent firstAction">
                         <Glyphicon glyph="map-marker"/>
                         &nbsp;Locate Me&nbsp;
                     </Button>
@@ -87,7 +87,7 @@ let MapPaneComponent = React.createClass({
                     </DropdownButton>
                 </div>
                 <div className="mapContainer">
-                    <Map />
+                    <h1>[Map]</h1>
                 </div>
             </div>
         );
