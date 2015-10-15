@@ -3,9 +3,9 @@
 // import d3 from 'd3';
 
 /**
- * A datasource wrapping the Cropy Yield, by Tons/Acre
+ * A datasource wrapping the Cropy Yield, by BU/Acre
  */
-class CropYieldsDataSource {
+class CropYieldsBUADataSource {
     list() {
         var that = this;
         if (!this.__listPromise) {
@@ -13,7 +13,7 @@ class CropYieldsDataSource {
                 if (!that.__data) {
                     let locations = {};
 
-                    d3.csv('data/nass-yield-tons-per-acre.csv',
+                    d3.csv('data/nass-yield-bu-per-acre.csv',
                         function (err, data) {
                             if (err) {
                                 that.__data = undefined;
@@ -36,4 +36,4 @@ class CropYieldsDataSource {
     }
 }
 
-module.exports = CropYieldsDataSource;
+module.exports = CropYieldsBUADataSource;
