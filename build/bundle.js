@@ -47,14 +47,20 @@
 	__webpack_require__(1);
 	__webpack_require__(208);
 	__webpack_require__(206);
-	__webpack_require__(216);
+	__webpack_require__(222);
 	__webpack_require__(205);
-	__webpack_require__(215);
+	__webpack_require__(213);
 	__webpack_require__(204);
-	__webpack_require__(214);
+	__webpack_require__(215);
+	__webpack_require__(217);
+	__webpack_require__(219);
+	__webpack_require__(221);
 	__webpack_require__(211);
 	__webpack_require__(209);
-	__webpack_require__(213);
+	__webpack_require__(214);
+	__webpack_require__(216);
+	__webpack_require__(218);
+	__webpack_require__(220);
 	__webpack_require__(210);
 	__webpack_require__(207);
 	module.exports = __webpack_require__(212);
@@ -24922,19 +24928,43 @@
 	
 	var _chartsTemperatureReports2 = _interopRequireDefault(_chartsTemperatureReports);
 	
-	var _chartsCropYields = __webpack_require__(213);
-	
-	var _chartsCropYields2 = _interopRequireDefault(_chartsCropYields);
-	
-	var _datasourcesCropYields = __webpack_require__(214);
-	
-	var _datasourcesCropYields2 = _interopRequireDefault(_datasourcesCropYields);
-	
-	var _temperatureReportsDataTable = __webpack_require__(215);
+	var _temperatureReportsDataTable = __webpack_require__(213);
 	
 	var _temperatureReportsDataTable2 = _interopRequireDefault(_temperatureReportsDataTable);
 	
-	var _map = __webpack_require__(216);
+	var _chartsCropYields = __webpack_require__(214);
+	
+	var _chartsCropYields2 = _interopRequireDefault(_chartsCropYields);
+	
+	var _datasourcesCropYields = __webpack_require__(215);
+	
+	var _datasourcesCropYields2 = _interopRequireDefault(_datasourcesCropYields);
+	
+	var _chartsCropYieldsBUA = __webpack_require__(216);
+	
+	var _chartsCropYieldsBUA2 = _interopRequireDefault(_chartsCropYieldsBUA);
+	
+	var _datasourcesCropYieldsBUA = __webpack_require__(217);
+	
+	var _datasourcesCropYieldsBUA2 = _interopRequireDefault(_datasourcesCropYieldsBUA);
+	
+	var _chartsCropYieldsBaA = __webpack_require__(218);
+	
+	var _chartsCropYieldsBaA2 = _interopRequireDefault(_chartsCropYieldsBaA);
+	
+	var _datasourcesCropYieldsBaA = __webpack_require__(219);
+	
+	var _datasourcesCropYieldsBaA2 = _interopRequireDefault(_datasourcesCropYieldsBaA);
+	
+	var _chartsCropYieldsCWTA = __webpack_require__(220);
+	
+	var _chartsCropYieldsCWTA2 = _interopRequireDefault(_chartsCropYieldsCWTA);
+	
+	var _datasourcesCropYieldsCWTA = __webpack_require__(221);
+	
+	var _datasourcesCropYieldsCWTA2 = _interopRequireDefault(_datasourcesCropYieldsCWTA);
+	
+	var _map = __webpack_require__(222);
 	
 	var _map2 = _interopRequireDefault(_map);
 	
@@ -24982,6 +25012,21 @@
 	                            "div",
 	                            { className: "row" },
 	                            _react2["default"].createElement(_chartsCropYields2["default"], { dataSource: new _datasourcesCropYields2["default"]() })
+	                        ),
+	                        _react2["default"].createElement(
+	                            "div",
+	                            { className: "row" },
+	                            _react2["default"].createElement(_chartsCropYieldsBUA2["default"], { dataSource: new _datasourcesCropYieldsBUA2["default"]() })
+	                        ),
+	                        _react2["default"].createElement(
+	                            "div",
+	                            { className: "row" },
+	                            _react2["default"].createElement(_chartsCropYieldsBaA2["default"], { dataSource: new _datasourcesCropYieldsBaA2["default"]() })
+	                        ),
+	                        _react2["default"].createElement(
+	                            "div",
+	                            { className: "row" },
+	                            _react2["default"].createElement(_chartsCropYieldsCWTA2["default"], { dataSource: new _datasourcesCropYieldsCWTA2["default"]() })
 	                        ),
 	                        _react2["default"].createElement(_map2["default"], { dataSource: dataSource }),
 	                        _react2["default"].createElement(_temperatureReportsDataTable2["default"], { dataSource: dataSource })
@@ -25427,178 +25472,6 @@
 
 	"use strict";
 	
-	// import dc from 'dc';
-	// import d3 from 'd3';
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-	
-	var _react = __webpack_require__(2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _commonUtil = __webpack_require__(208);
-	
-	var _commonUtil2 = _interopRequireDefault(_commonUtil);
-	
-	var _colors = __webpack_require__(209);
-	
-	var _colors2 = _interopRequireDefault(_colors);
-	
-	var CropYields = _react2["default"].createClass({
-	    displayName: "CropYields",
-	
-	    propTypes: {
-	        dataSource: _react2["default"].PropTypes.object.isRequired
-	    },
-	
-	    getInitialState: function getInitialState() {
-	        return {};
-	    },
-	
-	    componentDidMount: function componentDidMount() {
-	        var _this = this;
-	
-	        var el = this.getDOMNode();
-	        var startDate = new Date('2015-01-01');
-	        var endDate = new Date('2015-12-31');
-	        this.props.dataSource.list().then(function (results) {
-	            //TODO: remove me
-	            console.log("Beginning");
-	
-	            var yearFormat = d3.time.format("%Y");
-	            var data = results.data;
-	            var ndx = results.index;
-	
-	            data.forEach(function (item) {
-	                item.yearTime = d3.time.year(new Date(item.Year, 1, 1)); // coerce to date object
-	            });
-	
-	            var all = ndx.groupAll();
-	
-	            var yearlyDim = ndx.dimension(function (d) {
-	                return d.yearTime;
-	            });
-	            console.log(yearlyDim.top(10));
-	
-	            var yearlyYieldGroup = yearlyDim.group().reduceSum(function (d) {
-	                return d.Value;
-	            });
-	            console.log(yearlyYieldGroup.all());
-	
-	            var commodityDim = ndx.dimension(function (d) {
-	                return d.Commodity;
-	            });
-	            var stateDim = ndx.dimension(function (d) {
-	                return d.State;
-	            });
-	            var productionPracticeDim = ndx.dimension(function (d) {
-	                return d.ProdPractice;
-	            });
-	
-	            var yieldTimeScale = d3.time.scale().domain([new Date(2000, 1, 1), new Date(2015, 1, 1)]);
-	            //var yieldTimeScale = d3.scale.linear().domain([2000, 2015])
-	            yieldTimeScale.ticks(d3.time.year);
-	
-	            var yieldTonsChart = dc.barChart(el);
-	            yieldTonsChart.width($(el).innerWidth() - 30).height(200).margins({ top: 10, left: 90, right: 10, bottom: 20 }).x(yieldTimeScale).xUnits(d3.time.years).colors(_colors2["default"].main).dimension(yearlyDim).group(yearlyYieldGroup);
-	            dc.renderAll();
-	            _this.state.myChart = yieldTonsChart;
-	        });
-	    },
-	    reset: function reset() {
-	        if (this.state && this.state.myChart) {
-	            this.state.myChart.filterAll();
-	            dc.redrawAll();
-	        }
-	    },
-	    render: function render() {
-	        return _react2["default"].createElement(
-	            "div",
-	            { className: "col-xs-12", id: "cropYieldsChart" },
-	            _react2["default"].createElement(
-	                "h4",
-	                null,
-	                "Crop Yields"
-	            ),
-	            _react2["default"].createElement(
-	                "span",
-	                { className: "text-muted" },
-	                "Crop yields in Terms of Tons / Acre"
-	            ),
-	            _react2["default"].createElement(
-	                "a",
-	                { className: "reset", onClick: this.reset, style: { display: "none" } },
-	                "reset"
-	            )
-	        );
-	    }
-	});
-	
-	module.exports = CropYields;
-
-/***/ },
-/* 214 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	// import d3 from 'd3';
-	
-	/**
-	 * A datasource wrapping the hi-low data
-	 */
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var CropYieldsDataSource = (function () {
-	    function CropYieldsDataSource() {
-	        _classCallCheck(this, CropYieldsDataSource);
-	    }
-	
-	    _createClass(CropYieldsDataSource, [{
-	        key: "list",
-	        value: function list() {
-	            var that = this;
-	            if (!this.__listPromise) {
-	                this.__listPromise = new Promise(function (resolve, reject) {
-	                    if (!that.__data) {
-	                        var locations = {};
-	
-	                        d3.csv('data/nass-yield-tons-per-acre.csv', function (err, data) {
-	                            if (err) {
-	                                that.__data = undefined;
-	                                reject(err);
-	                            } else {
-	                                that.__data = {
-	                                    data: data,
-	                                    index: crossfilter(data)
-	                                };
-	                                resolve(that.__data);
-	                            }
-	                        });
-	                    } else {
-	                        resolve(that.__data);
-	                    }
-	                });
-	            }
-	
-	            return this.__listPromise;
-	        }
-	    }]);
-	
-	    return CropYieldsDataSource;
-	})();
-	
-	module.exports = CropYieldsDataSource;
-
-/***/ },
-/* 215 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
 	var _react = __webpack_require__(2);
@@ -25716,7 +25589,695 @@
 	module.exports = TemperatureReportsDataTable;
 
 /***/ },
+/* 214 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	// import dc from 'dc';
+	// import d3 from 'd3';
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _commonUtil = __webpack_require__(208);
+	
+	var _commonUtil2 = _interopRequireDefault(_commonUtil);
+	
+	var _colors = __webpack_require__(209);
+	
+	var _colors2 = _interopRequireDefault(_colors);
+	
+	var CropYields = _react2["default"].createClass({
+	    displayName: "CropYields",
+	
+	    propTypes: {
+	        dataSource: _react2["default"].PropTypes.object.isRequired
+	    },
+	
+	    getInitialState: function getInitialState() {
+	        return {};
+	    },
+	
+	    componentDidMount: function componentDidMount() {
+	        var _this = this;
+	
+	        var el = this.getDOMNode();
+	        var startDate = new Date('2015-01-01');
+	        var endDate = new Date('2015-12-31');
+	        this.props.dataSource.list().then(function (results) {
+	            //TODO: remove me
+	            console.log("Beginning");
+	
+	            var yearFormat = d3.time.format("%Y");
+	            var data = results.data;
+	            var ndx = results.index;
+	
+	            data.forEach(function (item) {
+	                item.yearTime = d3.time.year(new Date(item.Year, 1, 1)); // coerce to date object
+	            });
+	
+	            var all = ndx.groupAll();
+	
+	            var yearlyDim = ndx.dimension(function (d) {
+	                return d.yearTime;
+	            });
+	            console.log(yearlyDim.top(10));
+	
+	            var yearlyYieldGroup = yearlyDim.group().reduceSum(function (d) {
+	                return d.Value;
+	            });
+	            console.log(yearlyYieldGroup.all());
+	
+	            var commodityDim = ndx.dimension(function (d) {
+	                return d.Commodity;
+	            });
+	            var stateDim = ndx.dimension(function (d) {
+	                return d.State;
+	            });
+	            var productionPracticeDim = ndx.dimension(function (d) {
+	                return d.ProdPractice;
+	            });
+	
+	            var yieldTimeScale = d3.time.scale().domain([new Date(2000, 1, 1), new Date(2015, 1, 1)]);
+	            //var yieldTimeScale = d3.scale.linear().domain([2000, 2015])
+	            yieldTimeScale.ticks(d3.time.year);
+	
+	            var yieldTonsChart = dc.barChart(el);
+	            yieldTonsChart.width($(el).innerWidth() - 30).height(200).margins({ top: 10, left: 90, right: 10, bottom: 20 }).x(yieldTimeScale).xUnits(d3.time.years).colors(_colors2["default"].main).dimension(yearlyDim).group(yearlyYieldGroup);
+	            dc.renderAll();
+	            _this.state.myChart = yieldTonsChart;
+	        });
+	    },
+	    reset: function reset() {
+	        if (this.state && this.state.myChart) {
+	            this.state.myChart.filterAll();
+	            dc.redrawAll();
+	        }
+	    },
+	    render: function render() {
+	        return _react2["default"].createElement(
+	            "div",
+	            { className: "col-xs-12", id: "cropYieldsChart" },
+	            _react2["default"].createElement(
+	                "h4",
+	                null,
+	                "Crop Yields"
+	            ),
+	            _react2["default"].createElement(
+	                "span",
+	                { className: "text-muted" },
+	                "Crop yields in Terms of Tons / Acre"
+	            ),
+	            _react2["default"].createElement(
+	                "a",
+	                { className: "reset", onClick: this.reset, style: { display: "none" } },
+	                "reset"
+	            )
+	        );
+	    }
+	});
+	
+	module.exports = CropYields;
+
+/***/ },
+/* 215 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	// import d3 from 'd3';
+	
+	/**
+	 * A datasource wrapping the Cropy Yield, by Tons/Acre
+	 */
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var CropYieldsDataSource = (function () {
+	    function CropYieldsDataSource() {
+	        _classCallCheck(this, CropYieldsDataSource);
+	    }
+	
+	    _createClass(CropYieldsDataSource, [{
+	        key: "list",
+	        value: function list() {
+	            var that = this;
+	            if (!this.__listPromise) {
+	                this.__listPromise = new Promise(function (resolve, reject) {
+	                    if (!that.__data) {
+	                        var locations = {};
+	
+	                        d3.csv('data/nass-yield-tons-per-acre.csv', function (err, data) {
+	                            if (err) {
+	                                that.__data = undefined;
+	                                reject(err);
+	                            } else {
+	                                that.__data = {
+	                                    data: data,
+	                                    index: crossfilter(data)
+	                                };
+	                                resolve(that.__data);
+	                            }
+	                        });
+	                    } else {
+	                        resolve(that.__data);
+	                    }
+	                });
+	            }
+	
+	            return this.__listPromise;
+	        }
+	    }]);
+	
+	    return CropYieldsDataSource;
+	})();
+	
+	module.exports = CropYieldsDataSource;
+
+/***/ },
 /* 216 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	// import dc from 'dc';
+	// import d3 from 'd3';
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _commonUtil = __webpack_require__(208);
+	
+	var _commonUtil2 = _interopRequireDefault(_commonUtil);
+	
+	var _colors = __webpack_require__(209);
+	
+	var _colors2 = _interopRequireDefault(_colors);
+	
+	var CropYieldsBUA = _react2["default"].createClass({
+	    displayName: "CropYieldsBUA",
+	
+	    propTypes: {
+	        dataSource: _react2["default"].PropTypes.object.isRequired
+	    },
+	
+	    getInitialState: function getInitialState() {
+	        return {};
+	    },
+	
+	    componentDidMount: function componentDidMount() {
+	        var _this = this;
+	
+	        var el = this.getDOMNode();
+	        var startDate = new Date('2015-01-01');
+	        var endDate = new Date('2015-12-31');
+	        this.props.dataSource.list().then(function (results) {
+	            //TODO: remove me
+	            console.log("Beginning");
+	
+	            var yearFormat = d3.time.format("%Y");
+	            var data = results.data;
+	            var ndx = results.index;
+	
+	            data.forEach(function (item) {
+	                item.yearTime = d3.time.year(new Date(item.Year, 1, 1)); // coerce to date object
+	            });
+	
+	            var all = ndx.groupAll();
+	
+	            var yearlyDim = ndx.dimension(function (d) {
+	                return d.yearTime;
+	            });
+	            console.log(yearlyDim.top(10));
+	
+	            var yearlyYieldGroup = yearlyDim.group().reduceSum(function (d) {
+	                return d.Value;
+	            });
+	            console.log(yearlyYieldGroup.all());
+	
+	            var commodityDim = ndx.dimension(function (d) {
+	                return d.Commodity;
+	            });
+	            var stateDim = ndx.dimension(function (d) {
+	                return d.State;
+	            });
+	            var productionPracticeDim = ndx.dimension(function (d) {
+	                return d.ProdPractice;
+	            });
+	
+	            var yieldTimeScale = d3.time.scale().domain([new Date(2000, 1, 1), new Date(2015, 1, 1)]);
+	            //var yieldTimeScale = d3.scale.linear().domain([2000, 2015])
+	            yieldTimeScale.ticks(d3.time.year);
+	
+	            var yieldTonsChart = dc.barChart(el);
+	            yieldTonsChart.width($(el).innerWidth() - 30).height(200).margins({ top: 10, left: 90, right: 10, bottom: 20 }).x(yieldTimeScale).xUnits(d3.time.years).colors(_colors2["default"].main).dimension(yearlyDim).group(yearlyYieldGroup);
+	            dc.renderAll();
+	            _this.state.myChart = yieldTonsChart;
+	        });
+	    },
+	    reset: function reset() {
+	        if (this.state && this.state.myChart) {
+	            this.state.myChart.filterAll();
+	            dc.redrawAll();
+	        }
+	    },
+	    render: function render() {
+	        return _react2["default"].createElement(
+	            "div",
+	            { className: "col-xs-12", id: "cropYieldsChartBUA" },
+	            _react2["default"].createElement(
+	                "h4",
+	                null,
+	                "Crop Yields"
+	            ),
+	            _react2["default"].createElement(
+	                "span",
+	                { className: "text-muted" },
+	                "Crop yields in Terms of BU / Acre"
+	            ),
+	            _react2["default"].createElement(
+	                "a",
+	                { className: "reset", onClick: this.reset, style: { display: "none" } },
+	                "reset"
+	            )
+	        );
+	    }
+	});
+	
+	module.exports = CropYieldsBUA;
+
+/***/ },
+/* 217 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	// import d3 from 'd3';
+	
+	/**
+	 * A datasource wrapping the Cropy Yield, by BU/Acre
+	 */
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var CropYieldsBUADataSource = (function () {
+	    function CropYieldsBUADataSource() {
+	        _classCallCheck(this, CropYieldsBUADataSource);
+	    }
+	
+	    _createClass(CropYieldsBUADataSource, [{
+	        key: "list",
+	        value: function list() {
+	            var that = this;
+	            if (!this.__listPromise) {
+	                this.__listPromise = new Promise(function (resolve, reject) {
+	                    if (!that.__data) {
+	                        var locations = {};
+	
+	                        d3.csv('data/nass-yield-bu-per-acre.csv', function (err, data) {
+	                            if (err) {
+	                                that.__data = undefined;
+	                                reject(err);
+	                            } else {
+	                                that.__data = {
+	                                    data: data,
+	                                    index: crossfilter(data)
+	                                };
+	                                resolve(that.__data);
+	                            }
+	                        });
+	                    } else {
+	                        resolve(that.__data);
+	                    }
+	                });
+	            }
+	
+	            return this.__listPromise;
+	        }
+	    }]);
+	
+	    return CropYieldsBUADataSource;
+	})();
+	
+	module.exports = CropYieldsBUADataSource;
+
+/***/ },
+/* 218 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	// import dc from 'dc';
+	// import d3 from 'd3';
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _commonUtil = __webpack_require__(208);
+	
+	var _commonUtil2 = _interopRequireDefault(_commonUtil);
+	
+	var _colors = __webpack_require__(209);
+	
+	var _colors2 = _interopRequireDefault(_colors);
+	
+	var CropYieldsBaA = _react2["default"].createClass({
+	    displayName: "CropYieldsBaA",
+	
+	    propTypes: {
+	        dataSource: _react2["default"].PropTypes.object.isRequired
+	    },
+	
+	    getInitialState: function getInitialState() {
+	        return {};
+	    },
+	
+	    componentDidMount: function componentDidMount() {
+	        var _this = this;
+	
+	        var el = this.getDOMNode();
+	        var startDate = new Date('2015-01-01');
+	        var endDate = new Date('2015-12-31');
+	        this.props.dataSource.list().then(function (results) {
+	            //TODO: remove me
+	            console.log("Beginning");
+	
+	            var yearFormat = d3.time.format("%Y");
+	            var data = results.data;
+	            var ndx = results.index;
+	
+	            data.forEach(function (item) {
+	                item.yearTime = d3.time.year(new Date(item.Year, 1, 1)); // coerce to date object
+	            });
+	
+	            var all = ndx.groupAll();
+	
+	            var yearlyDim = ndx.dimension(function (d) {
+	                return d.yearTime;
+	            });
+	            console.log(yearlyDim.top(10));
+	
+	            var yearlyYieldGroup = yearlyDim.group().reduceSum(function (d) {
+	                return d.Value;
+	            });
+	            console.log(yearlyYieldGroup.all());
+	
+	            var commodityDim = ndx.dimension(function (d) {
+	                return d.Commodity;
+	            });
+	            var stateDim = ndx.dimension(function (d) {
+	                return d.State;
+	            });
+	            var productionPracticeDim = ndx.dimension(function (d) {
+	                return d.ProdPractice;
+	            });
+	
+	            var yieldTimeScale = d3.time.scale().domain([new Date(2000, 1, 1), new Date(2015, 1, 1)]);
+	            //var yieldTimeScale = d3.scale.linear().domain([2000, 2015])
+	            yieldTimeScale.ticks(d3.time.year);
+	
+	            var yieldTonsChart = dc.barChart(el);
+	            yieldTonsChart.width($(el).innerWidth() - 30).height(200).margins({ top: 10, left: 90, right: 10, bottom: 20 }).x(yieldTimeScale).xUnits(d3.time.years).colors(_colors2["default"].main).dimension(yearlyDim).group(yearlyYieldGroup);
+	            dc.renderAll();
+	            _this.state.myChart = yieldTonsChart;
+	        });
+	    },
+	    reset: function reset() {
+	        if (this.state && this.state.myChart) {
+	            this.state.myChart.filterAll();
+	            dc.redrawAll();
+	        }
+	    },
+	    render: function render() {
+	        return _react2["default"].createElement(
+	            "div",
+	            { className: "col-xs-12", id: "cropYieldsChartBaA" },
+	            _react2["default"].createElement(
+	                "h4",
+	                null,
+	                "Crop Yields"
+	            ),
+	            _react2["default"].createElement(
+	                "span",
+	                { className: "text-muted" },
+	                "Crop yields in Terms of Bales / Acre"
+	            ),
+	            _react2["default"].createElement(
+	                "a",
+	                { className: "reset", onClick: this.reset, style: { display: "none" } },
+	                "reset"
+	            )
+	        );
+	    }
+	});
+	
+	module.exports = CropYieldsBaA;
+
+/***/ },
+/* 219 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	// import d3 from 'd3';
+	
+	/**
+	 * A datasource wrapping the Cropy Yield, by Ba/Acre
+	 */
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var CropYieldsBaADataSource = (function () {
+	    function CropYieldsBaADataSource() {
+	        _classCallCheck(this, CropYieldsBaADataSource);
+	    }
+	
+	    _createClass(CropYieldsBaADataSource, [{
+	        key: "list",
+	        value: function list() {
+	            var that = this;
+	            if (!this.__listPromise) {
+	                this.__listPromise = new Promise(function (resolve, reject) {
+	                    if (!that.__data) {
+	                        var locations = {};
+	
+	                        d3.csv('data/nass-yield-bales-per-acre.csv', function (err, data) {
+	                            if (err) {
+	                                that.__data = undefined;
+	                                reject(err);
+	                            } else {
+	                                that.__data = {
+	                                    data: data,
+	                                    index: crossfilter(data)
+	                                };
+	                                resolve(that.__data);
+	                            }
+	                        });
+	                    } else {
+	                        resolve(that.__data);
+	                    }
+	                });
+	            }
+	
+	            return this.__listPromise;
+	        }
+	    }]);
+	
+	    return CropYieldsBaADataSource;
+	})();
+	
+	module.exports = CropYieldsBaADataSource;
+
+/***/ },
+/* 220 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	// import dc from 'dc';
+	// import d3 from 'd3';
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _commonUtil = __webpack_require__(208);
+	
+	var _commonUtil2 = _interopRequireDefault(_commonUtil);
+	
+	var _colors = __webpack_require__(209);
+	
+	var _colors2 = _interopRequireDefault(_colors);
+	
+	var CropYieldsCWTA = _react2["default"].createClass({
+	    displayName: "CropYieldsCWTA",
+	
+	    propTypes: {
+	        dataSource: _react2["default"].PropTypes.object.isRequired
+	    },
+	
+	    getInitialState: function getInitialState() {
+	        return {};
+	    },
+	
+	    componentDidMount: function componentDidMount() {
+	        var _this = this;
+	
+	        var el = this.getDOMNode();
+	        var startDate = new Date('2015-01-01');
+	        var endDate = new Date('2015-12-31');
+	        this.props.dataSource.list().then(function (results) {
+	            //TODO: remove me
+	            console.log("CWT Beginning");
+	
+	            var yearFormat = d3.time.format("%Y");
+	            var data = results.data;
+	            var ndx = results.index;
+	
+	            data.forEach(function (item) {
+	                item.yearTime = d3.time.year(new Date(item.Year, 1, 1)); // coerce to date object
+	            });
+	
+	            var all = ndx.groupAll();
+	
+	            var yearlyDim = ndx.dimension(function (d) {
+	                return d.yearTime;
+	            });
+	            console.log(yearlyDim.top(10));
+	
+	            var yearlyYieldGroup = yearlyDim.group().reduceSum(function (d) {
+	                return d.Value;
+	            });
+	            console.log(yearlyYieldGroup.all());
+	
+	            var commodityDim = ndx.dimension(function (d) {
+	                return d.Commodity;
+	            });
+	            var stateDim = ndx.dimension(function (d) {
+	                return d.State;
+	            });
+	            var productionPracticeDim = ndx.dimension(function (d) {
+	                return d.ProdPractice;
+	            });
+	
+	            var yieldTimeScale = d3.time.scale().domain([new Date(2000, 1, 1), new Date(2015, 1, 1)]);
+	            //var yieldTimeScale = d3.scale.linear().domain([2000, 2015])
+	            yieldTimeScale.ticks(d3.time.year);
+	
+	            var yieldTonsChart = dc.barChart(el);
+	            yieldTonsChart.width($(el).innerWidth() - 30).height(200).margins({ top: 10, left: 90, right: 10, bottom: 20 }).x(yieldTimeScale).xUnits(d3.time.years).colors(_colors2["default"].main).dimension(yearlyDim).group(yearlyYieldGroup);
+	            dc.renderAll();
+	            _this.state.myChart = yieldTonsChart;
+	        });
+	    },
+	    reset: function reset() {
+	        if (this.state && this.state.myChart) {
+	            this.state.myChart.filterAll();
+	            dc.redrawAll();
+	        }
+	    },
+	    render: function render() {
+	        return _react2["default"].createElement(
+	            "div",
+	            { className: "col-xs-12", id: "cropYieldsChartCWTA" },
+	            _react2["default"].createElement(
+	                "h4",
+	                null,
+	                "Crop Yields"
+	            ),
+	            _react2["default"].createElement(
+	                "span",
+	                { className: "text-muted" },
+	                "Crop yields in Terms of CWT / Acre"
+	            ),
+	            _react2["default"].createElement(
+	                "a",
+	                { className: "reset", onClick: this.reset, style: { display: "none" } },
+	                "reset"
+	            )
+	        );
+	    }
+	});
+	
+	module.exports = CropYieldsCWTA;
+
+/***/ },
+/* 221 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	// import d3 from 'd3';
+	
+	/**
+	 * A datasource wrapping the Cropy Yield, by CWT/Acre
+	 */
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var CropYieldsCWTADataSource = (function () {
+	    function CropYieldsCWTADataSource() {
+	        _classCallCheck(this, CropYieldsCWTADataSource);
+	    }
+	
+	    _createClass(CropYieldsCWTADataSource, [{
+	        key: "list",
+	        value: function list() {
+	            var that = this;
+	            if (!this.__listPromise) {
+	                this.__listPromise = new Promise(function (resolve, reject) {
+	                    if (!that.__data) {
+	                        var locations = {};
+	
+	                        d3.csv('data/nass-yield-cwt-per-acre.csv', function (err, data) {
+	                            if (err) {
+	                                that.__data = undefined;
+	                                reject(err);
+	                            } else {
+	                                that.__data = {
+	                                    data: data,
+	                                    index: crossfilter(data)
+	                                };
+	                                resolve(that.__data);
+	                            }
+	                        });
+	                    } else {
+	                        resolve(that.__data);
+	                    }
+	                });
+	            }
+	
+	            return this.__listPromise;
+	        }
+	    }]);
+	
+	    return CropYieldsCWTADataSource;
+	})();
+	
+	module.exports = CropYieldsCWTADataSource;
+
+/***/ },
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
