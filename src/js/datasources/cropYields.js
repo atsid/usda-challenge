@@ -3,7 +3,7 @@
 // import d3 from 'd3';
 
 /**
- * A datasource wrapping the hi-low data
+ * A datasource wrapping the Cropy Yield, by Tons/Acre
  */
 class CropYieldsDataSource {
     list() {
