@@ -56,7 +56,7 @@ gulp.task("webpack", function(callback) {
             },
             module: {
                 loaders: [{
-                    exclude: /(node_modules|bower_components)/,
+                    exclude: /(bower_components)/,
                     loader: 'babel'
                 }]
             }

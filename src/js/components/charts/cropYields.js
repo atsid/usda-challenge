@@ -5,6 +5,8 @@
 import React from "react";
 import util from "../../common/util";
 import colors from "./colors";
+import debugFactory from "debug";
+const debug = debugFactory('app:components:CropYields');
 
 let COMMODITIES = ['SUGARBEETS', 'CORN', 'SUGARCANE', 'HAY', 'HAYLAGE'];
 
@@ -24,7 +26,7 @@ var CropYields = React.createClass({
         let endDate = new Date('2015-12-31');
         this.props.dataSource.list().then((results) => {
             //TODO: remove me
-            console.log("Tons Beginning");
+            debug('receiving data');
 
             var yearFormat = d3.time.format("%Y");
             var data = results.data;
@@ -35,6 +37,15 @@ var CropYields = React.createClass({
             });
 
             var yearlyDim = ndx.dimension((d) => d.yearTime);
+            debug('yearlyDim', yearlyDim.top(10));
+
+            var yearlyYieldGroup = yearlyDim.group().reduceSum((d) => d.Value);
+            debug('yearlyYieldGroup: ', yearlyYieldGroup.all());
+
+            var commodityDim = ndx.dimension((d) => d.Commodity);
+            var stateDim = ndx.dimension((d) => d.State);
+            var productionPracticeDim = ndx.dimension((d) => d.ProdPractice);
+
             var yieldTimeScale = d3.time.scale().domain([new Date(2000,1,1), new Date(2015, 1,1)])
             //var yieldTimeScale = d3.scale.linear().domain([2000, 2015])
             yieldTimeScale.ticks(d3.time.year)
