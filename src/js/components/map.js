@@ -1,5 +1,7 @@
 "use strict";
 import React from "react";
+import debugFactory from "debug";
+const debug = debugFactory('app:components:Map');
 
 let MapComponent = React.createClass({
     propTypes: {
@@ -84,13 +86,13 @@ let MapComponent = React.createClass({
                     properties: {id: id}
                 };
                 var feature = new google.maps.Data.Feature(featureOptions);
-                console.log(feature);
+                debug("feature", feature);
                 map.data.add(feature);
             });
 
             map.data.addListener('click', function(event) {
-                console.log('clicked point', event);
-                console.log('station: ' + event.feature.getProperty('id'));
+                debug('clicked point', event);
+                debug('station: ' + event.feature.getProperty('id'));
             });
         });
     },
