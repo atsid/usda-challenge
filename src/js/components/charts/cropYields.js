@@ -24,7 +24,7 @@ var CropYields = React.createClass({
         let endDate = new Date('2015-12-31');
         this.props.dataSource.list().then((results) => {
             //TODO: remove me
-            console.log("Beginning");
+            console.log("Tons Beginning");
 
             var yearFormat = d3.time.format("%Y");
             var data = results.data;
