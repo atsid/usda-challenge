@@ -6,6 +6,8 @@ import React from "react";
 import util from "../../common/util";
 import colors from "./colors";
 
+let COMMODITIES = ['SUGARBEETS', 'WHEAT', 'TOBACCO', 'OATS', 'SOYBEANS', 'SORGHUM', 'CORN', 'SUGARCANE', 'HAY', 'BEANS', 'BARLEY', 'PEANUTS', 'RICE', 'HAYLAGE', 'COTTON'];
+
 var CropYields = React.createClass({
 
     propTypes: {
@@ -32,35 +34,73 @@ var CropYields = React.createClass({
                 item.yearTime = d3.time.year(new Date(item.Year,1,1)); // coerce to date object
             });
 
-            var all = ndx.groupAll();
-
             var yearlyDim = ndx.dimension((d) => d.yearTime);
-            console.log(yearlyDim.top(10));
-
-            var yearlyYieldGroup = yearlyDim.group().reduceSum((d) => d.Value);
-            console.log(yearlyYieldGroup.all())
-
-            var commodityDim = ndx.dimension((d) => d.Commodity);
-            var stateDim = ndx.dimension((d) => d.State);
-            var productionPracticeDim = ndx.dimension((d) => d.ProdPractice);
-
             var yieldTimeScale = d3.time.scale().domain([new Date(2000,1,1), new Date(2015, 1,1)])
             //var yieldTimeScale = d3.scale.linear().domain([2000, 2015])
             yieldTimeScale.ticks(d3.time.year)
 
-            var yieldTonsChart = dc.barChart(el);
-                yieldTonsChart
-                    .width($(el).innerWidth()-30)
-                    .height(200)
-                    .margins({top: 10, left:90, right: 10, bottom:20})
-                    .x(yieldTimeScale)
-                    .xUnits(d3.time.years)
-                    .colors(colors.main)
-                    .dimension(yearlyDim)
-                    .group(yearlyYieldGroup)
-                    ;
+            var gap = 80, translate = 10;
+            var yearlyYieldGroupByCommodity = yearlyDim.group().reduce(
+                function (p, v) {
+                    p[v.Commodity].count++;
+                    p[v.Commodity].total += parseFloat(v.Value);
+                    return p;
+                },
+                function reduceRemove(p, v) {
+                    p[v.Commodity].count--;
+                    p[v.Commodity].total -= parseFloat(v.Value);
+                    return p;
+                },
+                function reduceInitial() {
+                    var initial = {
+                        commodities: {}
+                    };
+                    COMMODITIES.forEach((c) => initial[c] = {
+                        count: 0,
+                        total: 0
+                    });
+                    return initial;
+                });
+
+            let tempChart = dc.compositeChart(el);
+            tempChart
+                .width($(el).innerWidth()-30)
+                .height(200)
+                .margins({top: 10, left:90, right: 10, bottom:20})
+                .x(yieldTimeScale)
+                .xUnits(d3.time.years)
+                // .colors(colors.main)
+                .dimension(yearlyDim)
+                .brushOn(false)
+                .compose(
+                    COMMODITIES.map((c) => {
+                        return dc.barChart(tempChart)
+                            .group(yearlyYieldGroupByCommodity)
+                            .gap(gap)
+                            .brushOn(false)
+                            .colors(["#" + intToRGB(hashCode(c))])
+                            .valueAccessor((d) => {
+                                return d.value[c].total;
+                            });
+                    }))
+                .renderlet(function (chart) {
+                    COMMODITIES.forEach((c, i) => {
+                        var tip = d3.tip()
+                            .attr('class', 'd3-tip')
+                            .offset([-10, 0])
+                            .html(function (d) {
+                                return "<span style='color: #f0027f'>(" + d.data.key.getFullYear() + ") " +  c + ": " + d.data.value[c].total.toFixed(2) + " Tons/Acre " + "</span>";
+                            });
+                        var rect = chart.selectAll("g._" + i + " rect");
+                        rect.attr("transform", "translate(" + (i * translate) + ", 0)");
+
+                        rect.call(tip);
+                        rect.on('mouseover', tip.show)
+                            .on('mouseout', tip.hide);
+                        });
+                });
+            this.state.myChart = tempChart;
             dc.renderAll();
-            this.state.myChart = yieldTonsChart;
         });
     },
     reset() {
@@ -79,5 +119,21 @@ var CropYields = React.createClass({
         );
     }
 });
+
+function hashCode(str) { // java String#hashCode
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return hash;
+}
+
+function intToRGB(i){
+    var c = (i & 0x00FFFFFF)
+        .toString(16)
+        .toUpperCase();
+
+    return "00000".substring(0, 6 - c.length) + c;
+}
 
 module.exports = CropYields;
