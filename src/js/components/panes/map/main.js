@@ -14,15 +14,31 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import DropdownButton from "react-bootstrap/lib/DropdownButton";
 import MenuItem from "react-bootstrap/lib/MenuItem";
 import Panel from "react-bootstrap/lib/Panel";
-import Map from "../../map";
+import Map from "./map";
 
 let MapPaneComponent = React.createClass({
+    getInitialState() {
+        return {};
+    },
+
+    onLocateMe() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                debug('located to position', position);
+                this.refs.map.onGeoLocate(position);
+            });
+        } else {
+            this.setState({alert: "Geolocation is not supported by this browser."});
+        }
+    },
+
     render() {
+        debug('rendering map pane', this.state);
         return (
             <div className="pane">
                 <div className="paneHeader">
                     <h4 className="paneHeaderContent">Where's your farm?</h4>
-                    <Button id="locateMe" className="paneHeaderContent firstAction">
+                    <Button id="locateMe" className="paneHeaderContent firstAction" onClick={this.onLocateMe}>
                         <Glyphicon glyph="map-marker"/>
                         &nbsp;Locate Me&nbsp;
                     </Button>
@@ -87,7 +103,7 @@ let MapPaneComponent = React.createClass({
                     </DropdownButton>
                 </div>
                 <div className="mapContainer">
-                    <h1>[Map]</h1>
+                    <Map ref="map" />
                 </div>
             </div>
         );
