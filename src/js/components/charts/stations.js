@@ -5,6 +5,7 @@
 import React from "react";
 import util from "../../common/util";
 import colors from "./colors";
+import ReactDOM from "react-dom";
 
 var Stations = React.createClass({
 
@@ -17,7 +18,7 @@ var Stations = React.createClass({
     },
 
     componentDidMount: function () {
-        var el = this.getDOMNode();
+        var el = ReactDOM.findDOMNode(this);
 
         let locations = {};
         this.props.dataSource.list().then((results) => {

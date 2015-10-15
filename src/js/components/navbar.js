@@ -1,18 +1,18 @@
 "use strict";
 
 import React from "react";
+import Navbar from "react-bootstrap/lib/Navbar";
+import NavBrand from "react-bootstrap/lib/NavBrand";
 
 let NavBar = React.createClass({
 
     render: function() {
         return (
-            <nav className={"navbar navbar-inverse navbar-fixed-top"}>
-                <div className={"container-fluid"}>
-                    <div className={"navbar-header"}>
-                        <a className={"navbar-brand"} href={"#"}>ATS + EchoUser USDA Innovation Challenge</a>
-                    </div>
-                </div>
-            </nav>
+            <Navbar inverse fixedTop>
+                <NavBrand>
+                    ATS + EchoUser USDA Innovation Challenge
+                </NavBrand>
+            </Navbar>
         );
     }
 });
