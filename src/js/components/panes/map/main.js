@@ -25,7 +25,7 @@ let MapPaneComponent = React.createClass({
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((position) => {
                 debug('located to position', position);
-                this.setState({geoPosition: position});
+                this.refs.map.onGeoLocate(position);
             });
         } else {
             this.setState({alert: "Geolocation is not supported by this browser."});
@@ -103,7 +103,7 @@ let MapPaneComponent = React.createClass({
                     </DropdownButton>
                 </div>
                 <div className="mapContainer">
-                    <Map geoPosition={this.state.geoPosition} />
+                    <Map ref="map" />
                 </div>
             </div>
         );

@@ -5,43 +5,37 @@ import debugFactory from "debug";
 const debug = debugFactory('app:components:Map');
 
 let MapComponent = React.createClass({
-    propTypes: {
-        geoPosition: React.PropTypes.object,
+    getInitialState() {
+        return {
+            center: {lat: 42, lng: -94},
+            zoom: 7,
+        };
     },
 
     componentDidMount () {
         const mapNode = ReactDOM.findDOMNode(this.refs.map);
         const map = new google.maps.Map($(mapNode)[0], {
-            center: this.getCenter(),
-            zoom: this.getZoom()
+            center: this.state.center,
+            zoom: this.state.zoom,
         });
-        google.maps.event.addListener(map, 'bounds_changed', () => {
-            var bounds = map.getBounds();
-        });
+        map.addListener('bounds_changed', () => { debug('bounds changed'); });
+        map.addListener('center_changed', () => { debug('center changed'); });
         this.map = map;
     },
 
-    getCenter() {
-        const geoPosition = this.props.geoPosition;
-        if (geoPosition) {
-            const coords = geoPosition.coords;
-            debug('coords: ', coords);
-            return {lat: coords.latitude, lng: coords.longitude};
-        } else {
-            return {lat: 42, lng: -94};
-        }
+    onGeoLocate(geoPosition) {
+        const coords = geoPosition.coords;
+        const newCenter = {lat: coords.latitude, lng: coords.longitude};
+        this.setState({center: newCenter});
     },
-
-    getZoom() {
-        return 7;
-    },
-
 
     render() {
         debug('rendering map view', this.state);
         const map = this.map;
         if (map) {
-            map.setCenter(this.getCenter());
+            if (this.state.center) {
+                map.setCenter(this.state.center);
+            }
         }
         return (
             <div className="mapContainer">
