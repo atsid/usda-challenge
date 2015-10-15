@@ -17,9 +17,10 @@ var jsx = require("gulp-jsx");
 var config = {
   src: {
     all: './',
-    siteFiles: ['index.html', 'data/**/*'],
+    siteFiles: ['index.html', 'build/*', 'bower_components/**/*', 'data/**/*'],
     build: 'build',
-    deploy: 'build/**/*',
+    dist: 'dist',
+    deploy: 'dist/**/*',
     jsDir: 'src/js',
     js: 'src/js/**/*.js'
   }
@@ -64,17 +65,17 @@ gulp.task("webpack", function(callback) {
 });
 
 /*
- * Clean out the build directory so we don't have any excess junk
+ * Clean out the dist directory so we don't have any excess junk
  */
 gulp.task('clean', function (cb) {
-  rimraf(config.src.build, cb);
+  rimraf(config.src.dist, cb);
 });
 
 /*
  * Copy static content into a single point for deployment, without the extra cruft.
  */
 gulp.task('site', function (cb) {
-    return gulp.src(config.src.siteFiles, { 'base': '.' }).pipe(gulp.dest(config.src.build));
+    return gulp.src(config.src.siteFiles, { 'base': '.' }).pipe(gulp.dest(config.src.dist));
 });
 
 /*
@@ -111,7 +112,7 @@ gulp.task('serve-server', function() {
  */
 gulp.task('watch', function() {
     watch(config.src.js, function() {
-        runSequence('build');
+        runSequence('lint', 'webpack');
     });
 });
 
@@ -119,14 +120,14 @@ gulp.task('watch', function() {
  * Live-reload server to make the app available (localhost:8000) and auto-refresh when files change.
  */
 gulp.task('serve', function(cb) {
-    runSequence('build', 'watch', 'serve-server');
+    runSequence('lint', 'webpack', 'watch', 'serve-server');
 });
 
 /*
  * Web server to host the app, but from output folder, replicating live deploy with built resources.
  */
 gulp.task('serve-dist', function() {
-  gulp.src(config.src.build)
+  gulp.src(config.src.dist)
       .pipe(serve(false));
 });
 
