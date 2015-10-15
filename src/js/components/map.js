@@ -1,16 +1,21 @@
-(function (global) {
+"use strict";
+import React from "react";
 
-    var Map = function () {
+let MapComponent = React.createClass({
+    propTypes: {
+        dataSource: React.PropTypes.object.isRequired
+    },
 
-        var map = new google.maps.Map($('#map')[0], {
+    componentDidMount () {
+        let mapEl = this.refs.map.getDOMNode();
+        let input = this.refs.searchInput.getDOMNode();
+        var map = new google.maps.Map($(mapEl)[0], {
             center: { lat: 42, lng: -94 },
             zoom: 7
         });
 
-
         //supports map search
         var markers = [];
-        var input = document.getElementById('pac-input');
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
         var searchBox = new google.maps.places.SearchBox(input);
 
@@ -65,10 +70,39 @@
             searchBox.setBounds(bounds);
         });
 
-        this.map = map;
+        this.props.dataSource.list().then(function (result) {
+            //XXX: connecting these via direct access to the map is a temporary kludge. it also doesn't filter
+            //TODO: event on point clicks to filter dashboard data
+            Object.keys(result.locations).forEach(function (id) {
+                var location = result.locations[id];
+                var latLng = new google.maps.LatLng(
+                    location.latitude,
+                    location.longitude
+                );
+                var featureOptions = {
+                    geometry: new google.maps.Data.Point(latLng),
+                    properties: {id: id}
+                };
+                var feature = new google.maps.Data.Feature(featureOptions);
+                console.log(feature);
+                map.data.add(feature);
+            });
 
-    };
+            map.data.addListener('click', function(event) {
+                console.log('clicked point', event);
+                console.log('station: ' + event.feature.getProperty('id'));
+            });
+        });
+    },
 
-    global.usda.Map = Map;
-
-}(this));
+    render() {
+        return (
+            <div>
+                <h2 className="sub-header">Map</h2>
+                <input ref="searchInput" className={"searchInput search_control"} type="text" placeholder="Search"></input>
+                <div ref="map" className="map"></div>
+            </div>
+        );
+    }
+});
+module.exports = MapComponent;

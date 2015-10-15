@@ -1,14 +1,15 @@
+'use strict';
+
+import React from 'react'
+import { Router, Route, Redirect } from 'react-router'
+import USDAApp from "./components/usda"
+import Dashboard from "./components/dashboard";
+
 (function (global) {
-    'use strict';
-
-    var usda = global.usda;
-    var url = 'data/iowa-hi-lo-clipped.csv';
-
-    var map = new usda.Map();
-    usda.map = map;
-
-    var dashboard = new usda.Dashboard(url, map);
-    usda.dashboard = dashboard;
-
-
+    React.render((
+        <Router>
+            <Route path="dashboard" component={USDAApp} content={Dashboard}/>
+            <Redirect from="/" to="/dashboard" />
+        </Router>
+    ), document.getElementById("app"));
 }(this));
