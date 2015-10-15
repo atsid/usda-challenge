@@ -17,7 +17,7 @@ var jsx = require("gulp-jsx");
 var config = {
   src: {
     all: './',
-    siteFiles: ['index.html', 'build/*', 'bower_components/**/*', 'data/**/*'],
+    siteFiles: ['index.html', 'build/*', 'bower_components/**/*', 'data/**/*', 'src/css/*'],
     build: 'build',
     dist: 'dist',
     deploy: 'dist/**/*',
