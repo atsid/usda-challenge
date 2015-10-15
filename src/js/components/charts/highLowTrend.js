@@ -5,6 +5,7 @@
 import React from "react";
 import util from "../../common/util";
 import colors from "./colors";
+import ReactDOM from "react-dom";
 
 var HighLowTrend = React.createClass({
 
@@ -17,7 +18,7 @@ var HighLowTrend = React.createClass({
     },
 
     componentDidMount: function () {
-        let el = this.getDOMNode();
+        let el = ReactDOM.findDOMNode(this);
         let startDate = new Date('2015-01-01');
         let endDate = new Date('2015-12-31');
         this.props.dataSource.list().then((results) => {

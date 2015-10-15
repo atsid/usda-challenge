@@ -109,10 +109,13 @@ body {
 /* end bootstrap template */
 
 .map {
-    width: 100%;
+    width: 95%;
     height: 100%;
-    min-width: 800px;
     min-height: 600px;
+}
+
+.mapContainer {
+    height: 100%;
 }
 
 .search_control {

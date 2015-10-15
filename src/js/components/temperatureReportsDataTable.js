@@ -1,6 +1,7 @@
 "use strict";
 
 import React from "react";
+import ReactDOM from "react-dom";
 // import dc from "dc";
 
 let TemperatureReportsDataTable = React.createClass({
@@ -14,7 +15,7 @@ let TemperatureReportsDataTable = React.createClass({
     },
 
     componentDidMount: function () {
-        let el = this.getDOMNode();
+        let el = ReactDOM.findDOMNode(this);
         this.props.dataSource.list().then((results) => {
             var dataTable = dc.dataTable($(el).find(".data-table")[0]);
             var index = results.index;
@@ -38,21 +39,24 @@ let TemperatureReportsDataTable = React.createClass({
         });
     },
 
-    render: function() {
+    render: function () {
         return (
             <div>
                 <h2 className="sub-header">Raw Data</h2>
                 <span className="text-muted">(Last 100 readings)</span>
                 <div className="row">
                     <div className="col-xs-12">
-                        <table className="table table-bordered table-hover table-striped table-condensed data-table" id="temperatureDataTable">
+                        <table className="table table-bordered table-hover table-striped table-condensed data-table"
+                               id="temperatureDataTable">
                             <thead>
-                            <th className="col-xs-2">Date</th>
-                            <th className="col-xs-1">High T</th>
-                            <th className="col-xs-1">Low T</th>
-                            <th className="col-xs-1">Lat</th>
-                            <th className="col-xs-1">Long</th>
-                            <th className="col-xs-3">Elev</th>
+                            <tr>
+                                <th className="col-xs-2">Date</th>
+                                <th className="col-xs-1">High T</th>
+                                <th className="col-xs-1">Low T</th>
+                                <th className="col-xs-1">Lat</th>
+                                <th className="col-xs-1">Long</th>
+                                <th className="col-xs-3">Elev</th>
+                            </tr>
                             </thead>
                         </table>
                     </div>

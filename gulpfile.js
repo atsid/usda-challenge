@@ -12,7 +12,6 @@ var bootlint  = require('gulp-bootlint');
 var gutil = require("gulp-util");
 var webpack = require("gulp-webpack");
 var watch = require("gulp-watch");
-var jsx = require("gulp-jsx");
 
 var config = {
   src: {
@@ -44,11 +43,8 @@ gulp.task('bootlint', function() {
 /**
  * Packs the UI into a single file
  */
-gulp.task("webpack", function(callback) {
+gulp.task("webpack", function() {
     return gulp.src(config.src.js)
-        .pipe(jsx({
-            factory: 'React.createClass'
-        }))
         .pipe(webpack({
             devtool: "source-map",
             output: {
@@ -56,7 +52,7 @@ gulp.task("webpack", function(callback) {
             },
             module: {
                 loaders: [{
-                    exclude: /(bower_components)/,
+                    exclude: /(node_modules|bower_components)/,
                     loader: 'babel'
                 }]
             }

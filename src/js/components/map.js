@@ -1,5 +1,6 @@
 "use strict";
 import React from "react";
+import ReactDOM from "react-dom";
 import debugFactory from "debug";
 const debug = debugFactory('app:components:Map');
 
@@ -9,8 +10,8 @@ let MapComponent = React.createClass({
     },
 
     componentDidMount () {
-        let mapEl = this.refs.map.getDOMNode();
-        let input = this.refs.searchInput.getDOMNode();
+        let mapEl = ReactDOM.findDOMNode(this.refs.map);
+        let input = ReactDOM.findDOMNode(this.refs.searchInput);
         var map = new google.maps.Map($(mapEl)[0], {
             center: { lat: 42, lng: -94 },
             zoom: 7
@@ -99,8 +100,7 @@ let MapComponent = React.createClass({
 
     render() {
         return (
-            <div>
-                <h2 className="sub-header">Map</h2>
+            <div className="mapContainer">
                 <input ref="searchInput" className={"searchInput search_control"} type="text" placeholder="Search"></input>
                 <div ref="map" className="map"></div>
             </div>

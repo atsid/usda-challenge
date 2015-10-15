@@ -3,6 +3,7 @@
 // import dc from 'dc';
 // import d3 from 'd3';
 import React from "react";
+import ReactDOM from "react-dom";
 import util from "../../common/util";
 import colors from "./colors";
 import debugFactory from "debug";
@@ -19,7 +20,7 @@ var CropYieldsBUA = React.createClass({
     },
 
     componentDidMount: function () {
-        let el = this.getDOMNode();
+        let el = ReactDOM.findDOMNode(this);
         let startDate = new Date('2015-01-01');
         let endDate = new Date('2015-12-31');
         this.props.dataSource.list().then((results) => {
