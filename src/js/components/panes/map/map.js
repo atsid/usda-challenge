@@ -21,11 +21,18 @@ let MapComponent = React.createClass({
         this.map = map;
     },
 
-    setPosition(geoPosition) {
-        if (this.map && geoPosition && geoPosition.coords) {
-            const coords = geoPosition.coords;
-            const newCenter = {lat: coords.latitude, lng: coords.longitude};
-            this.map.setCenter(newCenter);
+    setCenter(center) {
+        if (this.map && center) {
+            debug('received new center', center);
+            this.map.setCenter(center);
+        }
+    },
+
+    setBounds(bounds) {
+        if (this.map && bounds) {
+            debug('received new bounds', bounds, this.map);
+            const gbounds = new google.maps.LatLngBounds(bounds.sw, bounds.ne);
+            this.map.fitBounds(gbounds);
         }
     },
 

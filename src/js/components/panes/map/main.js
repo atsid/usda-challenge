@@ -2,6 +2,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import debugFactory from "debug";
+import stateData from "./states";
 const debug = debugFactory('app:components:MapPane');
 
 import Grid from "react-bootstrap/lib/Grid";
@@ -22,18 +23,50 @@ let MapPaneComponent = React.createClass({
     },
 
     onLocateMe() {
+        this.setState({selectedState: null});
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((position) => {
-                debug('located to position', position);
-                this.refs.map.setPosition(position);
+                const center = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                };
+                this.refs.map.setCenter(center);
             });
         } else {
             this.setState({alert: "Geolocation is not supported by this browser."});
         }
     },
 
+    onSelectState(state) {
+        debug('Selected State', state);
+        if (state) {
+            const center = {lat: state.lat, lng: state.lng};
+            const bounds = {
+                sw: {
+                    lat: state.bounds.minLat,
+                    lng: state.bounds.minLng,
+                },
+                ne: {
+                    lat: state.bounds.maxLat,
+                    lng: state.bounds.maxLng,
+                },
+            };
+            this.setState({selectedState: state});
+            this.refs.map.setCenter(center);
+            this.refs.map.setBounds(bounds);
+        }
+    },
+
     render() {
         debug('rendering map pane', this.state);
+        const stateSelections = stateData.states.map((state) => {
+          return (<MenuItem key={state.code} onSelect={() => this.onSelectState(state)}>{state.name}</MenuItem>)
+        });
+        let stateTitle = "Select State";
+        if (this.state.selectedState) {
+            stateTitle = this.state.selectedState.name;
+        }
+
         return (
             <div className="pane">
                 <div className="paneHeader">
@@ -43,63 +76,8 @@ let MapPaneComponent = React.createClass({
                         &nbsp;Locate Me&nbsp;
                     </Button>
                     <span>&nbsp;or&nbsp;</span>
-                    <DropdownButton id="selectState" title="Select State">
-                        <MenuItem>Alabama</MenuItem>
-                        <MenuItem>Alaska</MenuItem>
-                        <MenuItem>American Samoa</MenuItem>
-                        <MenuItem>Arizona</MenuItem>
-                        <MenuItem>Arkansas</MenuItem>
-                        <MenuItem>California</MenuItem>
-                        <MenuItem>Colorado</MenuItem>
-                        <MenuItem>Connecticut</MenuItem>
-                        <MenuItem>Delaware</MenuItem>
-                        <MenuItem>District of Columbia</MenuItem>
-                        <MenuItem>Florida</MenuItem>
-                        <MenuItem>Georgia</MenuItem>
-                        <MenuItem>Guam</MenuItem>
-                        <MenuItem>Hawaii</MenuItem>
-                        <MenuItem>Idaho</MenuItem>
-                        <MenuItem>Illinois</MenuItem>
-                        <MenuItem>Indiana</MenuItem>
-                        <MenuItem>Iowa</MenuItem>
-                        <MenuItem>Kansas</MenuItem>
-                        <MenuItem>Kentucky</MenuItem>
-                        <MenuItem>Louisiana</MenuItem>
-                        <MenuItem>Maine</MenuItem>
-                        <MenuItem>Maryland</MenuItem>
-                        <MenuItem>Massachusetts</MenuItem>
-                        <MenuItem>Michigan</MenuItem>
-                        <MenuItem>Minnesota</MenuItem>
-                        <MenuItem>Mississippi</MenuItem>
-                        <MenuItem>Missouri</MenuItem>
-                        <MenuItem>Montana</MenuItem>
-                        <MenuItem>Nebraska</MenuItem>
-                        <MenuItem>Nevada</MenuItem>
-                        <MenuItem>New Hampshire</MenuItem>
-                        <MenuItem>New Jersey</MenuItem>
-                        <MenuItem>New Mexico</MenuItem>
-                        <MenuItem>New York</MenuItem>
-                        <MenuItem>North Carolina</MenuItem>
-                        <MenuItem>North Dakota</MenuItem>
-                        <MenuItem>Northern Marianas Islands</MenuItem>
-                        <MenuItem>Ohio</MenuItem>
-                        <MenuItem>Oklahoma</MenuItem>
-                        <MenuItem>Oregon</MenuItem>
-                        <MenuItem>Pennsylvania</MenuItem>
-                        <MenuItem>Puerto Rico</MenuItem>
-                        <MenuItem>Rhode Island</MenuItem>
-                        <MenuItem>South Carolina</MenuItem>
-                        <MenuItem>South Dakota</MenuItem>
-                        <MenuItem>Tennessee</MenuItem>
-                        <MenuItem>Texas</MenuItem>
-                        <MenuItem>Utah</MenuItem>
-                        <MenuItem>Vermont</MenuItem>
-                        <MenuItem>Virginia</MenuItem>
-                        <MenuItem>Virgin Islands</MenuItem>
-                        <MenuItem>Washington</MenuItem>
-                        <MenuItem>West Virginia</MenuItem>
-                        <MenuItem>Wisconsin</MenuItem>
-                        <MenuItem>Wyoming</MenuItem>
+                    <DropdownButton id="selectState" title={stateTitle}>
+                        {stateSelections}
                     </DropdownButton>
                 </div>
                 <div className="mapContainer">
