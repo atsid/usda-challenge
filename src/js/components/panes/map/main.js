@@ -19,13 +19,17 @@ import Map from "./map";
 
 let MapPaneComponent = React.createClass({
     getInitialState() {
-        return {};
+        return {
+            acquiringLocation: false,
+        };
     },
 
     onLocateMe() {
         this.setState({selectedState: null});
         if (navigator.geolocation) {
+            this.setState({acquiringLocation: true});
             navigator.geolocation.getCurrentPosition((position) => {
+                this.setState({acquiringLocation: false});
                 const center = {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude,
@@ -71,9 +75,13 @@ let MapPaneComponent = React.createClass({
             <div className="pane">
                 <div className="paneHeader">
                     <h4 className="paneHeaderContent">Where's your farm?</h4>
-                    <Button id="locateMe" className="paneHeaderContent firstAction" onClick={this.onLocateMe}>
+                    <Button
+                        id="locateMe"
+                        className="paneHeaderContent firstAction"
+                        onClick={this.onLocateMe}
+                        disabled={this.state.acquiringLocation}>
                         <Glyphicon glyph="map-marker"/>
-                        &nbsp;Locate Me&nbsp;
+                        &nbsp;{this.state.acquiringLocation ? "Locating..." : "Locate Me"}&nbsp;
                     </Button>
                     <span>&nbsp;or&nbsp;</span>
                     <DropdownButton id="selectState" title={stateTitle}>
@@ -83,6 +91,9 @@ let MapPaneComponent = React.createClass({
                 <div className="mapContainer">
                     <Map ref="map" />
                 </div>
+                <Panel>
+                    <h4>Activities Performed</h4>
+                </Panel>
             </div>
         );
     }
