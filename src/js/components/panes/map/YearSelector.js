@@ -1,6 +1,7 @@
 "use strict";
 import React from "react";
 import ReactDOM from "react-dom";
+import { PropTypes } from "react-router";
 import debugFactory from "debug";
 const debug = debugFactory('app:components:YearSelector');
 
@@ -12,6 +13,9 @@ for (let y = MAX_YEAR; y >= MIN_YEAR; y--) {
 }
 
 const YearSelector = React.createClass({
+    contextTypes: {
+    },
+
     getInitialState() {
         return {
             selectedYear: 2012
@@ -22,6 +26,7 @@ const YearSelector = React.createClass({
     },
 
     render() {
+        debug('YEAR SELECTOR render', this);
         const yearComponents = YEARS.map((year) => {
             const isSelected = (year) => this.state.selectedYear === year;
             const selectYear = (year) => this.setState({selectedYear: year});

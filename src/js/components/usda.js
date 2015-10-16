@@ -2,6 +2,10 @@
 
 import React from "react";
 import Navbar from "./navbar";
+import {History} from "react-router";
+
+import debugFactory from "debug";
+const debug = debugFactory('app:components:App');
 
 let USDAApp = React.createClass({
     propTypes: {

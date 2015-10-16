@@ -5,11 +5,7 @@ import ReactDOM from "react-dom";
 import debugFactory from "debug";
 const debug = debugFactory('app:components:OverlaySelector');
 
-import Button from "react-bootstrap/lib/Button";
-import Glyphicon from "react-bootstrap/lib/Glyphicon";
-import Tooltip from "react-bootstrap/lib/Tooltip";
-import Overlay from "react-bootstrap/lib/Overlay";
-import OverlayTrigger from "react-bootstrap/lib/OverlayTrigger";
+import {Button, Glyphicon, Tooltip, Overlay, OverlayTrigger} from "react-bootstrap";
 
 const OverlaySelector = React.createClass({
     getInitialState() {
@@ -30,12 +26,9 @@ const OverlaySelector = React.createClass({
         const overlayStyle = (enabled) => enabled ? 'warning' : 'default';
         const overlays = this.state.overlays;
         const toggleOverlay = (name) => {
-            debug('toggling', name);
             const isEnabled = this.state.overlays[name];
             this.setState(_.merge(this.state, {overlays: {[name]: !isEnabled}}));
         };
-
-        debug('state', this.state);
 
         return (
             <div className="overlaySelectorGroup">
