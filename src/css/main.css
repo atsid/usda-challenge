@@ -109,9 +109,8 @@ body {
 /* end bootstrap template */
 
 .map {
-    width: 100%;
+    width: 95%;
     height: 100%;
-    min-width: 800px;
     min-height: 600px;
 }
 
@@ -189,4 +188,22 @@ h4 {
 
 .reset {
     margin-left: 10px;
+}
+
+.paneHeaderContent {
+    display: inline;
+    padding: 5px;
+    vertical-align: bottom;
+}
+
+.firstAction {
+    margin-left: 2em;
+}
+
+.pane {
+    margin: 10px;
+}
+
+.mapContainer {
+    margin: 10px;
 }
