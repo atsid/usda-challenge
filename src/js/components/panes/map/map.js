@@ -21,8 +21,8 @@ let MapComponent = React.createClass({
             zoom: this.state.initialZoom,
         });
 
-        var centerControl = new MapControl((<OverlaySelector/>));
-        centerControl.register(map, google.maps.ControlPosition.LEFT, 1);
+        const overlaySelector = new MapControl((<OverlaySelector/>));
+        overlaySelector.register(map, google.maps.ControlPosition.LEFT, 1);
     },
 
     setCenter(center) {
@@ -30,6 +30,14 @@ let MapComponent = React.createClass({
             debug('received new center', center);
             this.map.setCenter(center);
         }
+    },
+
+    enable(shape) {
+      shape.setMap(this.map);
+    },
+
+    disable(shape) {
+      shape.setMap(null);
     },
 
     setBounds(bounds) {

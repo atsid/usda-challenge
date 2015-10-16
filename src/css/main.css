@@ -211,3 +211,22 @@ h4 {
 .overlaySelectorGroup {
     margin: 5px;
 }
+
+.yearbox {
+    display: inline;
+    margin: 10px;
+    border: 1px solid lightgrey;
+    padding: 3px;
+}
+
+.yearSelectorContainer {
+    margin-top: 15px;
+    margin-left: 15px;
+    overflow: scroll;
+}
+.interYearLine {
+    display: inline;
+    min-width: 30px;
+    height: 2px;
+    border: 1px solid lightgrey;
+}
