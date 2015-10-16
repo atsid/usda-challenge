@@ -15,7 +15,7 @@ const OverlaySelector = React.createClass({
     getInitialState() {
         return {
             overlays: {
-                soilType: true,
+                soilType: false,
                 weather: false,
                 plantDensity: false,
             },

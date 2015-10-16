@@ -16,12 +16,17 @@ import DropdownButton from "react-bootstrap/lib/DropdownButton";
 import MenuItem from "react-bootstrap/lib/MenuItem";
 import Panel from "react-bootstrap/lib/Panel";
 import Map from "./map";
+import YearSelector from "./YearSelector";
 
 let MapPaneComponent = React.createClass({
     getInitialState() {
         return {
             acquiringLocation: false,
         };
+    },
+
+    componentDidMount() {
+      this.onSelectState(stateData.statesByCode.IA);
     },
 
     onLocateMe() {
@@ -55,7 +60,12 @@ let MapPaneComponent = React.createClass({
                     lng: state.bounds.maxLng,
                 },
             };
+            if (this.state.selectedState) {
+                this.refs.map.disable(this.state.selectedState.polygon);
+            }
             this.setState({selectedState: state});
+
+            this.refs.map.enable(state.polygon);
             this.refs.map.setCenter(center);
             this.refs.map.setBounds(bounds);
         }
@@ -87,6 +97,9 @@ let MapPaneComponent = React.createClass({
                     <DropdownButton id="selectState" title={stateTitle}>
                         {stateSelections}
                     </DropdownButton>
+                </div>
+                <div className="yearSelectorContainer">
+                    <YearSelector/>
                 </div>
                 <div className="mapContainer">
                     <Map ref="map" />
