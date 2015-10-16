@@ -2,12 +2,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import debugFactory from "debug";
-import stateData from "./states";
 const debug = debugFactory('app:components:MapPane');
 
 import {Grid, Row, Col, Button, PageHeader, Input, Glyphicon, DropdownButton, MenuItem, Panel} from "react-bootstrap";
 import Map from "./map";
 import YearSelector from "./YearSelector";
+import StateSelector from "./StateSelector";
 
 let MapPaneComponent = React.createClass({
     getInitialState() {
@@ -17,7 +17,10 @@ let MapPaneComponent = React.createClass({
     },
 
     componentDidMount() {
-      this.onSelectState(stateData.statesByCode.IA);
+        if (this._initialState) {
+            this.loadState(this._initialState);
+            delete this._initialState;
+        }
     },
 
     onLocateMe() {
@@ -37,40 +40,40 @@ let MapPaneComponent = React.createClass({
         }
     },
 
+    loadState(state) {
+        const center = {lat: state.lat, lng: state.lng};
+        const bounds = {
+            sw: {
+                lat: state.bounds.minLat,
+                lng: state.bounds.minLng,
+            },
+            ne: {
+                lat: state.bounds.maxLat,
+                lng: state.bounds.maxLng,
+            },
+        };
+        if (this.state.selectedState) {
+            this.refs.map.disable(this.state.selectedState.polygon);
+        }
+        this.setState({selectedState: state});
+
+        this.refs.map.enable(state.polygon);
+        this.refs.map.setCenter(center);
+        this.refs.map.setBounds(bounds);
+    },
+
     onSelectState(state) {
         debug('Selected State', state);
         if (state) {
-            const center = {lat: state.lat, lng: state.lng};
-            const bounds = {
-                sw: {
-                    lat: state.bounds.minLat,
-                    lng: state.bounds.minLng,
-                },
-                ne: {
-                    lat: state.bounds.maxLat,
-                    lng: state.bounds.maxLng,
-                },
-            };
-            if (this.state.selectedState) {
-                this.refs.map.disable(this.state.selectedState.polygon);
+            if (!this.refs.map) {
+                this._initialState = state;
+            } else {
+                this.loadState(state);
             }
-            this.setState({selectedState: state});
-
-            this.refs.map.enable(state.polygon);
-            this.refs.map.setCenter(center);
-            this.refs.map.setBounds(bounds);
         }
     },
 
     render() {
-        const stateSelections = stateData.states.map((state) => {
-          return (<MenuItem key={state.code} onSelect={() => this.onSelectState(state)}>{state.name}</MenuItem>)
-        });
-        let stateTitle = "Select State";
-        if (this.state.selectedState) {
-            stateTitle = this.state.selectedState.name;
-        }
-
         return (
             <div className="pane">
                 <div className="paneHeader">
@@ -84,9 +87,7 @@ let MapPaneComponent = React.createClass({
                         &nbsp;{this.state.acquiringLocation ? "Locating..." : "Locate Me"}&nbsp;
                     </Button>
                     <span>&nbsp;or&nbsp;</span>
-                    <DropdownButton id="selectState" title={stateTitle}>
-                        {stateSelections}
-                    </DropdownButton>
+                    <StateSelector onStateSelected={this.onSelectState}/>
                 </div>
                 <div className="yearSelectorContainer">
                     <YearSelector/>
