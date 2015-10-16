@@ -4,13 +4,18 @@ import ReactDOM from "react-dom";
 import debugFactory from "debug";
 const debug = debugFactory('app:components:RainfallVsYieldChartComponent');
 
+import CropYieldsChart from "../../charts/cropYieldsGeneric";
+import CropYieldsDataSource from "../../../datasources/cropYieldsByCrop";
+
+import RainfallDataSource from "../../../datasources/rainfall.js";
+
 import {Glyphicon, Button, DropdownButton, MenuItem} from "react-bootstrap";
 
 let RainfallVsYieldChartComponent = React.createClass({
     render() {
         return (
             <div>
-                <h1>[Rainfall vs. Yield Chart]</h1>
+                <CropYieldsChart cropSource={new CropYieldsDataSource()} rainSource={new RainfallDataSource()} />
             </div>
         );
     }
