@@ -14,8 +14,8 @@ debug.enable('*');
         <Router>
             <Redirect from="/" to="dashboard"/>
             <Route path="/" component={USDAApp}>
-                <Route path="dashboard" component={Dashboard}/>
-                <Route path="sandbox" component={Sandbox}/>
+                <Route name="dashboard" path="dashboard" component={Dashboard}/>
+                <Route name="sandbox" path="sandbox" component={Sandbox}/>
             </Route>
         </Router>
     ), document.getElementById("app"));

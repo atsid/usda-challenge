@@ -6,7 +6,7 @@ states.forEach((state) => state.polygon = new google.maps.Polygon({
     paths: state.coords,
     strokeColor: '#FF0000',
     strokeOpacity: 0.8,
-    strokeWeight: 1,
+    strokeWeight: 1.2,
     fillColor: '#FF0000',
     fillOpacity: 0.0,
 }));

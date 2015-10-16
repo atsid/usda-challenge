@@ -13,14 +13,27 @@ for (let y = MAX_YEAR; y >= MIN_YEAR; y--) {
 
 const YearSelector = React.createClass({
     getInitialState() {
-        return { selectedYear: 2012 }
+        return {
+            selectedYear: 2012
+        }
     },
+
+    componentDidMount() {
+    },
+
     render() {
         const yearComponents = YEARS.map((year) => {
-            return (<div key={"year" + year} className="yearbox">{year}</div>);
+            const isSelected = (year) => this.state.selectedYear === year;
+            const selectYear = (year) => this.setState({selectedYear: year});
+            return (
+                <div key={"year" + year}
+                     className={"yearbox" + (isSelected(year) ? " selected" : "")}
+                     onClick={() => selectYear(year)}>
+                    {year}
+                </div>);
         });
         for (let index = 1; index < yearComponents.length; index += 2) {
-            yearComponents.splice(index, 0, (<div key={"yearline" + index} className="interYearLine"/>));
+            yearComponents.splice(index, 0, (<hr key={"yearline" + index} className="interYearLine"/>));
         }
 
         return (
