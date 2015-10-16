@@ -5,9 +5,9 @@ import debugFactory from "debug";
 const debug = debugFactory('app:components:RainfallVsYieldChartComponent');
 
 import CropYieldsChart from "../../charts/cropYieldsGeneric";
-import CropYieldsDataSource from "../../../datasources/cropYieldsBaA";
+import CropYieldsDataSource from "../../../datasources/cropYieldsByCrop";
 
-import HighLowDataSource from "../../../datasources/highLow.js";
+import RainfallDataSource from "../../../datasources/rainfall.js";
 
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import Button from "react-bootstrap/lib/Button";
@@ -18,7 +18,7 @@ let RainfallVsYieldChartComponent = React.createClass({
     render() {
         return (
             <div>
-                <CropYieldsChart dataSource={new CropYieldsDataSource()} rainSource={new HighLowDataSource()} />
+                <CropYieldsChart cropSource={new CropYieldsDataSource()} rainSource={new RainfallDataSource()} />
             </div>
         );
     }

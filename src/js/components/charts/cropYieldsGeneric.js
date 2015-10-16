@@ -9,23 +9,24 @@ import colors from "./colors";
 import debugFactory from "debug";
 const debug = debugFactory('app:components:CropYieldsGeneric');
 
-
 var CropYieldsGeneric = React.createClass({
 
     propTypes: {
-        dataSource: React.PropTypes.object.isRequired,
+        cropSource: React.PropTypes.object.isRequired,
         rainSource: React.PropTypes.object.isRequired
     },
 
     getInitialState() {
-        return {};
+        return {
+            crop: 'COTTON'
+        };
     },
 
     componentDidMount: function () {
         let el = ReactDOM.findDOMNode(this);
 
         Promise.all([
-            this.props.dataSource.list(),
+            this.props.cropSource.list(this.state.crop),
             this.props.rainSource.list()
         ]).then((results) => {
 
@@ -34,7 +35,7 @@ var CropYieldsGeneric = React.createClass({
 
             var all = yieldIndex.groupAll();
 
-            var yearlyYieldDim = yieldIndex.dimension((d) => d.yearTime);
+            var yearlyYieldDim = yieldIndex.dimension((d) => d3.time.month(d.date));
             debug('yearlyYieldDim:', yearlyYieldDim.top(10));
 
             var yearlyYieldGroup = yearlyYieldDim.group().reduceSum((d) => d.Value);
@@ -42,10 +43,7 @@ var CropYieldsGeneric = React.createClass({
 
             //TODO: the props here are from temperature, need to be swapped out
             var monthlyRainDim = rainIndex.dimension((d) => d3.time.month(d.date));
-            var monthlyRainGroup = monthlyRainDim.group().reduceSum((d) => d.high);
             var monthlyAverageRainGroup = monthlyRainDim.group().reduceSum((d) => d.low);
-
-            debug('monthlyRainGroup', monthlyRainGroup.all());
 
             var timeScale = d3.time.scale().domain([new Date(2000,1,1), new Date(2015, 12,31)]);
 
@@ -57,7 +55,7 @@ var CropYieldsGeneric = React.createClass({
                 .x(timeScale)
                 .xUnits(d3.time.years)
                 .xAxisLabel("Date")
-                .yAxisLabel("Cotton (Tons / Acre)")
+                .yAxisLabel(this.cropLabel(this.state.crop))
                 .rightYAxisLabel('Rainfall (inches)')
                 .dimension(yearlyYieldDim)
                 .brushOn(false)
@@ -65,10 +63,6 @@ var CropYieldsGeneric = React.createClass({
                     dc.barChart(compChart)
                         .colors(colors.yield)
                         .group(yearlyYieldGroup),
-                    dc.lineChart(compChart)
-                        .colors(colors.monthlyRainfall)
-                        .useRightYAxis(true)
-                        .group(monthlyRainGroup),
                     dc.lineChart(compChart)
                         .colors(colors.monthlyAverageRainfall)
                         .useRightYAxis(true)
@@ -94,7 +88,31 @@ var CropYieldsGeneric = React.createClass({
                 <a className={"reset"} onClick={this.reset} style={{display: "none"}}>reset</a>
             </div>
         );
+    },
+
+    cropMap: {
+        BARLEY: 'Bushels / Acre',
+        BEANS: 'CWT / Acre',
+        CORN: 'Bushels / Acre',
+        COTTON: 'Bales / Acre',
+        HAY: 'Tons / Acre',
+        HAYLAGE: 'Tons / Acre',
+        OATS: 'Bushels / Acre',
+        RICE: 'CWT / Acre',
+        SORGHUM: 'Bushels / Acre',
+        SUGARBEETS: 'Tons / Acre',
+        SUGARCANE: 'Tons / Acre',
+        SOYBEANS: 'Bushels / Acre',
+        WHEAT: 'Bushels / Acre'
+    },
+
+    //'COTTON' -> Cotton (Bales / Acre)
+    cropLabel: function (crop) {
+        let units = this.cropMap[crop];
+        let prefix = crop.substring(0, 1) + crop.substring(1, crop.length).toLowerCase();
+        return prefix + ' (' + units + ')';
     }
+
 });
 
 module.exports = CropYieldsGeneric;
