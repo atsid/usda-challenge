@@ -5,16 +5,7 @@ import debugFactory from "debug";
 import stateData from "./states";
 const debug = debugFactory('app:components:MapPane');
 
-import Grid from "react-bootstrap/lib/Grid";
-import Row from "react-bootstrap/lib/Row";
-import Col from "react-bootstrap/lib/Col";
-import Button from "react-bootstrap/lib/Button";
-import PageHeader from "react-bootstrap/lib/PageHeader";
-import Input from "react-bootstrap/lib/Input";
-import Glyphicon from "react-bootstrap/lib/Glyphicon";
-import DropdownButton from "react-bootstrap/lib/DropdownButton";
-import MenuItem from "react-bootstrap/lib/MenuItem";
-import Panel from "react-bootstrap/lib/Panel";
+import {Grid, Row, Col, Button, PageHeader, Input, Glyphicon, DropdownButton, MenuItem, Panel} from "react-bootstrap";
 import Map from "./map";
 import YearSelector from "./YearSelector";
 
@@ -72,7 +63,6 @@ let MapPaneComponent = React.createClass({
     },
 
     render() {
-        debug('rendering map pane', this.state);
         const stateSelections = stateData.states.map((state) => {
           return (<MenuItem key={state.code} onSelect={() => this.onSelectState(state)}>{state.name}</MenuItem>)
         });

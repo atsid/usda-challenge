@@ -1,8 +1,7 @@
 "use strict";
 
 import React from "react";
-import Navbar from "react-bootstrap/lib/Navbar";
-import NavBrand from "react-bootstrap/lib/NavBrand";
+import { Navbar, NavBrand } from "react-bootstrap";
 
 let NavBar = React.createClass({
 

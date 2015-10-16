@@ -1,16 +1,17 @@
 "use strict";
 
 import React from "react";
-import Grid from "react-bootstrap/lib/Col";
-import Col from "react-bootstrap/lib/Col";
-import Row from "react-bootstrap/lib/Row";
+import { Grid, Row, Col } from "react-bootstrap";
 import MapPane from './panes/map/main';
 import CropMetricsPane from './panes/cropmetrics/main';
+
+import debugFactory from "debug";
+const debug = debugFactory('app:components:Dashboard');
 
 let DashboardComponent = React.createClass({
     render: function() {
         return (
-            <Grid>
+            <Grid style={{width: "100%"}}>
                 <Row>
                     <Col md={6} sm={12} xs={12}>
                         <MapPane />

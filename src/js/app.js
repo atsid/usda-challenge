@@ -7,6 +7,8 @@ import USDAApp from "./components/usda"
 import Sandbox from "./components/sandbox";
 import Dashboard from "./components/dashboard";
 import SplashPage from "./components/SplashPage";
+import history from './history';
+
 import debug from 'debug';
 debug.enable('*');
 
