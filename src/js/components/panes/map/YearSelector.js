@@ -1,7 +1,7 @@
 "use strict";
 import React from "react";
 import ReactDOM from "react-dom";
-import { PropTypes } from "react-router";
+import { Link } from "react-router";
 import debugFactory from "debug";
 const debug = debugFactory('app:components:YearSelector');
 
@@ -13,28 +13,25 @@ for (let y = MAX_YEAR; y >= MIN_YEAR; y--) {
 }
 
 const YearSelector = React.createClass({
-    contextTypes: {
+    propTypes: {
     },
 
-    getInitialState() {
-        return {
-            selectedYear: 2012
-        }
+    contextTypes: {
+        location: React.PropTypes.object.isRequired,
     },
 
     componentDidMount() {
     },
 
     render() {
-        debug('YEAR SELECTOR render', this);
+        let selectedYear = parseInt(this.context.location.query.year) || 2012;
+
         const yearComponents = YEARS.map((year) => {
-            const isSelected = (year) => this.state.selectedYear === year;
-            const selectYear = (year) => this.setState({selectedYear: year});
+            const isSelected = (year) => selectedYear === year;
             return (
                 <div key={"year" + year}
-                     className={"yearbox" + (isSelected(year) ? " selected" : "")}
-                     onClick={() => selectYear(year)}>
-                    {year}
+                     className={"yearbox" + (isSelected(year) ? " selected" : "")}>
+                    <Link to="/dashboard" query={{year}}>{year}</Link>
                 </div>);
         });
         for (let index = 1; index < yearComponents.length; index += 2) {
