@@ -40,8 +40,20 @@ let MapPaneComponent = React.createClass({
     onSelectState(state) {
         debug('Selected State', state);
         if (state) {
+            const center = {lat: state.lat, lng: state.lng};
+            const bounds = {
+                sw: {
+                    lat: state.bounds.minLat,
+                    lng: state.bounds.minLng,
+                },
+                ne: {
+                    lat: state.bounds.maxLat,
+                    lng: state.bounds.maxLng,
+                },
+            };
             this.setState({selectedState: state});
-            this.refs.map.setCenter({lat: state.lat, lng: state.lng});
+            this.refs.map.setCenter(center);
+            this.refs.map.setBounds(bounds);
         }
     },
 

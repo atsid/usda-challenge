@@ -28,6 +28,14 @@ let MapComponent = React.createClass({
         }
     },
 
+    setBounds(bounds) {
+        if (this.map && bounds) {
+            debug('received new bounds', bounds, this.map);
+            const gbounds = new google.maps.LatLngBounds(bounds.sw, bounds.ne);
+            this.map.fitBounds(gbounds);
+        }
+    },
+
     render() {
         return (
             <div className="mapContainer">
