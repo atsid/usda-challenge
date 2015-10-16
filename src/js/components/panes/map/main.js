@@ -25,7 +25,7 @@ let MapPaneComponent = React.createClass({
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((position) => {
                 debug('located to position', position);
-                this.refs.map.onGeoLocate(position);
+                this.refs.map.setPosition(position);
             });
         } else {
             this.setState({alert: "Geolocation is not supported by this browser."});
