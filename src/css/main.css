@@ -239,3 +239,7 @@ h4 {
     display: inline-flex;
     min-width: 20px;
 }
+
+.welcomeHero {
+    background-image: url("src/img/trees.jpg");
+}
