@@ -42,8 +42,8 @@ var CropYieldsGeneric = React.createClass({
             debug('yearlyYieldGroup:', yearlyYieldGroup.all());
 
             //TODO: the props here are from temperature, need to be swapped out
-            var monthlyRainDim = rainIndex.dimension((d) => d3.time.month(d.date));
-            var monthlyAverageRainGroup = monthlyRainDim.group().reduceSum((d) => d.low);
+            var yearlyRainDim = rainIndex.dimension((d) => d3.time.year(d.date));
+            var yearlyAverageRainGroup = yearlyRainDim.group().reduceSum((d) => d.high);
 
             var timeScale = d3.time.scale().domain([new Date(2000,1,1), new Date(2015, 12,31)]);
 
@@ -61,12 +61,14 @@ var CropYieldsGeneric = React.createClass({
                 .brushOn(false)
                 .compose([
                     dc.barChart(compChart)
-                        .colors(colors.yield)
-                        .group(yearlyYieldGroup),
-                    dc.lineChart(compChart)
-                        .colors(colors.monthlyAverageRainfall)
+                        .colors(colors.yearlyAverageRainfall)
+                        .barPadding(0.3)
                         .useRightYAxis(true)
-                        .group(monthlyAverageRainGroup)
+                        .group(yearlyAverageRainGroup),
+                    dc.barChart(compChart)
+                        .colors(colors.yield)
+                        .barPadding(0.3)
+                        .group(yearlyYieldGroup)
                 ]);
 
 
