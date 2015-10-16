@@ -12,10 +12,12 @@ debug.enable('*');
 (function (global) {
     ReactDOM.render((
         <Router>
-            <Redirect from="/" to="dashboard"/>
-            <Route path="/" component={USDAApp}>
-                <Route name="dashboard" path="dashboard" component={Dashboard}/>
-                <Route name="sandbox" path="sandbox" component={Sandbox}/>
+            <Redirect from="/" to="/splash"/>
+            <Route path="/dashboard" component={USDAApp}>
+                <IndexRoute name="dashboard" component={Dashboard}/>
+            </Route>
+            <Route path="/sandbox" component={USDAApp}>
+                <IndexRoute name="sandbox" component={Sandbox}/>
             </Route>
         </Router>
     ), document.getElementById("app"));

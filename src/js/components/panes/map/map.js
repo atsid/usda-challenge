@@ -50,9 +50,7 @@ let MapComponent = React.createClass({
 
     render() {
         return (
-            <div className="mapContainer">
-                <div ref="map" className="map"></div>
-            </div>
+            <div ref="map" className="map"></div>
         );
     }
 });
