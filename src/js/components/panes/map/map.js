@@ -3,6 +3,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import debugFactory from "debug";
 const debug = debugFactory('app:components:Map');
+import MapControl from "./map_controls/MapControl";
+import OverlaySelector from "./map_controls/OverlaySelector";
 
 let MapComponent = React.createClass({
     getInitialState() {
@@ -14,11 +16,13 @@ let MapComponent = React.createClass({
 
     componentDidMount () {
         const mapNode = ReactDOM.findDOMNode(this.refs.map);
-        const map = new google.maps.Map($(mapNode)[0], {
+        const map = this.map = new google.maps.Map($(mapNode)[0], {
             center: this.state.initialCenter,
             zoom: this.state.initialZoom,
         });
-        this.map = map;
+
+        var centerControl = new MapControl((<OverlaySelector/>));
+        centerControl.register(map, google.maps.ControlPosition.LEFT, 1);
     },
 
     setCenter(center) {
