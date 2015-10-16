@@ -11,9 +11,12 @@ class CropYieldsBaADataSource {
         if (!this.__listPromise) {
             this.__listPromise = new Promise(function (resolve, reject) {
                 if (!that.__data) {
-                    let locations = {};
-
                     d3.csv('data/nass-yield-bales-per-acre.csv',
+                        function (d) {
+                            d.yearTime = d3.time.year(new Date(d.Year,1,1)); // coerce to date object
+                            d.monthTime = d3.time.month(new Date(d.Year,1,1)); // coerce to date object
+                            return d;
+                        },
                         function (err, data) {
                             if (err) {
                                 that.__data = undefined;

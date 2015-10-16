@@ -3,5 +3,8 @@
 module.exports = {
     main: ['purple'],
     highTemp: ['orange'],
-    lowTemp: ['lightblue']
+    lowTemp: ['lightblue'],
+    yield: ['orange'],
+    monthlyRainfall: ['blue'],
+    monthlyAverageRainfall: ['lightblue'],
 };
