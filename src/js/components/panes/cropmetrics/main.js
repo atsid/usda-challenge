@@ -6,37 +6,52 @@ const debug = debugFactory('app:components:CropMetricsPane');
 
 import {Glyphicon, Button, DropdownButton, MenuItem} from "react-bootstrap";
 import RainfallVsYieldChart from './rainfall_vs_yield';
+import MonthlyRainfallChart from './monthly_rainfall';
 
 let CropMetricsPaneComponent = React.createClass({
+
+    getInitialState() {
+        return {
+            crop: 'CORN'
+        };
+    },
+
     render() {
         return (
             <div className="pane">
                 <div className="paneHeader">
                     <h4 className="paneHeaderContent">What do you grow in your farm?</h4>
-                    <DropdownButton className="firstAction" id="selectCrop" title="+" noCaret>
-                        <MenuItem>Barley</MenuItem>
-                        <MenuItem>Beans</MenuItem>
-                        <MenuItem>Corn</MenuItem>
-                        <MenuItem>Cotton</MenuItem>
-                        <MenuItem>Hay</MenuItem>
-                        <MenuItem>Haylage</MenuItem>
-                        <MenuItem>Oats</MenuItem>
-                        <MenuItem>Rice</MenuItem>
-                        <MenuItem>Sorghum</MenuItem>
-                        <MenuItem>Sugarbeets</MenuItem>
-                        <MenuItem>Sugarcane</MenuItem>
-                        <MenuItem>Soybeans</MenuItem>
-                        <MenuItem>Wheat</MenuItem>
+                    <DropdownButton className="firstAction" id="selectCrop" title="+" noCaret onSelect={this.handleSelect}>
+                        <MenuItem eventKey="BARLEY">Barley</MenuItem>
+                        <MenuItem eventKey="BEANS">Beans</MenuItem>
+                        <MenuItem eventKey="CORN">Corn</MenuItem>
+                        <MenuItem eventKey="COTTON">Cotton</MenuItem>
+                        <MenuItem eventKey="HAY">Hay</MenuItem>
+                        <MenuItem eventKey="HAYLAGE">Haylage</MenuItem>
+                        <MenuItem eventKey="OATS">Oats</MenuItem>
+                        <MenuItem eventKey="RICE">Rice</MenuItem>
+                        <MenuItem eventKey="SORGHUM">Sorghum</MenuItem>
+                        <MenuItem eventKey="SUGARBEETS">Sugarbeets</MenuItem>
+                        <MenuItem eventKey="SUGARCANE">Sugarcane</MenuItem>
+                        <MenuItem eventKey="SOYBEANS">Soybeans</MenuItem>
+                        <MenuItem eventKey="WHEAT">Wheat</MenuItem>
                     </DropdownButton>
                 </div>
                 <div>
-                    <h4 className="paneHeaderContent"><small>wheat, corn, and barley</small></h4>
+                    <h4 className="paneHeaderContent"><small>{this.state.crop}</small></h4>
                 </div>
                 <div className="mapContainer">
-                    <RainfallVsYieldChart />
+                    <RainfallVsYieldChart crop={this.state.crop}/>
+                </div>
+                <div className="mapContainer">
+                    <MonthlyRainfallChart />
                 </div>
             </div>
         );
+    },
+
+    handleSelect(e, k) {
+        this.setState({crop: k});
     }
 });
 module.exports = CropMetricsPaneComponent;
