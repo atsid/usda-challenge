@@ -55,19 +55,19 @@ var CropYieldsGeneric = React.createClass({
                 .x(timeScale)
                 .xUnits(d3.time.years)
                 .xAxisLabel("Date")
-                .yAxisLabel(this.cropLabel(this.state.crop))
-                .rightYAxisLabel('Rainfall (inches)')
+                .yAxisLabel('Rainfall (inches)')
+                .rightYAxisLabel(this.cropLabel(this.state.crop))
                 .dimension(yearlyYieldDim)
                 .brushOn(false)
                 .compose([
                     dc.barChart(compChart)
                         .colors(colors.yearlyAverageRainfall)
                         .barPadding(0.3)
-                        .useRightYAxis(true)
                         .group(yearlyAverageRainGroup),
                     dc.barChart(compChart)
                         .colors(colors.yield)
                         .barPadding(0.3)
+                        .useRightYAxis(true)
                         .group(yearlyYieldGroup)
                 ]);
 
@@ -86,7 +86,7 @@ var CropYieldsGeneric = React.createClass({
         return (
             <div className={"col-xs-12"} id="cropYieldsChartGeneric">
                 <h4>Crop Yields versus Rainfall</h4>
-                <span className={"text-muted"}>Crop yields in Terms of Bales / Acre</span>
+                <span className={"text-muted"}>Crop yields versus average annual rainfall</span>
                 <a className={"reset"} onClick={this.reset} style={{display: "none"}}>reset</a>
             </div>
         );
