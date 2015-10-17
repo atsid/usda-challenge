@@ -14,7 +14,7 @@ let RainfallVsYieldChartComponent = React.createClass({
     render() {
         return (
             <div>
-                <CropYieldsChart cropSource={new CropYieldsDataSource()} rainSource={new RainfallDataSource()} />
+                <CropYieldsChart cropSource={new CropYieldsDataSource()} rainSource={new RainfallDataSource()} crop={this.props.crop} />
             </div>
         );
     }
