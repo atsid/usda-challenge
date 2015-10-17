@@ -12,7 +12,7 @@ let SplashPageComponent = React.createClass({
                 backgroundImage: 'url("src/img/trees.jpg")'
             }}>
                 <h1 style={{
-                        color: 'lightgrey',
+                        color: 'white',
                         textAlign: 'center'
                     }}>Use Data to Solve Problems</h1>
                     <Button style={{

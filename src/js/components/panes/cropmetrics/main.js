@@ -40,10 +40,10 @@ let CropMetricsPaneComponent = React.createClass({
                 <div>
                     <h4 className="paneHeaderContent"><small>{this.state.crop}</small></h4>
                 </div>
-                <div className="mapContainer">
+                <div>
                     <RainfallVsYieldChart crop={this.state.crop}/>
                 </div>
-                <div className="mapContainer">
+                <div>
                     <MonthlyRainfallChart />
                 </div>
             </div>
