@@ -109,7 +109,6 @@ body {
 /* end bootstrap template */
 
 .map {
-    width: 95%;
     height: 100%;
     min-height: 400px;
 }
@@ -210,4 +209,37 @@ h4 {
 
 .overlaySelectorGroup {
     margin: 5px;
+}
+
+.yearSelectorContainer {
+    margin-top: 15px;
+    margin-left: 15px;
+    margin-right: 15px;
+    height: 40px;
+    overflow: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+.yearbox {
+    display: inline-flex;
+    margin: 10px;
+    border: 1px solid lightgrey;
+    padding: 3px;
+    cursor: pointer;
+}
+
+.yearbox.selected {
+    border: 1px solid black;
+    font-weight: bold;
+}
+
+
+.interYearLine {
+    display: inline-flex;
+    min-width: 20px;
+}
+
+.welcomeHero {
+    background-image: url("src/img/trees.jpg");
 }
