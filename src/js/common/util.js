@@ -136,6 +136,20 @@
         }
     };
 
+    util.geospatial = {
+
+        hitTestPoints: function (points, center, radius) {
+            console.log('hit testing points', points.length);
+            var output = {};
+            points.forEach(function (point) {
+                output[point.id] = point;
+            });
+            console.log(output);
+            return output;
+        }
+
+    };
+
     module.exports = util;
 
 }(this));
