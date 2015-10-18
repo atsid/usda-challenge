@@ -12,8 +12,13 @@ let CropMetricsPaneComponent = React.createClass({
 
     getInitialState() {
         return {
-            crop: 'CORN'
+            crop: 'CORN',
+            state: 'IA'
         };
+    },
+    
+    handleSelect(e, k) {
+        this.setState({crop: k});
     },
 
     render() {
@@ -44,14 +49,11 @@ let CropMetricsPaneComponent = React.createClass({
                     <RainfallVsYieldChart crop={this.state.crop}/>
                 </div>
                 <div>
-                    <MonthlyRainfallChart />
+                    <MonthlyRainfallChart state={this.state.state}/>
                 </div>
             </div>
         );
     },
 
-    handleSelect(e, k) {
-        this.setState({crop: k});
-    }
 });
 module.exports = CropMetricsPaneComponent;
