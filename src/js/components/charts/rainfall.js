@@ -12,7 +12,9 @@ const debug = debugFactory('app:components:MonthlyRainfall');
 var Rainfall = React.createClass({
 
     propTypes: {
-        monthlySource: React.PropTypes.object.isRequired
+        monthlySource: React.PropTypes.object.isRequired,
+        average30Source: React.PropTypes.object.isRequired,
+        state: React.PropTypes.string.isRequired
     },
 
     getInitialState() {
@@ -20,12 +22,23 @@ var Rainfall = React.createClass({
     },
 
     componentDidMount: function () {
+        this.drawChart();
+    },
+
+    componentDidUpdate: function () {
+        this.drawChart();
+    },
+
+    drawChart: function () {
         let el = ReactDOM.findDOMNode(this);
 
-        this.props.monthlySource.list().then((results) => {
+        Promise.all([
+            this.props.monthlySource.list(this.props.state),
+            this.props.average30Source.list()
+        ]).then((results) => {
 
-            var monthlyIndex = results.monthlyIndex;
-            var average30Index = results.average30Index;
+            var monthlyIndex = results[0].index;
+            var average30Index = results[1].index;
 
             var monthlyRainDim = monthlyIndex.dimension((d) => d3.time.month(d.date));
             var average30RainDim = average30Index.dimension((d) => d3.time.month(d.date));
