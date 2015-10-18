@@ -16,6 +16,10 @@ let CropMetricsPaneComponent = React.createClass({
             state: 'IA'
         };
     },
+    
+    handleSelect(e, k) {
+        this.setState({crop: k});
+    },
 
     render() {
         return (
@@ -51,8 +55,5 @@ let CropMetricsPaneComponent = React.createClass({
         );
     },
 
-    handleSelect(e, k) {
-        this.setState({crop: k});
-    }
 });
 module.exports = CropMetricsPaneComponent;

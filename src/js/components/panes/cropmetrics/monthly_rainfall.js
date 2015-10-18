@@ -11,6 +11,11 @@ import Average30RainfallDataSource from "../../../datasources/average30Rainfall.
 import {Glyphicon, Button, DropdownButton, MenuItem} from "react-bootstrap";
 
 let RainfallChartComponent = React.createClass({
+
+    propTypes: {
+        state: React.PropTypes.string.isRequired
+    },
+
     render() {
         return (
             <div>

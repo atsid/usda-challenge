@@ -85,15 +85,6 @@ var CropYieldsVersusRainfall = React.createClass({
             dc.redrawAll();
         }
     },
-    render() {
-        return (
-            <div className={"col-xs-12"} id="cropYieldsChartGeneric">
-                <h4>Crop Yields versus Rainfall</h4>
-                <span className={"text-muted"}>Crop yields versus average annual rainfall</span>
-                <a className={"reset"} onClick={this.reset} style={{display: "none"}}>reset</a>
-            </div>
-        );
-    },
 
     cropMap: {
         BARLEY: 'Bushels / Acre',
@@ -116,7 +107,17 @@ var CropYieldsVersusRainfall = React.createClass({
         let units = this.cropMap[crop];
         let prefix = crop.substring(0, 1) + crop.substring(1, crop.length).toLowerCase();
         return prefix + ' (' + units + ')';
-    }
+    },
+
+    render() {
+        return (
+            <div className={"col-xs-12"} id="cropYieldsChartGeneric">
+                <h4>Crop Yields versus Rainfall</h4>
+                <span className={"text-muted"}>Crop yields versus average annual rainfall</span>
+                <a className={"reset"} onClick={this.reset} style={{display: "none"}}>reset</a>
+            </div>
+        );
+    },
 
 });
 

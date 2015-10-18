@@ -11,6 +11,11 @@ import RainfallDataSource from "../../../datasources/rainfall.js";
 import {Glyphicon, Button, DropdownButton, MenuItem} from "react-bootstrap";
 
 let RainfallVsYieldChartComponent = React.createClass({
+
+    propTypes: {
+        crop: React.PropTypes.string.isRequired
+    },
+
     render() {
         return (
             <div>
