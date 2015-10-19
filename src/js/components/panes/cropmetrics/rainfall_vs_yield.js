@@ -10,6 +10,9 @@ import RainfallDataSource from "../../../datasources/rainfall.js";
 
 import {Glyphicon, Button, DropdownButton, MenuItem} from "react-bootstrap";
 
+const cropYieldsDataSource = new CropYieldsDataSource();
+const rainfallDataSource = new RainfallDataSource();
+
 let RainfallVsYieldChartComponent = React.createClass({
 
     propTypes: {
@@ -20,8 +23,8 @@ let RainfallVsYieldChartComponent = React.createClass({
         return (
             <div>
                 <CropYieldsChart
-                    cropSource={new CropYieldsDataSource()}
-                    rainSource={new RainfallDataSource()}
+                    cropSource={cropYieldsDataSource}
+                    rainSource={rainfallDataSource}
                     crop={this.props.crop} />
             </div>
         );
