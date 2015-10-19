@@ -21,8 +21,6 @@ let DashboardComponent = React.createClass({
     },
 
     handleLocationChange(e) {
-        console.log('location changed');
-        console.log(e);
         this.setState({
             state: e.state,
             location: e.location

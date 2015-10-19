@@ -1,5 +1,8 @@
 'use strict';
 
+import debugFactory from "debug";
+const debug = debugFactory('app:common:util');
+
 (function (global) {
 
     var util = {};
@@ -138,14 +141,14 @@
 
     util.geospatial = {
 
+        //TODO: this needs to actually hit test the passed points
         hitTestPoints: function (points, center, radius) {
-            console.log('hit testing points', points.length);
-            console.log('location', center);
+            debug('hit testing points', points.length);
+            debug('location', center);
             var output = {};
             points.forEach(function (point) {
                 output[point.id] = point;
             });
-            console.log(Object.keys(output).length + ' results');
             return output;
         }
 
