@@ -45,7 +45,7 @@ let CropMetricsPaneComponent = React.createClass({
                     <h4 className="paneHeaderContent"><small>{this.state.crop}</small></h4>
                 </div>
                 <div>
-                    <RainfallVsYieldChart crop={this.state.crop} />
+                    <RainfallVsYieldChart crop={this.state.crop} state={this.props.state} location={this.props.location} />
                 </div>
                 <div>
                     <MonthlyRainfallChart state={this.props.state} location={this.props.location} />

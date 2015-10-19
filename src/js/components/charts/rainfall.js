@@ -2,6 +2,7 @@
 
 // import dc from 'dc';
 // import d3 from 'd3';
+import _ from "lodash";
 import React from "react";
 import ReactDOM from "react-dom";
 import util from "../../common/util";
@@ -24,12 +25,19 @@ var Rainfall = React.createClass({
         return {};
     },
 
-    componentDidMount: function () {
+    componentDidMount() {
         this.drawChart();
     },
 
-    componentDidUpdate: function () {
-        this.drawChart();
+    componentDidUpdate(prevProps) {
+        if (prevProps.state !== this.props.state ||
+            prevProps.radius !== this.props.radius ||
+            prevProps.location.lat !== this.props.location.lat ||
+            prevProps.location.lng !== this.props.location.lng
+        ) {
+            debug('update', prevProps, this.props);
+            this.drawChart();
+        }
     },
 
     //subsets stations by a fixed radius, so we can constrain the plotted data to a reasonable spatial range
@@ -45,7 +53,8 @@ var Rainfall = React.createClass({
         return output;
     },
 
-    drawChart: function () {
+    drawChart() {
+        debug('redrawing rainfall chart');
         let el = ReactDOM.findDOMNode(this);
 
         Promise.all([
