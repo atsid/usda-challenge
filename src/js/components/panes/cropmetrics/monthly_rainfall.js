@@ -11,6 +11,11 @@ import StationDataSource from "../../../datasources/stations.js";
 
 import {Glyphicon, Button, DropdownButton, MenuItem} from "react-bootstrap";
 
+// Rainfall Data
+const monthlyRainfallData = new MonthlyRainfallDataSource();
+const average30Source = new Average30RainfallDataSource();
+const stationData = new StationDataSource();
+
 let RainfallChartComponent = React.createClass({
 
     propTypes: {
@@ -22,9 +27,9 @@ let RainfallChartComponent = React.createClass({
         return (
             <div>
                 <RainfallChart
-                    monthlySource={new MonthlyRainfallDataSource()}
-                    average30Source={new Average30RainfallDataSource()}
-                    stationSource={new StationDataSource()}
+                    monthlySource={monthlyRainfallData}
+                    average30Source={average30Source}
+                    stationSource={stationData}
                     radius={100}
                     state={this.props.state}
                     location={this.props.location} />
