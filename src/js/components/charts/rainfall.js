@@ -14,7 +14,10 @@ var Rainfall = React.createClass({
     propTypes: {
         monthlySource: React.PropTypes.object.isRequired,
         average30Source: React.PropTypes.object.isRequired,
-        state: React.PropTypes.string.isRequired
+        stationSource: React.PropTypes.object.isRequired,
+        state: React.PropTypes.string.isRequired,
+        location: React.PropTypes.object.isRequired,
+        radius: React.PropTypes.number.isRequired,
     },
 
     getInitialState() {
@@ -29,16 +32,41 @@ var Rainfall = React.createClass({
         this.drawChart();
     },
 
+    //subsets stations by a fixed radius, so we can constrain the plotted data to a reasonable spatial range
+    subsetStations(stations, coords, radius) {
+        return util.geospatial.hitTestPoints(stations, coords, radius);
+    },
+
+    //subsets the weather data to only include stations in the subset map
+    subsetWeatherData(data, stations) {
+        var output = data.filter(function (d) {
+            return stations[d.id];
+        });
+        return output;
+    },
+
     drawChart: function () {
         let el = ReactDOM.findDOMNode(this);
 
         Promise.all([
+            //TODO: push the state/location into all of these functions, so results are already filtered
+            //if this was done, we could reduce iteration of the monthly by 12, since each station has one row per year
             this.props.monthlySource.list(this.props.state),
-            this.props.average30Source.list()
+            this.props.average30Source.list(),
+            this.props.stationSource.list()
         ]).then((results) => {
 
-            var monthlyIndex = results[0].index;
-            var average30Index = results[1].index;
+            var monthlyData = results[0].data;
+            var average30Data = results[1].data;
+
+
+            var stationSubset = this.subsetStations(results[2].data, this.props.location, this.props.radius);
+
+            var monthlySubset = this.subsetWeatherData(monthlyData, stationSubset);
+            var average30Subset = this.subsetWeatherData(average30Data, stationSubset);
+
+            var monthlyIndex = crossfilter(monthlySubset);
+            var average30Index = crossfilter(average30Subset);
 
             var monthlyRainDim = monthlyIndex.dimension((d) => d3.time.month(d.date));
             var average30RainDim = average30Index.dimension((d) => d3.time.month(d.date));

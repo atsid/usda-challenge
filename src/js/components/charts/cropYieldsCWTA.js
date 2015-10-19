@@ -21,13 +21,8 @@ var CropYieldsCWTA = React.createClass({
 
     componentDidMount: function () {
         let el = ReactDOM.findDOMNode(this);
-        let startDate = new Date('2015-01-01');
-        let endDate = new Date('2015-12-31');
         this.props.dataSource.list().then((results) => {
-            //TODO: remove me
-            debug("receiving data");
 
-            var yearFormat = d3.time.format("%Y");
             var data = results.data;
             var ndx = results.index;
 
@@ -35,21 +30,14 @@ var CropYieldsCWTA = React.createClass({
                 item.yearTime = d3.time.year(new Date(item.Year,1,1)); // coerce to date object
             });
 
-            var all = ndx.groupAll();
-
             var yearlyDim = ndx.dimension((d) => d.yearTime);
             debug('yearlyDim', yearlyDim.top(10));
 
             var yearlyYieldGroup = yearlyDim.group().reduceSum((d) => d.Value);
             debug('yearlyYieldGroup', yearlyYieldGroup.all());
 
-            var commodityDim = ndx.dimension((d) => d.Commodity);
-            var stateDim = ndx.dimension((d) => d.State);
-            var productionPracticeDim = ndx.dimension((d) => d.ProdPractice);
-
-            var yieldTimeScale = d3.time.scale().domain([new Date(2000,1,1), new Date(2015, 1,1)])
-            //var yieldTimeScale = d3.scale.linear().domain([2000, 2015])
-            yieldTimeScale.ticks(d3.time.year)
+            var yieldTimeScale = d3.time.scale().domain([new Date(2000,1,1), new Date(2015, 1,1)]);
+            yieldTimeScale.ticks(d3.time.year);
 
             var yieldTonsChart = dc.barChart(el);
                 yieldTonsChart

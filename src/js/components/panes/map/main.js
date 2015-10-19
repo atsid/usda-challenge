@@ -10,6 +10,11 @@ import YearSelector from "./YearSelector";
 import StateSelector from "./StateSelector";
 
 let MapPaneComponent = React.createClass({
+
+    propTypes: {
+        onLocationChange: React.PropTypes.func.isRequired
+    },
+
     getInitialState() {
         return {
             acquiringLocation: false,
@@ -24,6 +29,7 @@ let MapPaneComponent = React.createClass({
     },
 
     onLocateMe() {
+        //TODO: need to use geocoding to lookup state from coords
         this.setState({selectedState: null});
         if (navigator.geolocation) {
             this.setState({acquiringLocation: true});
@@ -34,6 +40,10 @@ let MapPaneComponent = React.createClass({
                     lng: position.coords.longitude,
                 };
                 this.refs.map.setCenter(center);
+                this.props.onLocationChange({
+                    state: this.selectedState ? this.selectedState.code : 'IA', //TEMP to handle missing state
+                    location: center
+                });
             });
         } else {
             this.setState({alert: "Geolocation is not supported by this browser."});
@@ -60,6 +70,10 @@ let MapPaneComponent = React.createClass({
         this.refs.map.enable(state.polygon);
         this.refs.map.setCenter(center);
         this.refs.map.setBounds(bounds);
+        this.props.onLocationChange({
+            state: state.code,
+            location: center
+        });
     },
 
     onSelectState(state) {
@@ -72,6 +86,7 @@ let MapPaneComponent = React.createClass({
             }
         }
     },
+
 
     render() {
         return (

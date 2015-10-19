@@ -1,5 +1,8 @@
 'use strict';
 
+import debugFactory from "debug";
+const debug = debugFactory('app:common:util');
+
 (function (global) {
 
     var util = {};
@@ -94,15 +97,14 @@
             var output = [];
 
             data.forEach(function (d) {
-                if (d.Year !== '0000') { //make sure this is not an 'annual' entry
-                    //push a set of items in for every month in the row
-                    Object.keys(months).forEach(function (month) {
-                        output.push({
-                            date: new Date(d.Year * 1, months[month], 1), //first day of the month
-                            value: d[month] * 1 //coerce precip for that month
-                        });
+                //push a set of items in for every month in the row
+                Object.keys(months).forEach(function (month) {
+                    output.push({
+                        id: d.id1,
+                        date: new Date(d.Year * 1, months[month], 1), //first day of the month
+                        value: d[month] * 1 //coerce precip for that month
                     });
-                }
+                });
             });
 
             return output;
@@ -114,26 +116,60 @@
             var output = [];
 
             data.forEach(function (d) {
-                if (d.Year === '0000') { //only process 'annual' entries
-                    //push a set of items in for every month in the row
-                    Object.keys(months).forEach(function (month) {
-                        //replicate the data for each month for all years - this is how we compare to the regular monthly data
-                        var monthNum = months[month];
-                        var value = d[month] * 1;  //coerce precip for that month
-
-                        for (var year = minYear; year <= maxYear; year++) {
-                            output.push({
-                                date: new Date(year, monthNum, 1), //first day of the month
-                                value: value
-                            });
-                        }
-
-                    });
-                }
+                //push a set of items in for every month in the row
+                Object.keys(months).forEach(function (month) {
+                    //replicate the data for each month for all years - this is how we compare to the regular monthly data
+                    var monthNum = months[month];
+                    var value = d[month] * 1;  //coerce precip for that month
+                    for (var year = minYear; year <= maxYear; year++) {
+                        output.push({
+                            id: d.id1,
+                            date: new Date(year, monthNum, 1), //first day of the month
+                            value: value
+                        });
+                    }
+                });
             });
 
             return output;
         }
+    };
+
+    util.geospatial = {
+
+        deg2rad(deg) {
+            var rad = deg * Math.PI/180; // radians = degrees * pi/180
+            return rad;
+        },
+
+        hitTestPoints: function (points, center, radius) {
+            var output = {};
+            //uses Great Circle distance to check if point diff is within radius
+            points.forEach(function (point) {
+                //http://andrew.hedges.name/experiments/haversine/
+                //dlon = lon2 - lon1
+                //dlat = lat2 - lat1
+                //a = (sin(dlat/2))^2 + cos(lat1) * cos(lat2) * (sin(dlon/2))^2
+                //c = 2 * atan2( sqrt(a), sqrt(1-a) )
+                //d = R * c (where R is the radius of the Earth)
+
+                var lat1 = util.geospatial.deg2rad(center.lat);
+                var lat2 = util.geospatial.deg2rad(point.lat);
+                var lon1 = util.geospatial.deg2rad(center.lng);
+                var lon2 = util.geospatial.deg2rad(point.lon);
+                var dlon = lon2 - lon1;
+                var dlat = lat2 - lat1;
+                var a = Math.pow(Math.sin(dlat/2),2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(dlon/2),2);
+                var c = 2 * Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+                var d = 3961 * c; //radius of earth in miles
+                if (d < radius) {
+                    output[point.id] = point;
+                }
+            });
+            debug('subset station count: ' + Object.keys(output).length);
+            return output;
+        }
+
     };
 
     module.exports = util;
