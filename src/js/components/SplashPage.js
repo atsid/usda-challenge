@@ -25,16 +25,6 @@ let SplashPageComponent = React.createClass({
 
     render: function() {
         return (
-<<<<<<< HEAD
-            <Jumbotron style={{
-                backgroundImage: 'url("src/img/produce.jpg")'
-            }}>
-                <h1 style={{
-                        color: 'lightgrey',
-                        textAlign: 'center'
-                    }}>Using Data to Solve Problems</h1>
-                    <Button style={{
-=======
             <Panel>
 
                 <Jumbotron style={{
@@ -51,7 +41,6 @@ let SplashPageComponent = React.createClass({
                 <Input id="splashMapSearch" ref="searchInput" type="text" placeholder="Search (e.g., address)" />
 
                 <Button style={{
->>>>>>> origin/master
                         display: 'block',
                         marginLeft: 'auto',
                         marginRight: 'auto'
