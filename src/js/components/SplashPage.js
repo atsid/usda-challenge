@@ -38,7 +38,7 @@ let SplashPageComponent = React.createClass({
             <Panel>
 
                 <Jumbotron style={{
-                    backgroundImage: 'url("src/img/trees.jpg")'
+                    backgroundImage: 'url("src/img/produce.jpg")'
                 }}>
                     <h1 style={{
                             color: 'white',
