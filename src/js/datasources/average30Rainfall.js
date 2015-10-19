@@ -12,7 +12,7 @@ class Average30RainfallDataSource {
         if (!this.__listPromise) {
             this.__listPromise = new Promise(function (resolve, reject) {
                 if (!that.__data) {
-                    d3.csv('data/monthly-precip-avg-tmp.csv',
+                    d3.csv('data/monthly-precip-avg.csv',
                         function (err, data) {
                             if (err) {
                                 that.__data = undefined;
@@ -20,7 +20,6 @@ class Average30RainfallDataSource {
                             } else {
                                 //transpose and summarize the data into monthly and annual with real dates
                                 var average30 = util.rainfall.monthlyAverage30(data);
-
                                 that.__data = {
                                     data: average30,
                                     index: crossfilter(average30)

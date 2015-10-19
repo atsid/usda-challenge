@@ -50,6 +50,7 @@ var Rainfall = React.createClass({
 
         Promise.all([
             //TODO: push the state/location into all of these functions, so results are already filtered
+            //if this was done, we could reduce iteration of the monthly by 12, since each station has one row per year
             this.props.monthlySource.list(this.props.state),
             this.props.average30Source.list(),
             this.props.stationSource.list()
@@ -57,6 +58,7 @@ var Rainfall = React.createClass({
 
             var monthlyData = results[0].data;
             var average30Data = results[1].data;
+
 
             var stationSubset = this.subsetStations(results[2].data, this.props.location, this.props.radius);
 

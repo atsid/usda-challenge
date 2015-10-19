@@ -25,7 +25,7 @@ let RainfallChartComponent = React.createClass({
                     monthlySource={new MonthlyRainfallDataSource()}
                     average30Source={new Average30RainfallDataSource()}
                     stationSource={new StationDataSource()}
-                    radius={10}
+                    radius={100}
                     state={this.props.state}
                     location={this.props.location} />
             </div>
