@@ -4,23 +4,21 @@ import React from "react";
 import ReactDOM from "react-dom";
 import {Link} from "react-router";
 import {Panel, Jumbotron, Button, Input} from "react-bootstrap";
+import debugFactory from "debug";
+const debug = debugFactory('app:SplashPage');
 
 let SplashPageComponent = React.createClass({
 
     componentDidMount() {
         //connect google maps input
-        console.log('mounted');
         let input = ReactDOM.findDOMNode(this.refs.searchInput);
-
-        console.log(input);
-
         let searchBox = new google.maps.places.Autocomplete(input);
 
         //TODO: this "functions" but not with autocomplete, so the place is undefined
-        console.log(searchBox);
+        debug('maps autocomplete', searchBox);
         google.maps.event.addListener(searchBox, 'place_changed', function () {
             var places = searchBox.getPlace();
-            console.log('places', places);
+            debug('place', places);
         });
 
     },
