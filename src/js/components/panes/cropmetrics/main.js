@@ -9,6 +9,11 @@ import RainfallVsYieldChart from './rainfall_vs_yield';
 import MonthlyRainfallChart from './monthly_rainfall';
 
 let CropMetricsPaneComponent = React.createClass({
+    propTypes: {
+        state: React.PropTypes.string,
+        location: React.PropTypes.object,
+        crop: React.PropTypes.string,
+    },
 
     getInitialState() {
         return {

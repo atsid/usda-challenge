@@ -15,23 +15,13 @@ for (let y = MAX_YEAR; y >= MIN_YEAR; y--) {
 
 const YearSelector = React.createClass({
     propTypes: {
-    },
-
-    contextTypes: {
-        location: React.PropTypes.object.isRequired,
-        history: React.PropTypes.object.isRequired,
-    },
-
-    getYear() {
-        return parseInt(this.context.location.query.year) || 2012;
+        year: React.PropTypes.number.isRequired,
+        onYearChange: React.PropTypes.func.isRequired,
     },
 
     render() {
-        let selectedYear = this.getYear();
-        const gotoYear = (year) => {
-            const newQuery = _.merge(this.context.location.query, {year});
-            this.context.history.pushState(null, "/dashboard", newQuery);
-        };
+        const selectedYear = this.props.year;
+        const gotoYear = (year) => this.props.onYearChange(year);
         const yearComponents = YEARS.map((year) => {
             const isSelected = (year) => selectedYear === year;
             return (
@@ -44,7 +34,6 @@ const YearSelector = React.createClass({
         for (let index = 1; index < yearComponents.length; index += 2) {
             yearComponents.splice(index, 0, (<hr key={"yearline" + index} className="interYearLine"/>));
         }
-
         return (
             <div className="yearSelector">
                 {yearComponents}

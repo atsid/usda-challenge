@@ -34,7 +34,6 @@ var CropYieldsVersusRainfall = React.createClass({
             prevProps.location.lat !== this.props.location.lat ||
             prevProps.location.lng !== this.props.location.lng
         ) {
-            debug('update', prevProps, this.props);
             this.drawChart();
         }
     },

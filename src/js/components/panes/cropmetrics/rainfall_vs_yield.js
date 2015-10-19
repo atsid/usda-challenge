@@ -27,6 +27,7 @@ let RainfallVsYieldChartComponent = React.createClass({
                 <CropYieldsChart
                     cropSource={cropYieldsDataSource}
                     rainSource={rainfallDataSource}
+                    radius={100}
                     crop={this.props.crop}
                     state={this.props.state}
                     location={this.props.location} />

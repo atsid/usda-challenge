@@ -3,7 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import debugFactory from "debug";
 const debug = debugFactory('app:components:MapPane');
-
+const stateData = require('./states');
 import {Grid, Row, Col, Button, PageHeader, Input, Glyphicon, DropdownButton, MenuItem, Panel} from "react-bootstrap";
 import Map from "./map";
 import YearSelector from "./YearSelector";
@@ -12,7 +12,13 @@ import StateSelector from "./StateSelector";
 let MapPaneComponent = React.createClass({
 
     propTypes: {
-        onLocationChange: React.PropTypes.func.isRequired
+        onCenterChange: React.PropTypes.func.isRequired,
+        onStateChange: React.PropTypes.func.isRequired,
+        onZoomChange: React.PropTypes.func.isRequired,
+        onYearChange: React.PropTypes.func.isRequired,
+        state: React.PropTypes.string.isRequired,
+        location: React.PropTypes.object.isRequired,
+        year: React.PropTypes.number.isRequired,
     },
 
     getInitialState() {
@@ -22,10 +28,7 @@ let MapPaneComponent = React.createClass({
     },
 
     componentDidMount() {
-        if (this._initialState) {
-            this.loadState(this._initialState);
-            delete this._initialState;
-        }
+        this.initialLoadState(stateData.statesByCode[this.props.state]);
     },
 
     onLocateMe() {
@@ -40,18 +43,23 @@ let MapPaneComponent = React.createClass({
                     lng: position.coords.longitude,
                 };
                 this.refs.map.setCenter(center);
-                this.props.onLocationChange({
-                    state: this.selectedState ? this.selectedState.code : 'IA', //TEMP to handle missing state
-                    location: center
-                });
+                // TODO: signal state change using geocoding
+                this.props.onCenterChange(center);
             });
         } else {
             this.setState({alert: "Geolocation is not supported by this browser."});
         }
     },
 
+    initialLoadState(state) {
+        debug('loading initial state', state);
+        this.setState({selectedState: state});
+        this.refs.map.enable(state.polygon);
+        this.props.onStateChange(state.code);
+    },
+
     loadState(state) {
-        const center = {lat: state.lat, lng: state.lng};
+        debug('loading state', state);
         const bounds = {
             sw: {
                 lat: state.bounds.minLat,
@@ -62,23 +70,20 @@ let MapPaneComponent = React.createClass({
                 lng: state.bounds.maxLng,
             },
         };
+
         if (this.state.selectedState) {
             this.refs.map.disable(this.state.selectedState.polygon);
         }
-        this.setState({selectedState: state});
 
+        this.setState({selectedState: state});
         this.refs.map.enable(state.polygon);
-        this.refs.map.setCenter(center);
         this.refs.map.setBounds(bounds);
-        this.props.onLocationChange({
-            state: state.code,
-            location: center
-        });
+        this.props.onStateChange(state.code);
     },
 
     onSelectState(state) {
-        debug('Selected State', state);
         if (state) {
+            debug('Selected State', state);
             if (!this.refs.map) {
                 this._initialState = state;
             } else {
@@ -87,8 +92,8 @@ let MapPaneComponent = React.createClass({
         }
     },
 
-
     render() {
+        debug('render map pane', this.props);
         return (
             <div className="pane">
                 <div className="paneHeader">
@@ -102,13 +107,21 @@ let MapPaneComponent = React.createClass({
                         &nbsp;{this.state.acquiringLocation ? "Locating..." : "Locate Me"}&nbsp;
                     </Button>
                     <span>&nbsp;or&nbsp;</span>
-                    <StateSelector onStateSelected={this.onSelectState}/>
+                    <StateSelector
+                        onStateSelected={this.onSelectState}
+                        state={this.props.state} />
                 </div>
                 <div className="yearSelectorContainer">
-                    <YearSelector/>
+                    <YearSelector
+                        year={this.props.year}
+                        onYearChange={this.props.onYearChange}
+                    />
                 </div>
                 <div className="mapContainer">
-                    <Map ref="map" />
+                    <Map ref="map"
+                         location={this.props.location}
+                         onCenterChange={this.props.onCenterChange}
+                         onZoomChange={this.props.onZoomChange}/>
                 </div>
                 <Panel>
                     <h4>Activities Performed</h4>

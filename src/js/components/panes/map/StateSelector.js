@@ -11,29 +11,24 @@ import {DropdownButton, MenuItem} from "react-bootstrap";
 
 const StateSelector = React.createClass({
     propTypes: {
-        onStateSelected: React.PropTypes.func.isRequired
+        onStateSelected: React.PropTypes.func.isRequired,
+        state: React.PropTypes.string.isRequired,
     },
 
     contextTypes: {
         location: React.PropTypes.object.isRequired,
-        history: React.PropTypes.object.isRequired,
     },
 
     componentDidMount() {
-        this.props.onStateSelected(stateData.statesByCode[this.getSelectedStateCode()]);
+        //this.props.onStateSelected(stateData.statesByCode[this.getSelectedStateCode()]);
     },
 
-    getSelectedStateCode() {
-        return this.context.location.query.state || "IA";
-    },
 
     getSelectedState() {
-        return stateData.statesByCode[this.getSelectedStateCode()];
+        return stateData.statesByCode[this.props.state];
     },
 
     selectState(state) {
-        const newQuery = _.merge(this.context.location.query, {state: state.code});
-        this.context.history.pushState(null, "/dashboard", newQuery);
         this.props.onStateSelected(state);
     },
 
@@ -41,7 +36,7 @@ const StateSelector = React.createClass({
         const selectedState = this.getSelectedState();
         const stateSelections = stateData.states.map((state) => {
             return (
-                <MenuItem key={state.code} onSelect={() => this.selectState(state)}>
+                <MenuItem key={state.code} onSelect={() => this.props.onStateSelected(state)}>
                     {state.name}
                 </MenuItem>
             );
