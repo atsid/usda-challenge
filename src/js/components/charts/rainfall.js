@@ -39,12 +39,9 @@ var Rainfall = React.createClass({
 
     //subsets the weather data to only include stations in the subset map
     subsetWeatherData(data, stations) {
-        console.log(data.length);
-        console.log(stations);
         var output = data.filter(function (d) {
-            return stations[d.id1];
+            return stations[d.id];
         });
-        console.log(output.length);
         return output;
     },
 
@@ -60,7 +57,7 @@ var Rainfall = React.createClass({
 
             var monthlyData = results[0].data;
             var average30Data = results[1].data;
-            
+
             var stationSubset = this.subsetStations(results[2].data, this.props.location, this.props.radius);
 
             var monthlySubset = this.subsetWeatherData(monthlyData, stationSubset);

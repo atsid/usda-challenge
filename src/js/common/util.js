@@ -98,6 +98,7 @@
                     //push a set of items in for every month in the row
                     Object.keys(months).forEach(function (month) {
                         output.push({
+                            id: d.id1,
                             date: new Date(d.Year * 1, months[month], 1), //first day of the month
                             value: d[month] * 1 //coerce precip for that month
                         });
@@ -120,14 +121,13 @@
                         //replicate the data for each month for all years - this is how we compare to the regular monthly data
                         var monthNum = months[month];
                         var value = d[month] * 1;  //coerce precip for that month
-
                         for (var year = minYear; year <= maxYear; year++) {
                             output.push({
+                                id: d.id1,
                                 date: new Date(year, monthNum, 1), //first day of the month
                                 value: value
                             });
                         }
-
                     });
                 }
             });
@@ -140,11 +140,12 @@
 
         hitTestPoints: function (points, center, radius) {
             console.log('hit testing points', points.length);
+            console.log('location', center);
             var output = {};
             points.forEach(function (point) {
                 output[point.id] = point;
             });
-            console.log(output);
+            console.log(Object.keys(output).length + ' results');
             return output;
         }
 

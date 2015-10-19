@@ -13,7 +13,7 @@ let DashboardComponent = React.createClass({
     getInitialState() {
         return {
             state: 'IA',
-            coords: {
+            location: {
                 "lat": 42.0046,
                 "lng": -93.214,
             }
@@ -25,7 +25,7 @@ let DashboardComponent = React.createClass({
         console.log(e);
         this.setState({
             state: e.state,
-            coords: e.coords
+            location: e.location
         });
     },
 
@@ -37,7 +37,7 @@ let DashboardComponent = React.createClass({
                         <MapPane onLocationChange={this.handleLocationChange}/>
                     </Col>
                     <Col md={6} sm={12} xs={12}>
-                        <CropMetricsPane state={this.state.state} location={this.state.coords}/>
+                        <CropMetricsPane state={this.state.state} location={this.state.location}/>
                     </Col>
                 </Row>
             </Grid>
