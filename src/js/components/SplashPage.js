@@ -9,12 +9,12 @@ let SplashPageComponent = React.createClass({
     render: function() {
         return (
             <Jumbotron style={{
-                backgroundImage: 'url("src/img/trees.jpg")'
+                backgroundImage: 'url("src/img/produce.jpg")'
             }}>
                 <h1 style={{
                         color: 'lightgrey',
                         textAlign: 'center'
-                    }}>Use Data to Solve Problems</h1>
+                    }}>Using Data to Solve Problems</h1>
                     <Button style={{
                         display: 'block',
                         marginLeft: 'auto',
