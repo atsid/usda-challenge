@@ -14,19 +14,29 @@ var CropYieldsVersusRainfall = React.createClass({
     propTypes: {
         crop: React.PropTypes.string.isRequired,
         cropSource: React.PropTypes.object.isRequired,
-        rainSource: React.PropTypes.object.isRequired
+        rainSource: React.PropTypes.object.isRequired,
+        state: React.PropTypes.string.isRequired,
+        location: React.PropTypes.object.isRequired,
+        radius: React.PropTypes.number.isRequired,
     },
 
     getInitialState() {
         return {};
     },
 
-    componentDidMount: function () {
+    componentDidMount() {
         this.drawChart();
     },
 
-    componentDidUpdate: function () {
-        this.drawChart();
+    componentDidUpdate(prevProps) {
+        if (prevProps.state !== this.props.state ||
+            prevProps.radius !== this.props.radius ||
+            prevProps.location.lat !== this.props.location.lat ||
+            prevProps.location.lng !== this.props.location.lng
+        ) {
+            debug('update', prevProps, this.props);
+            this.drawChart();
+        }
     },
 
     drawChart() {
@@ -103,7 +113,7 @@ var CropYieldsVersusRainfall = React.createClass({
     },
 
     //'COTTON' -> Cotton (Bales / Acre)
-    cropLabel: function (crop) {
+    cropLabel(crop) {
         let units = this.cropMap[crop];
         let prefix = crop.substring(0, 1) + crop.substring(1, crop.length).toLowerCase();
         return prefix + ' (' + units + ')';
