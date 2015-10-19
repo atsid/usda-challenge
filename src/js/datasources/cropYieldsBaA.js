@@ -1,41 +1,30 @@
 "use strict";
 
-// import d3 from 'd3';
+import CachingDataSource from './cachingDataSource';
 
 /**
  * A datasource wrapping the Cropy Yield, by Ba/Acre
  */
-class CropYieldsBaADataSource {
-    list() {
-        var that = this;
-        if (!this.__listPromise) {
-            this.__listPromise = new Promise(function (resolve, reject) {
-                if (!that.__data) {
-                    d3.csv('data/nass-yield-bales-per-acre.csv',
-                        function (d) {
-                            d.yearTime = d3.time.year(new Date(d.Year,1,1)); // coerce to date object
-                            d.monthTime = d3.time.month(new Date(d.Year,1,1)); // coerce to date object
-                            return d;
-                        },
-                        function (err, data) {
-                            if (err) {
-                                that.__data = undefined;
-                                reject(err);
-                            } else {
-                                that.__data = {
-                                    data: data,
-                                    index: crossfilter(data)
-                                };
-                                resolve(that.__data);
-                            }
+class CropYieldsBaADataSource extends CachingDataSource {
+    retrieveData() {
+        return new Promise((resolve, reject) => {
+            d3.csv('data/nass-yield-bales-per-acre.csv',
+                function (d) {
+                    d.yearTime = d3.time.year(new Date(d.Year, 1, 1)); // coerce to date object
+                    d.monthTime = d3.time.month(new Date(d.Year, 1, 1)); // coerce to date object
+                    return d;
+                },
+                function (err, data) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve({
+                            data: data,
+                            index: crossfilter(data)
                         });
-                } else {
-                    resolve(that.__data);
-                }
-            });
-        }
-
-        return this.__listPromise;
+                    }
+                });
+        });
     }
 }
 

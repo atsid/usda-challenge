@@ -2,38 +2,27 @@
 
 // import d3 from 'd3';
 import util from "../common/util";
+import CachingDataSource from './cachingDataSource';
 
 /**
  * A datasource wrapping the monthly average 30-year rainfall
  */
-class Average30RainfallDataSource {
-    list() {
-        var that = this;
-        if (!this.__listPromise) {
-            this.__listPromise = new Promise(function (resolve, reject) {
-                if (!that.__data) {
-                    d3.csv('data/monthly-precip-avg.csv',
-                        function (err, data) {
-                            if (err) {
-                                that.__data = undefined;
-                                reject(err);
-                            } else {
-                                //transpose and summarize the data into monthly and annual with real dates
-                                var average30 = util.rainfall.monthlyAverage30(data);
-                                that.__data = {
-                                    data: average30,
-                                    index: crossfilter(average30)
-                                };
-                                resolve(that.__data);
-                            }
-                        });
+class Average30RainfallDataSource extends CachingDataSource {
+    retrieveData() {
+        return new Promise((resolve, reject) => {
+            d3.csv('data/monthly-precip-avg.csv', (err, data) => {
+                if (err) {
+                    reject(err);
                 } else {
-                    resolve(that.__data);
+                    //transpose and summarize the data into monthly and annual with real dates
+                    var average30 = util.rainfall.monthlyAverage30(data);
+                    resolve({
+                        data: average30,
+                        index: crossfilter(average30)
+                    });
                 }
             });
-        }
-
-        return this.__listPromise;
+        });
     }
 }
 
