@@ -17,11 +17,14 @@ import CropYieldsCWTAChart from "./charts/cropYieldsCWTA";
 import CropYieldsCWTADataSource from "../datasources/cropYieldsCWTA";
 import Map from "./map";
 
+const dataSource = new HighLowDataSource();
+const cropYieldsDataSource = new CropYieldsDataSource();
+const cropYieldsBUADataSource = new CropYieldsBUADataSource();
+const cropYieldsBaADataSource = new CropYieldsBaADataSource();
+const cropYieldsCWTADataSource = new CropYieldsCWTADataSource();
+
 let SandboxComponent = React.createClass({
-
     render: function() {
-        let dataSource = new HighLowDataSource();
-
         return (
             <div>
                 <div className={"container-fluid"}>
@@ -39,16 +42,16 @@ let SandboxComponent = React.createClass({
                                 <HighLowTrend dataSource={dataSource}/>
                             </div>
                             <div className={"row"}>
-                                <CropYieldsChart dataSource={new CropYieldsDataSource()}/>
+                                <CropYieldsChart dataSource={cropYieldsDataSource}/>
                             </div>
                             <div className={"row"}>
-                                <CropYieldsBUAChart dataSource={new CropYieldsBUADataSource()}/>
+                                <CropYieldsBUAChart dataSource={cropYieldsBUADataSource}/>
                             </div>
                             <div className={"row"}>
-                                <CropYieldsBaAChart dataSource={new CropYieldsBaADataSource()}/>
+                                <CropYieldsBaAChart dataSource={cropYieldsBaADataSource}/>
                             </div>
                             <div className={"row"}>
-                                <CropYieldsCWTAChart dataSource={new CropYieldsCWTADataSource()}/>
+                                <CropYieldsCWTAChart dataSource={cropYieldsCWTADataSource}/>
                             </div>
                             <Map dataSource={dataSource}/>
                             <TemperatureReportsDataTable dataSource={dataSource}/>

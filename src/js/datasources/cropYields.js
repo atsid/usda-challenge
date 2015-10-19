@@ -1,38 +1,25 @@
 "use strict";
 
-// import d3 from 'd3';
+import CachingDataSource from './cachingDataSource';
 
 /**
  * A datasource wrapping the Cropy Yield, by Tons/Acre
  */
-class CropYieldsDataSource {
-    list() {
-        var that = this;
-        if (!this.__listPromise) {
-            this.__listPromise = new Promise(function (resolve, reject) {
-                if (!that.__data) {
-                    let locations = {};
+class CropYieldsDataSource extends CachingDataSource {
 
-                    d3.csv('data/nass-yield-tons-per-acre.csv',
-                        function (err, data) {
-                            if (err) {
-                                that.__data = undefined;
-                                reject(err);
-                            } else {
-                                that.__data = {
-                                    data: data,
-                                    index: crossfilter(data)
-                                };
-                                resolve(that.__data);
-                            }
-                        });
+    retrieveData() {
+        return new Promise((resolve, reject) => {
+            d3.csv('data/nass-yield-tons-per-acre.csv', (err, data) => {
+                if (err) {
+                    reject(err);
                 } else {
-                    resolve(that.__data);
+                    resolve({
+                        data: data,
+                        index: crossfilter(data)
+                    });
                 }
             });
-        }
-
-        return this.__listPromise;
+        });
     }
 }
 

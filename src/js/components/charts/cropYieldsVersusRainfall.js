@@ -7,41 +7,43 @@ import ReactDOM from "react-dom";
 import util from "../../common/util";
 import colors from "./colors";
 import debugFactory from "debug";
-const debug = debugFactory('app:components:CropYieldsGeneric');
+const debug = debugFactory('app:components:CropYieldsVersusRainfall');
 
-var CropYieldsGeneric = React.createClass({
+var CropYieldsVersusRainfall = React.createClass({
 
     propTypes: {
+        crop: React.PropTypes.string.isRequired,
         cropSource: React.PropTypes.object.isRequired,
         rainSource: React.PropTypes.object.isRequired
     },
 
     getInitialState() {
-        return {
-            crop: 'COTTON'
-        };
+        return {};
     },
 
     componentDidMount: function () {
+        this.drawChart();
+    },
+
+    componentDidUpdate: function () {
+        this.drawChart();
+    },
+
+    drawChart() {
         let el = ReactDOM.findDOMNode(this);
 
+        //TODO: we don't need to re-get the rain data each time, only selected crop
         Promise.all([
-            this.props.cropSource.list(this.state.crop),
+            this.props.cropSource.list(this.props.crop),
             this.props.rainSource.list()
         ]).then((results) => {
 
             var yieldIndex = results[0].index;
             var rainIndex = results[1].index;
 
-            var all = yieldIndex.groupAll();
-
             var yearlyYieldDim = yieldIndex.dimension((d) => d3.time.month(d.date));
-            debug('yearlyYieldDim:', yearlyYieldDim.top(10));
+            var yearlyYieldGroup = yearlyYieldDim.group().reduceSum((d) => d.yield);
 
-            var yearlyYieldGroup = yearlyYieldDim.group().reduceSum((d) => d.Value);
-            debug('yearlyYieldGroup:', yearlyYieldGroup.all());
-
-            //TODO: the props here are from temperature, need to be swapped out
             var yearlyRainDim = rainIndex.dimension((d) => d3.time.year(d.date));
             var yearlyAverageRainGroup = yearlyRainDim.group().reduceSum((d) => d.high);
 
@@ -55,19 +57,19 @@ var CropYieldsGeneric = React.createClass({
                 .x(timeScale)
                 .xUnits(d3.time.years)
                 .xAxisLabel("Date")
-                .yAxisLabel(this.cropLabel(this.state.crop))
-                .rightYAxisLabel('Rainfall (inches)')
+                .yAxisLabel('Rainfall (inches)')
+                .rightYAxisLabel(this.cropLabel(this.props.crop))
                 .dimension(yearlyYieldDim)
                 .brushOn(false)
                 .compose([
                     dc.barChart(compChart)
                         .colors(colors.yearlyAverageRainfall)
                         .barPadding(0.3)
-                        .useRightYAxis(true)
                         .group(yearlyAverageRainGroup),
                     dc.barChart(compChart)
                         .colors(colors.yield)
                         .barPadding(0.3)
+                        .useRightYAxis(true)
                         .group(yearlyYieldGroup)
                 ]);
 
@@ -76,20 +78,12 @@ var CropYieldsGeneric = React.createClass({
             this.state.myChart = compChart;
         });
     },
+
     reset() {
         if (this.state && this.state.myChart) {
             this.state.myChart.filterAll();
             dc.redrawAll();
         }
-    },
-    render() {
-        return (
-            <div className={"col-xs-12"} id="cropYieldsChartGeneric">
-                <h4>Crop Yields versus Rainfall</h4>
-                <span className={"text-muted"}>Crop yields in Terms of Bales / Acre</span>
-                <a className={"reset"} onClick={this.reset} style={{display: "none"}}>reset</a>
-            </div>
-        );
     },
 
     cropMap: {
@@ -113,8 +107,18 @@ var CropYieldsGeneric = React.createClass({
         let units = this.cropMap[crop];
         let prefix = crop.substring(0, 1) + crop.substring(1, crop.length).toLowerCase();
         return prefix + ' (' + units + ')';
-    }
+    },
+
+    render() {
+        return (
+            <div className={"col-xs-12"} id="cropYieldsChartGeneric">
+                <h4>Crop Yields versus Rainfall</h4>
+                <span className={"text-muted"}>Crop yields versus average annual rainfall</span>
+                <a className={"reset"} onClick={this.reset} style={{display: "none"}}>reset</a>
+            </div>
+        );
+    },
 
 });
 
-module.exports = CropYieldsGeneric;
+module.exports = CropYieldsVersusRainfall;

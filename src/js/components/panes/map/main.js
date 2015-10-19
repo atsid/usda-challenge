@@ -2,14 +2,19 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import debugFactory from "debug";
-import stateData from "./states";
 const debug = debugFactory('app:components:MapPane');
 
 import {Grid, Row, Col, Button, PageHeader, Input, Glyphicon, DropdownButton, MenuItem, Panel} from "react-bootstrap";
 import Map from "./map";
 import YearSelector from "./YearSelector";
+import StateSelector from "./StateSelector";
 
 let MapPaneComponent = React.createClass({
+
+    propTypes: {
+        onLocationChange: React.PropTypes.func.isRequired
+    },
+
     getInitialState() {
         return {
             acquiringLocation: false,
@@ -17,10 +22,14 @@ let MapPaneComponent = React.createClass({
     },
 
     componentDidMount() {
-      this.onSelectState(stateData.statesByCode.IA);
+        if (this._initialState) {
+            this.loadState(this._initialState);
+            delete this._initialState;
+        }
     },
 
     onLocateMe() {
+        //TODO: need to use geocoding to lookup state from coords
         this.setState({selectedState: null});
         if (navigator.geolocation) {
             this.setState({acquiringLocation: true});
@@ -31,46 +40,55 @@ let MapPaneComponent = React.createClass({
                     lng: position.coords.longitude,
                 };
                 this.refs.map.setCenter(center);
+                this.props.onLocationChange({
+                    state: this.selectedState ? this.selectedState.code : 'IA', //TEMP to handle missing state
+                    location: center
+                });
             });
         } else {
             this.setState({alert: "Geolocation is not supported by this browser."});
         }
     },
 
+    loadState(state) {
+        const center = {lat: state.lat, lng: state.lng};
+        const bounds = {
+            sw: {
+                lat: state.bounds.minLat,
+                lng: state.bounds.minLng,
+            },
+            ne: {
+                lat: state.bounds.maxLat,
+                lng: state.bounds.maxLng,
+            },
+        };
+        if (this.state.selectedState) {
+            this.refs.map.disable(this.state.selectedState.polygon);
+        }
+        this.setState({selectedState: state});
+
+        this.refs.map.enable(state.polygon);
+        this.refs.map.setCenter(center);
+        this.refs.map.setBounds(bounds);
+        this.props.onLocationChange({
+            state: state.code,
+            location: center
+        });
+    },
+
     onSelectState(state) {
         debug('Selected State', state);
         if (state) {
-            const center = {lat: state.lat, lng: state.lng};
-            const bounds = {
-                sw: {
-                    lat: state.bounds.minLat,
-                    lng: state.bounds.minLng,
-                },
-                ne: {
-                    lat: state.bounds.maxLat,
-                    lng: state.bounds.maxLng,
-                },
-            };
-            if (this.state.selectedState) {
-                this.refs.map.disable(this.state.selectedState.polygon);
+            if (!this.refs.map) {
+                this._initialState = state;
+            } else {
+                this.loadState(state);
             }
-            this.setState({selectedState: state});
-
-            this.refs.map.enable(state.polygon);
-            this.refs.map.setCenter(center);
-            this.refs.map.setBounds(bounds);
         }
     },
 
-    render() {
-        const stateSelections = stateData.states.map((state) => {
-          return (<MenuItem key={state.code} onSelect={() => this.onSelectState(state)}>{state.name}</MenuItem>)
-        });
-        let stateTitle = "Select State";
-        if (this.state.selectedState) {
-            stateTitle = this.state.selectedState.name;
-        }
 
+    render() {
         return (
             <div className="pane">
                 <div className="paneHeader">
@@ -84,9 +102,7 @@ let MapPaneComponent = React.createClass({
                         &nbsp;{this.state.acquiringLocation ? "Locating..." : "Locate Me"}&nbsp;
                     </Button>
                     <span>&nbsp;or&nbsp;</span>
-                    <DropdownButton id="selectState" title={stateTitle}>
-                        {stateSelections}
-                    </DropdownButton>
+                    <StateSelector onStateSelected={this.onSelectState}/>
                 </div>
                 <div className="yearSelectorContainer">
                     <YearSelector/>
