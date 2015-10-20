@@ -20,8 +20,8 @@ let SplashPageComponent = React.createClass({
             var places = searchBox.getPlace();
             debug('place', places);
             
-         /**rotating slider component**/        
-
+         /**jumbotron**/        
+<div>
 const jumbotronInstance = (
   <Jumbotron>
     <h1>Hello, world!</h1>
@@ -31,8 +31,8 @@ const jumbotronInstance = (
 );
 
 ReactDOM.render(jumbotronInstance, mountNode);
-
-         
+</div>
+      
                 <h2 style={{
                             color: 'gray',
                             textAlign: 'left'
