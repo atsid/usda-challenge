@@ -19,19 +19,37 @@ let SplashPageComponent = React.createClass({
         google.maps.event.addListener(searchBox, 'place_changed', function () {
             var places = searchBox.getPlace();
             debug('place', places);
+            
+         /**rotating slider component**/
+        
+            <link rel="stylesheet" href="carousel.css"/>
         });
-
     },
 
     render: function () {
         return (
-            <div>
-                <div style={{width: 660, height: 'auto'}}>
-                    <ResponsiveEmbed a16by9>
-                        <embed type="image/svg+xml" src="src/img/header-bg.jpg"/>
-                    </ResponsiveEmbed>
-                </div>
-                <h1 style={{
+         /** @jsx React.DOM */
+var React = require('react');
+var Carousel = require('./components/Carousel');
+
+var DemoSliderControls = React.createClass({
+    render() {
+        return (
+            <div className="demo-slider">
+                <Carousel 
+                    type="slider" 
+                    items={ sliderImages } 
+                    showControls={true} 
+                    showStatus={true} />
+            </div>
+        );
+    }
+});
+
+React.render(<DemoSliderControls />, document.querySelector('.demo-slider-controls'));
+         
+         
+                <h2 style={{
                             color: 'gray',
                             textAlign: 'left'
                             }}>
