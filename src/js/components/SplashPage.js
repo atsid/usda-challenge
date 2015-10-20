@@ -3,7 +3,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {Link} from "react-router";
-import {Panel, Jumbotron, Button, Input, ResponsiveEmbed} from "react-bootstrap";
+import {Panel, Nav, Navbar, NavItem, Jumbotron, Button, Input, ResponsiveEmbed} from "react-bootstrap";
 import debugFactory from "debug";
 const debug = debugFactory('app:SplashPage');
 
@@ -22,26 +22,16 @@ let SplashPageComponent = React.createClass({
             
          /**rotating slider component**/        
 
-/** @jsx React.DOM */
-var React = require('react');
-var Carousel = require('./components/Carousel');
+const jumbotronInstance = (
+  <Jumbotron>
+    <h1>Hello, world!</h1>
+    <p>This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+    <p><Button bsStyle="primary">Learn more</Button></p>
+  </Jumbotron>
+);
 
-var DemoCarousel = React.createClass({
-    render() {
-        return (
-            <div className="demo-carousel">
-                <Carousel items={ carouselImages } />
-            </div>
-        );
-    }
-});
+ReactDOM.render(jumbotronInstance, mountNode);
 
-React.render(<DemoCarousel />, document.querySelector('.demo-carousel'));
-<link rel="stylesheet" href="imageGallery.css"/>
-<link rel="stylesheet" href="carousel.css"/>
-
-
-         
          
                 <h2 style={{
                             color: 'gray',
