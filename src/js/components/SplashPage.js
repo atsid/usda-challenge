@@ -21,17 +21,7 @@ let SplashPageComponent = React.createClass({
             debug('place', places);
             
          /**jumbotron**/        
-<div>
-const jumbotronInstance = (
-  <Jumbotron>
-    <h1>Harness the power of data to feed the world!</h1>
-    <p>We make USDA data meaningful to you.</p>
-    <p><Button bsStyle="primary">Learn more</Button></p>
-  </Jumbotron>
-);
 
-ReactDOM.render(jumbotronInstance, mountNode);
-</div>
 
 /**location input**/        
 <div>
