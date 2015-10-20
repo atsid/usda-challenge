@@ -32,22 +32,15 @@ const jumbotronInstance = (
 
 ReactDOM.render(jumbotronInstance, mountNode);
 </div>
-      
-                <h2 style={{
-                            color: 'gray',
-                            textAlign: 'left'
-                            }}>
-                    Where do you farm?</h1>
-                <Input id="splashMapSearch" ref="searchInput" type="text" placeholder="Search (e.g., address)"/>
 
-                <Button style={{
-                        display: 'block',
-                        marginLeft: 'auto',
-                        marginRight: 'auto'
-                    }}>
-                    <Link to="/dashboard">Go to Dashboard</Link>
-                </Button>
-            </div>
+/**location input**/        
+<div>
+<h2 style={{color: 'gray', textAlign: 'left'}}>Where do you farm?</h2>
+<Input id="splashMapSearch" ref="searchInput" type="text" placeholder="Search (e.g., address)"/>
+
+<Button style={{display: 'block',marginLeft: 'auto',marginRight: 'auto'}}>
+<Link to="/dashboard">Go to Dashboard</Link></Button>
+</div>
         );
     },
 
