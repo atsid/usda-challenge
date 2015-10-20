@@ -84,16 +84,11 @@ let MapPaneComponent = React.createClass({
     onSelectState(state) {
         if (state) {
             debug('Selected State', state);
-            if (!this.refs.map) {
-                this._initialState = state;
-            } else {
-                this.loadState(state);
-            }
+            this.loadState(state);
         }
     },
 
     render() {
-        debug('render map pane', this.props);
         return (
             <div className="pane">
                 <div className="paneHeader">

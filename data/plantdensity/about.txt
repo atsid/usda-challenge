@@ -1,0 +1,6 @@
+Plant Density Database -
+
+Images are currently 40x40px at zoom level 6.
+The lat/lon granularity of the images should change as we zoom in.
+
+plantdensity/<zoom>/<lat>/<lon.png>

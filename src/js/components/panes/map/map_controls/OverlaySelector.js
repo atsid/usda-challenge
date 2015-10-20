@@ -7,7 +7,13 @@ const debug = debugFactory('app:components:OverlaySelector');
 
 import {Button, Glyphicon, Tooltip, Overlay, OverlayTrigger} from "react-bootstrap";
 
+import VegetationLayer from './layers/VegetationLayer';
+
 const OverlaySelector = React.createClass({
+    propTypes: {
+        map: React.PropTypes.object.isRequired
+    },
+
     getInitialState() {
         return {
             overlays: {
@@ -15,6 +21,9 @@ const OverlaySelector = React.createClass({
                 weather: false,
                 plantDensity: false,
             },
+            layers: {
+                plantDensity: new VegetationLayer(this.props.map),
+            }
         };
     },
 
@@ -28,6 +37,7 @@ const OverlaySelector = React.createClass({
         const toggleOverlay = (name) => {
             const isEnabled = this.state.overlays[name];
             this.setState(_.merge(this.state, {overlays: {[name]: !isEnabled}}));
+            this.state.layers[name][(isEnabled ? 'hide' : 'show')]();
         };
 
         return (
