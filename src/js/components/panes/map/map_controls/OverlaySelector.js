@@ -18,7 +18,6 @@ const OverlaySelector = React.createClass({
         return {
             overlays: {
                 soilType: false,
-                weather: false,
                 plantDensity: false,
             },
             layers: {
@@ -30,9 +29,8 @@ const OverlaySelector = React.createClass({
     render() {
         const tooltip = (text, id) => (<Tooltip id={id}>{text}</Tooltip>);
         const soilTypeTooltip = tooltip('Soil Type', 'soilType');
-        const weatherTooltip = tooltip('Weather', 'weather');
         const plantDensityTooltip = tooltip('Plant Density', 'plantDensity');
-        const overlayStyle = (enabled) => enabled ? 'warning' : 'default';
+        const overlayStyle = (enabled) => enabled ? 'success' : 'default';
         const overlays = this.state.overlays;
         const toggleOverlay = (name) => {
             const isEnabled = this.state.overlays[name];
@@ -44,22 +42,19 @@ const OverlaySelector = React.createClass({
             <div className="overlaySelectorGroup">
                 <div>
                     <OverlayTrigger placement="right" overlay={soilTypeTooltip}>
-                        <Button bsStyle={overlayStyle(overlays.soilType)} onClick={() => toggleOverlay('soilType')}>
-                            <Glyphicon glyph="apple"/>
-                        </Button>
-                    </OverlayTrigger>
-                </div>
-                <div>
-                    <OverlayTrigger placement="right" overlay={weatherTooltip}>
-                        <Button bsStyle={overlayStyle(overlays.weather)} onClick={() => toggleOverlay('weather')}>
-                            <Glyphicon glyph="cloud"/>
+                        <Button bsStyle={overlayStyle(overlays.soilType)} onClick={() => toggleOverlay('soilType')} className="layerButton">
+                            <img className="layerIcon" src="src/img/icons/soil.png"/>
+                            &nbsp;
+                            <span>Soil Type</span>
                         </Button>
                     </OverlayTrigger>
                 </div>
                 <div>
                     <OverlayTrigger placement="right" overlay={plantDensityTooltip}>
-                        <Button bsStyle={overlayStyle(overlays.plantDensity)} onClick={() => toggleOverlay('plantDensity')}>
-                            <Glyphicon glyph="leaf"/>
+                        <Button bsStyle={overlayStyle(overlays.plantDensity)} onClick={() => toggleOverlay('plantDensity')} className="layerButton">
+                            <img className="layerIcon" src="src/img/icons/plant_density.png"/>
+                            &nbsp;
+                            <span>Plant Density</span>
                         </Button>
                     </OverlayTrigger>
                 </div>
