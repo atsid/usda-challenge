@@ -12,7 +12,7 @@ import history from './history';
 import debug from 'debug';
 debug.enable('*');
 
-(function (global) {
+function initialize() {
     ReactDOM.render((
         <Router>
             <Redirect from="/" to="/splash"/>
@@ -25,4 +25,6 @@ debug.enable('*');
             </Route>
         </Router>
     ), document.getElementById("app"));
-}(this));
+}
+
+window.onload = initialize;

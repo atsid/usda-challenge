@@ -18,7 +18,6 @@ let DashboardComponent = React.createClass({
 
     getInitialState() {
         const query = this.context.location.query;
-        debug('getting initial state from query: ', query);
         const state = query.state || 'IA';
         const lat = parseFloat(query.lat) || 42.0046;
         const lng = parseFloat(query.lng) || -93.214;
@@ -65,7 +64,6 @@ let DashboardComponent = React.createClass({
     },
 
     render() {
-        debug('rendering dashboard', this.state);
         return (
             <Grid style={{width: "100%"}}>
                 <Row>

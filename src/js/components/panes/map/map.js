@@ -27,10 +27,12 @@ let MapComponent = React.createClass({
         const map = this.map = new google.maps.Map($(mapNode)[0], {
             center: this.state.initialCenter,
             zoom: this.state.initialZoom,
+            mapTypeControl: false,
+            streetViewControl: false,
         });
 
-        const overlaySelector = new MapControl((<OverlaySelector/>));
-        overlaySelector.register(map, google.maps.ControlPosition.LEFT, 1);
+        const overlaySelector = new MapControl((<OverlaySelector map={map} />));
+        overlaySelector.register(map, google.maps.ControlPosition.LEFT_BOTTOM, 1);
 
         map.addListener('center_changed', _.debounce(() => {
             const newCenter = {
