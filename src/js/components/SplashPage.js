@@ -27,16 +27,16 @@ let SplashPageComponent = React.createClass({
         return (
             <Panel>
 
-                <Jumbotron style={{
-                    backgroundImage: 'url("src/img/produce.jpg")'
-                }}>
-                    <h1 style={{
-                            color: 'white',
-                            textAlign: 'center'
-                        }}>Harness the power of data</h1>
-                </Jumbotron>
+              <div style={{width: 660, height: 'auto'}}>
+    <ResponsiveEmbed a16by9>
+      <embed type="image/svg+xml" src="/assets/TheresaKnott_castle.svg" />
+    </ResponsiveEmbed>
+  </div>
 
-                <p>Discover how densely crops grow in different soil</p>
+               <h2 style={{
+                            color: 'gray',
+                            textAlign: 'left'
+               Where do you farm?</h1>
 
                 <Input id="splashMapSearch" ref="searchInput" type="text" placeholder="Search (e.g., address)" />
 
