@@ -20,9 +20,7 @@ let SplashPageComponent = React.createClass({
             var places = searchBox.getPlace();
             debug('place', places);
             
-         /**rotating slider component**/
-        
-            <link rel="stylesheet" href="carousel.css"/>
+         /**rotating slider component**/        
         });
     },
 
@@ -45,8 +43,9 @@ var DemoSliderControls = React.createClass({
         );
     }
 });
-
 React.render(<DemoSliderControls />, document.querySelector('.demo-slider-controls'));
+<link rel="stylesheet" href="carousel.css"/>
+
          
          
                 <h2 style={{
