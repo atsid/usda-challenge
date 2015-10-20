@@ -55226,11 +55226,13 @@
 	        var mapNode = _reactDom2["default"].findDOMNode(this.refs.map);
 	        var map = this.map = new google.maps.Map($(mapNode)[0], {
 	            center: this.state.initialCenter,
-	            zoom: this.state.initialZoom
+	            zoom: this.state.initialZoom,
+	            mapTypeControl: false,
+	            streetViewControl: false
 	        });
 	
 	        var overlaySelector = new _map_controlsMapControl2["default"](_react2["default"].createElement(_map_controlsOverlaySelector2["default"], { map: map }));
-	        overlaySelector.register(map, google.maps.ControlPosition.LEFT, 1);
+	        overlaySelector.register(map, google.maps.ControlPosition.LEFT_BOTTOM, 1);
 	
 	        map.addListener('center_changed', _lodash2["default"].debounce(function () {
 	            var newCenter = {
@@ -55347,7 +55349,6 @@
 	        return {
 	            overlays: {
 	                soilType: false,
-	                weather: false,
 	                plantDensity: false
 	            },
 	            layers: {
@@ -55367,10 +55368,9 @@
 	            );
 	        };
 	        var soilTypeTooltip = tooltip('Soil Type', 'soilType');
-	        var weatherTooltip = tooltip('Weather', 'weather');
 	        var plantDensityTooltip = tooltip('Plant Density', 'plantDensity');
 	        var overlayStyle = function overlayStyle(enabled) {
-	            return enabled ? 'warning' : 'default';
+	            return enabled ? 'success' : 'default';
 	        };
 	        var overlays = this.state.overlays;
 	        var toggleOverlay = function toggleOverlay(name) {
@@ -55392,23 +55392,14 @@
 	                        _reactBootstrap.Button,
 	                        { bsStyle: overlayStyle(overlays.soilType), onClick: function () {
 	                                return toggleOverlay('soilType');
-	                            } },
-	                        _react2["default"].createElement(_reactBootstrap.Glyphicon, { glyph: "apple" })
-	                    )
-	                )
-	            ),
-	            _react2["default"].createElement(
-	                "div",
-	                null,
-	                _react2["default"].createElement(
-	                    _reactBootstrap.OverlayTrigger,
-	                    { placement: "right", overlay: weatherTooltip },
-	                    _react2["default"].createElement(
-	                        _reactBootstrap.Button,
-	                        { bsStyle: overlayStyle(overlays.weather), onClick: function () {
-	                                return toggleOverlay('weather');
-	                            } },
-	                        _react2["default"].createElement(_reactBootstrap.Glyphicon, { glyph: "cloud" })
+	                            }, className: "layerButton" },
+	                        _react2["default"].createElement("img", { className: "layerIcon", src: "src/img/icons/soil.png" }),
+	                        " ",
+	                        _react2["default"].createElement(
+	                            "span",
+	                            null,
+	                            "Soil Type"
+	                        )
 	                    )
 	                )
 	            ),
@@ -55422,8 +55413,14 @@
 	                        _reactBootstrap.Button,
 	                        { bsStyle: overlayStyle(overlays.plantDensity), onClick: function () {
 	                                return toggleOverlay('plantDensity');
-	                            } },
-	                        _react2["default"].createElement(_reactBootstrap.Glyphicon, { glyph: "leaf" })
+	                            }, className: "layerButton" },
+	                        _react2["default"].createElement("img", { className: "layerIcon", src: "src/img/icons/plant_density.png" }),
+	                        " ",
+	                        _react2["default"].createElement(
+	                            "span",
+	                            null,
+	                            "Plant Density"
+	                        )
 	                    )
 	                )
 	            )
@@ -56843,24 +56840,26 @@
 	
 	    render: function render() {
 	        return _react2["default"].createElement(
-	            "div",
+	            _reactBootstrap.Panel,
 	            null,
 	            _react2["default"].createElement(
-	                "div",
-	                { style: { width: 660, height: 'auto' } },
+	                _reactBootstrap.Jumbotron,
+	                { style: {
+	                        backgroundImage: 'url("src/img/trees.jpg")'
+	                    } },
 	                _react2["default"].createElement(
-	                    _reactBootstrap.ResponsiveEmbed,
-	                    { a16by9: true },
-	                    _react2["default"].createElement("embed", { type: "image/svg+xml", src: "src/img/header-bg.jpg" })
+	                    "h1",
+	                    { style: {
+	                            color: 'white',
+	                            textAlign: 'center'
+	                        } },
+	                    "Harness the power of data"
 	                )
 	            ),
 	            _react2["default"].createElement(
-	                "h1",
-	                { style: {
-	                        color: 'gray',
-	                        textAlign: 'left'
-	                    } },
-	                "Where do you farm?"
+	                "p",
+	                null,
+	                "Discover how densely crops grow in different soil"
 	            ),
 	            _react2["default"].createElement(_reactBootstrap.Input, { id: "splashMapSearch", ref: "searchInput", type: "text", placeholder: "Search (e.g., address)" }),
 	            _react2["default"].createElement(

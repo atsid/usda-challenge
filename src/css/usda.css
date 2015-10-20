@@ -1,5 +1,5 @@
 /*!
- * Start Bootstrap - Agency Bootstrap Theme (http://startbootstrap.com)
+ * Start Bootstrap - USDA Innovation Challenge Bootstrap Theme (http://startbootstrap.com)
  * Code licensed under the Apache License v2.0.
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
@@ -221,7 +221,7 @@ fieldset[disabled] .btn-xl.active {
 .navbar-default .navbar-nav>.active>a {
     border-radius: 0;
     color: #fff;
-    background-color: #99002D;
+    background-color: #000000;
 }
 
 .navbar-default .navbar-nav>.active>a:hover,
@@ -253,7 +253,7 @@ fieldset[disabled] .btn-xl.active {
 
     .navbar-default.navbar-shrink {
         padding: 10px 0;
-        background-color: #99002D;
+        background-color: #000000;
     }
 
     .navbar-default.navbar-shrink .navbar-brand {

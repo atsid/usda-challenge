@@ -243,3 +243,14 @@ h4 {
 .welcomeHero {
     background-image: url("src/img/trees.jpg");
 }
+
+.layerIcon {
+    height: 25px;
+    width: 25px;
+}
+
+.layerButton {
+    width: 120px;
+    padding: 5px;
+    text-align: left;
+}
