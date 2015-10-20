@@ -16,7 +16,7 @@ var watch = require("gulp-watch");
 var config = {
   src: {
     all: './',
-    siteFiles: ['index.html', 'build/*', 'bower_components/**/*', 'data/**/*', 'src/css/*'],
+    siteFiles: ['index.html', 'build/*', 'bower_components/**/*', 'data/**/*', 'src/css/*', 'src/img/**'],
     build: 'build',
     dist: 'dist',
     deploy: 'dist/**/*',
