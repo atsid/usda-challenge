@@ -21,30 +21,25 @@ let SplashPageComponent = React.createClass({
             debug('place', places);
             
          /**rotating slider component**/        
-        });
-    },
 
-    render: function () {
-        return (
-         /** @jsx React.DOM */
+/** @jsx React.DOM */
 var React = require('react');
 var Carousel = require('./components/Carousel');
 
-var DemoSliderControls = React.createClass({
+var DemoCarousel = React.createClass({
     render() {
         return (
-            <div className="demo-slider">
-                <Carousel 
-                    type="slider" 
-                    items={ sliderImages } 
-                    showControls={true} 
-                    showStatus={true} />
+            <div className="demo-carousel">
+                <Carousel items={ carouselImages } />
             </div>
         );
     }
 });
-React.render(<DemoSliderControls />, document.querySelector('.demo-slider-controls'));
+
+React.render(<DemoCarousel />, document.querySelector('.demo-carousel'));
+<link rel="stylesheet" href="imageGallery.css"/>
 <link rel="stylesheet" href="carousel.css"/>
+
 
          
          
