@@ -7,9 +7,7 @@ import {Panel, Nav, Navbar, NavItem, Jumbotron, Button, Input, ResponsiveEmbed} 
 import debugFactory from "debug";
 const debug = debugFactory('app:SplashPage');
 
-let SplashPageComponent = React.createClass({
-
-    componentDidMount() {
+let SplashPageComponent = React.createClass({componentDidMount() {
         //connect google maps input
         let input = ReactDOM.findDOMNode(this.refs.searchInput);
         let searchBox = new google.maps.places.Autocomplete(input);
@@ -20,13 +18,25 @@ let SplashPageComponent = React.createClass({
             var places = searchBox.getPlace();
             debug('place', places);
             
-         /**jumbotron**/        
+/**jumbotron**/        
+const jumbotronInstance = (
+  <Jumbotron>
+    <h1>Hello, world!</h1>
+    <p>This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+    <p><Button bsStyle="primary">Learn more</Button></p>
+  </Jumbotron>
+);
+
+ReactDOM.render(jumbotronInstance, mountNode);
 
 
 /**location input**/        
 <div>
 <h2 style={{color: 'gray', textAlign: 'left'}}>Where do you farm?</h2>
-<Input id="splashMapSearch" ref="searchInput" type="text" placeholder="Search (e.g., address)"/>
+
+<form>
+    <Input id="splashMapSearch" ref="searchInput" type="text" placeholder="Search (e.g., address)"/>
+  </form>
 
 <Button style={{display: 'block',marginLeft: 'auto',marginRight: 'auto'}}>
 <Link to="/dashboard">Go to Dashboard</Link></Button>
