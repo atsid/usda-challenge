@@ -29,7 +29,7 @@ let SplashPageComponent = React.createClass({
 
               <div style={{width: 660, height: 'auto'}}>
     <ResponsiveEmbed a16by9>
-      <embed type="image/svg+xml" src="/assets/TheresaKnott_castle.svg" />
+      <embed type="image/svg+xml" src="/img/header-bg.jpg" />
     </ResponsiveEmbed>
   </div>
 
