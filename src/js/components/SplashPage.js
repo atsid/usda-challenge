@@ -24,8 +24,8 @@ let SplashPageComponent = React.createClass({
 <div>
 const jumbotronInstance = (
   <Jumbotron>
-    <h1>Hello, world!</h1>
-    <p>This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+    <h1>Harness the power of data to feed the world!</h1>
+    <p>We make USDA data meaningful to you.</p>
     <p><Button bsStyle="primary">Learn more</Button></p>
   </Jumbotron>
 );
