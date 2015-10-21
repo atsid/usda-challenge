@@ -56191,7 +56191,7 @@
 	    },
 	
 	    getInitialState: function getInitialState() {
-	        return { activities: [] };
+	        return { activities: [], yearsForState: [] };
 	    },
 	
 	    componentDidMount: function componentDidMount() {
@@ -56206,7 +56206,8 @@
 	        var _this = this;
 	
 	        activityStore.getActivities(state, year).then(function (activities) {
-	            return _this.setState({ activities: activities });
+	            var yearsForState = activityStore.getYearsForState(state);
+	            _this.setState({ activities: activities, yearsForState: yearsForState });
 	        });
 	    },
 	
@@ -56215,6 +56216,7 @@
 	        var activities = this.state.activities.map(function (activity, index) {
 	            return _react2["default"].createElement(_ActivityTile2["default"], { key: "activity" + index, activity: activity });
 	        });
+	        var noData = "No Activity Data Found. " + stateName + " has data available for years " + this.state.yearsForState.join(', ');
 	        return _react2["default"].createElement(
 	            "div",
 	            null,
@@ -56237,8 +56239,8 @@
 	            ),
 	            _react2["default"].createElement(
 	                "div",
-	                { style: { display: 'flex' } },
-	                activities.length === 0 ? 'No Activity Data Found' : activities
+	                { className: "activityTileContainer" },
+	                activities.length === 0 ? noData : activities
 	            )
 	        );
 	    }
@@ -56265,9 +56267,10 @@
 	var cache = {};
 	
 	var KNOWN_ACTIVITIES = {
-	    herbicide: true,
-	    manure: true,
-	    pesticide: true
+	    herbicide: 'herbicide',
+	    manure: 'manure',
+	    pesticide: 'pesticide',
+	    insecticide: 'pesticide'
 	};
 	
 	var ActivityStore = (function () {
@@ -56286,6 +56289,11 @@
 	            });
 	        }
 	    }, {
+	        key: 'getYearsForState',
+	        value: function getYearsForState(stateCode) {
+	            return Object.keys(cache[stateCode]);
+	        }
+	    }, {
 	        key: '_loadStateData',
 	        value: function _loadStateData(stateCode) {
 	            var _this = this;
@@ -56295,11 +56303,13 @@
 	                cache[stateCode] = {};
 	                for (var i = 1; i < activities.data.length; i++) {
 	                    var datum = _this._createActivityDatum(activities.data[i]);
-	                    var year = datum.year;
-	                    if (!cache[stateCode][year]) {
-	                        cache[stateCode][year] = [];
+	                    if (datum.name) {
+	                        var year = datum.year;
+	                        if (!cache[stateCode][year]) {
+	                            cache[stateCode][year] = [];
+	                        }
+	                        cache[stateCode][year].push(datum);
 	                    }
-	                    cache[stateCode][year].push(datum);
 	                }
 	            });
 	        }
@@ -56316,7 +56326,7 @@
 	        key: '_getActivityImageUrl',
 	        value: function _getActivityImageUrl(name) {
 	            var lcName = name.toLowerCase();
-	            var icon = KNOWN_ACTIVITIES[lcName] ? lcName : 'misc';
+	            var icon = KNOWN_ACTIVITIES[lcName] || 'misc';
 	            return 'src/img/icons/activities/' + icon + '.png';
 	        }
 	    }, {
@@ -56380,23 +56390,19 @@
 	
 	    render: function render() {
 	        var name = this.props.activity.name;
-	        var percent = this.props.activity.percent;
+	        var percent = Math.round(this.props.activity.percent);
 	        var imageUrl = this.props.activity.imageUrl;
 	        return _react2["default"].createElement(
 	            "div",
-	            { style: { display: 'flex', marginLeft: '20px' } },
-	            _react2["default"].createElement("img", { src: imageUrl, style: {
-	                    height: "75px",
-	                    width: "75px",
-	                    display: "inline"
-	                } }),
+	            { className: "activityTile" },
+	            _react2["default"].createElement("img", { src: imageUrl }),
 	            _react2["default"].createElement(
 	                "div",
 	                null,
 	                _react2["default"].createElement(
 	                    "div",
-	                    { style: { fontSize: '20pt' } },
-	                    Math.round(percent),
+	                    { className: "activityTilePercent" },
+	                    percent,
 	                    "%"
 	                ),
 	                _react2["default"].createElement(
