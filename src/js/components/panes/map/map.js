@@ -5,8 +5,10 @@ import React from "react";
 import ReactDOM from "react-dom";
 import debugFactory from "debug";
 const debug = debugFactory('app:components:Map');
+
 import MapControl from "./map_controls/MapControl";
 import OverlaySelector from "./map_controls/OverlaySelector";
+import WaitSpinner from "./map_controls/WaitSpinner";
 
 let MapComponent = React.createClass({
     propTypes: {
@@ -23,17 +25,27 @@ let MapComponent = React.createClass({
     },
 
     componentDidMount () {
+        const map = this.map = this.createMap();
+        let onLoadingChange = {handle: null};
+        const registerVisibleCallback = (cb) => onLoadingChange.handle = cb;
+        const waitSpinnerComponent = (<WaitSpinner visible={false} visibleCallback={registerVisibleCallback} />);
+        const overlayComponent = (<OverlaySelector map={map} onLoadingChange={onLoadingChange} />);
+
+
+        const overlaySelector = new MapControl(overlayComponent);
+        const waitSpinner = new MapControl(waitSpinnerComponent);
+        overlaySelector.register(map, google.maps.ControlPosition.LEFT_BOTTOM, 1);
+        waitSpinner.register(map, google.maps.ControlPosition.BOTTOM, 2);
+    },
+
+    createMap() {
         const mapNode = ReactDOM.findDOMNode(this.refs.map);
-        const map = this.map = new google.maps.Map($(mapNode)[0], {
+        const map = new google.maps.Map($(mapNode)[0], {
             center: this.state.initialCenter,
             zoom: this.state.initialZoom,
             mapTypeControl: false,
             streetViewControl: false,
         });
-
-        const overlaySelector = new MapControl((<OverlaySelector map={map} />));
-        overlaySelector.register(map, google.maps.ControlPosition.LEFT_BOTTOM, 1);
-
         map.addListener('center_changed', _.debounce(() => {
             const newCenter = {
                 lat: map.center.lat(),
@@ -46,6 +58,7 @@ let MapComponent = React.createClass({
             const zoom = map.zoom;
             this.props.onZoomChange(zoom);
         }, 150));
+        return map;
     },
 
     setCenter(center) {

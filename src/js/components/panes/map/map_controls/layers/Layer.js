@@ -20,7 +20,7 @@ class Layer {
 
     show() {
         const map = this.map_;
-        this.isVisible = false;
+        this.isVisible = true;
         this.generateMapArtifacts(map, map.getBounds());
     }
 

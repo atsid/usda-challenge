@@ -11,19 +11,24 @@ import VegetationLayer from './layers/VegetationLayer';
 
 const OverlaySelector = React.createClass({
     propTypes: {
-        map: React.PropTypes.object.isRequired
+        map: React.PropTypes.object.isRequired,
+        onLoadingChange: React.PropTypes.object.isRequired,
     },
 
     getInitialState() {
         return {
+            isLoading: false,
             overlays: {
-                soilType: false,
                 plantDensity: false,
             },
             layers: {
                 plantDensity: new VegetationLayer(this.props.map),
             }
         };
+    },
+
+    componentDidMount() {
+        this.state.layers.plantDensity.onLoadingChange(this.props.onLoadingChange);
     },
 
     render() {
@@ -41,17 +46,9 @@ const OverlaySelector = React.createClass({
         return (
             <div className="overlaySelectorGroup">
                 <div>
-                    <OverlayTrigger placement="right" overlay={soilTypeTooltip}>
-                        <Button bsStyle={overlayStyle(overlays.soilType)} onClick={() => toggleOverlay('soilType')} className="layerButton">
-                            <img className="layerIcon" src="src/img/icons/soil.png"/>
-                            &nbsp;
-                            <span>Soil Type</span>
-                        </Button>
-                    </OverlayTrigger>
-                </div>
-                <div>
                     <OverlayTrigger placement="right" overlay={plantDensityTooltip}>
-                        <Button bsStyle={overlayStyle(overlays.plantDensity)} onClick={() => toggleOverlay('plantDensity')} className="layerButton">
+                        <Button bsStyle={overlayStyle(overlays.plantDensity)}
+                                onClick={() => toggleOverlay('plantDensity')} className="layerButton">
                             <img className="layerIcon" src="src/img/icons/plant_density.png"/>
                             &nbsp;
                             <span>Plant Density</span>
