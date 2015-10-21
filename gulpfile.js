@@ -16,7 +16,15 @@ var watch = require("gulp-watch");
 var config = {
   src: {
     all: './',
-    siteFiles: ['index.html', 'build/*', 'bower_components/**/*', 'data/**/*', 'src/css/*', 'src/img/**'],
+    siteFiles: [
+        'index.html',
+        'build/*',
+        'bower_components/**/*',
+        'data/**/*',
+        'lib/**/*',
+        'src/css/*',
+        'src/img/**'
+    ],
     build: 'build',
     dist: 'dist',
     deploy: 'dist/**/*',
@@ -70,7 +78,7 @@ gulp.task('clean', function (cb) {
 /*
  * Copy static content into a single point for deployment, without the extra cruft.
  */
-gulp.task('site', function (cb) {
+gulp.task('site', function () {
     return gulp.src(config.src.siteFiles, { 'base': '.' }).pipe(gulp.dest(config.src.dist));
 });
 

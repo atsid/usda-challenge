@@ -3,11 +3,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {Link} from "react-router";
-import {Panel, Nav, Navbar, NavItem, Jumbotron, Button, Input, ResponsiveEmbed} from "react-bootstrap";
+import {Panel, Jumbotron, Button, Input, Navbar, NavBrand} from "react-bootstrap";
 import debugFactory from "debug";
 const debug = debugFactory('app:SplashPage');
 
-let SplashPageComponent = React.createClass({componentDidMount() {
+let SplashPageComponent = React.createClass({
+
+    componentDidMount() {
         //connect google maps input
         let input = ReactDOM.findDOMNode(this.refs.searchInput);
         let searchBox = new google.maps.places.Autocomplete(input);
@@ -17,33 +19,120 @@ let SplashPageComponent = React.createClass({componentDidMount() {
         google.maps.event.addListener(searchBox, 'place_changed', function () {
             var places = searchBox.getPlace();
             debug('place', places);
-            
-/**jumbotron**/        
-const jumbotronInstance = (
-  <Jumbotron>
-    <h1>Hello, world!</h1>
-    <p>This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-    <p><Button bsStyle="primary">Learn more</Button></p>
-  </Jumbotron>
-);
+        });
 
-ReactDOM.render(jumbotronInstance, mountNode);
-
-
-/**location input**/        
-<div>
-<h2 style={{color: 'gray', textAlign: 'left'}}>Where do you farm?</h2>
-
-<form>
-    <Input id="splashMapSearch" ref="searchInput" type="text" placeholder="Search (e.g., address)"/>
-  </form>
-
-<Button style={{display: 'block',marginLeft: 'auto',marginRight: 'auto'}}>
-<Link to="/dashboard">Go to Dashboard</Link></Button>
-</div>
-        );
     },
 
-});
+    render: function () {
+        return (
+            <div>
+                <nav className="navbar navbar-default navbar-fixed-top">
+                    <div className="container">
+                        <div className="navbar-header page-scroll">
+                            <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                <span className="sr-only">Toggle navigation</span>
+                                <span className="icon-bar"></span>
+                                <span className="icon-bar"></span>
+                                <span className="icon-bar"></span>
+                            </button>
+                            <a className="navbar-brand page-scroll" href="#page-top">ATS & EchoUser USDA Innovation Challenge</a>
+                        </div>
 
-module.exports = SplashPageComponent;
+                        <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul className="nav navbar-nav navbar-right">
+                                <li className="hidden"> <a href="#page-top"></a></li>
+                                <li> <a className="page-scroll" href="# "> </a> </li>
+                                <li> <a className="page-scroll" href="# "> </a> </li>
+                                <li> <a className="page-scroll" href="# ">Home</a> </li>
+                                <li> <a className="page-scroll" href="#where ">Where</a> </li>
+                                <li> <a className="page-scroll" href="#rainfall ">Rainfall</a> </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+
+                <header>
+                    <div className="container">
+                        <div className="intro-text">
+                            <div className="intro-lead-in">Harness the power of data to feed the world</div>
+                            <div className="intro-heading">We make USDA data meaningful to you.</div>
+                        </div>
+                    </div>
+                </header>
+
+                <section id="where">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-lg-12 text-center">
+                            </div>
+                        </div>
+
+                        <div className="row text-left">
+                            <div className="col-md-3"/>
+                        </div>
+                        <div className="col-md-3">
+                            <span className="fa-stack fa-2x">
+                                <i className="fa fa-circle fa-stack-2x text-primary"></i>
+                                <i className="fa fa-search fa-stack-1x fa-inverse"></i>
+                            </span>
+                            <h4 className="service-heading">Do you know your soil?</h4>
+                            <p className="text-muted">See how soil type and crop growth are related on a map of your farm land.</p>
+                        </div>
+
+                        <div className="col-md-3">
+                            <span className="fa-stack fa-2x">
+                                <i className="fa fa-circle fa-stack-2x text-primary"></i>
+                                <i className="fa fa-tint fa-stack-1x fa-inverse"></i>
+                            </span>
+                            <h4 className="service-heading">Rainfall</h4>
+                            <p className="text-muted">Get a sense for how much your farm can produce per year compared to detailed historical precipitation data.</p>
+                        </div>
+
+                        <div className="container">
+                            <div className="row">
+                                <div className="col-lg-12 text-center"/>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="blurb">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-lg-12 text-center"/>
+                        </div>
+                        <h4 className="service-heading">Do you know your soil?</h4>
+                        <p className="text-muted">See how soil type and crop growth are related on a map of your farm land.</p>
+                    </div>
+
+
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-lg-12 text-center"/>
+                        </div>
+                    </div>
+                </section>
+
+                <footer>
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-md-4">
+                                <span className="copyright">All content copyright &copy; ATS & EchoUser 2015</span>
+                            </div>
+
+
+                            <div className="col-md-4">
+                                <ul className="list-inline quicklinks">
+                                    <li><a href="#"> </a>
+                                    </li>
+                                    <li><a href="#"> </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>);
+    },
+});
+export default SplashPageComponent;
