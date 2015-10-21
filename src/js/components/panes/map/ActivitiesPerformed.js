@@ -41,7 +41,7 @@ const ActivitiesPerformedComponent = React.createClass({
         const noData = `No Activity Data Found. ${stateName} has data available for years ${this.state.yearsForState.join(', ')}`;
         return (
             <div>
-                <h4>Percentage of land in <span>{stateName}</span> where certain activities were performed (in <span>{this.props.year}</span>)</h4>
+                <div className="activitiesPerformedHeader">Percentage of land in <span>{stateName}</span> where certain activities were performed (in <span>{this.props.year}</span>)</div >
                 <div className="activityTileContainer">
                     {activities.length === 0 ? noData : activities}
                 </div>

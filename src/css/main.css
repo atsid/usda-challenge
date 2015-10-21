@@ -265,4 +265,11 @@ h4 {
 
 .activityTileContainer {
     display: inline-flex;
+    margin-top: 20px;
+}
+
+.activitiesPerformedHeader {
+    font-size: 15pt;
+    margin-left: 10px;
+    margin-top: 15px;
 }
