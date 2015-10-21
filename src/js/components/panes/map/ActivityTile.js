@@ -13,17 +13,13 @@ const ActivityTile = React.createClass({
 
     render() {
         const name = this.props.activity.name;
-        const percent = this.props.activity.percent;
+        const percent = Math.round(this.props.activity.percent);
         const imageUrl = this.props.activity.imageUrl;
         return (
-            <div style={{display: 'flex', marginLeft: '20px'}}>
-                <img src={imageUrl} style={{
-                    height: "75px",
-                    width: "75px",
-                    display: "inline"
-                }}/>
+            <div className="activityTile">
+                <img src={imageUrl} />
                 <div>
-                    <div style={{fontSize: '20pt'}}>{Math.round(percent)}%</div>
+                    <div className="activityTilePercent">{percent}%</div>
                     <div>{name}</div>
                 </div>
             </div>

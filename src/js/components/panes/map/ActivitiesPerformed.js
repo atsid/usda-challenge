@@ -15,7 +15,7 @@ const ActivitiesPerformedComponent = React.createClass({
     },
 
     getInitialState() {
-        return { activities: [] };
+        return { activities: [], yearsForState: [] };
     },
 
     componentDidMount() {
@@ -28,17 +28,22 @@ const ActivitiesPerformedComponent = React.createClass({
     },
 
     loadActivities(state, year) {
-        activityStore.getActivities(state, year).then((activities) => this.setState({activities}));
+        activityStore.getActivities(state, year)
+            .then((activities) => {
+                const yearsForState = activityStore.getYearsForState(state);
+                this.setState({activities, yearsForState});
+            });
     },
 
     render() {
         const stateName = stateData.statesByCode[this.props.state].name;
         const activities = this.state.activities.map((activity, index) => (<ActivityTile key={`activity${index}`} activity={activity} />));
+        const noData = `No Activity Data Found. ${stateName} has data available for years ${this.state.yearsForState.join(', ')}`;
         return (
             <div>
                 <h4>Percentage of land in <span>{stateName}</span> where certain activities were performed (in <span>{this.props.year}</span>)</h4>
-                <div style={{display: 'flex'}}>
-                    {activities.length === 0 ? 'No Activity Data Found' : activities}
+                <div className="activityTileContainer">
+                    {activities.length === 0 ? noData : activities}
                 </div>
             </div>
         );

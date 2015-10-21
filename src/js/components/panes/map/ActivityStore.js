@@ -4,9 +4,10 @@ const debug = require('debug')('app:stores:ActivityStore');
 const cache = {};
 
 const KNOWN_ACTIVITIES = {
-    herbicide: true,
-    manure: true,
-    pesticide: true
+    herbicide: 'herbicide',
+    manure: 'manure',
+    pesticide: 'pesticide',
+    insecticide: 'pesticide'
 };
 
 export default class ActivityStore {
@@ -19,6 +20,10 @@ export default class ActivityStore {
             .then(() => cache[stateCode][year] || []);
     }
 
+    getYearsForState(stateCode) {
+        return Object.keys(cache[stateCode]);
+    }
+
     _loadStateData(stateCode) {
         return this._getActivitiesInState(stateCode)
             .then(this._parseCsv)
@@ -27,11 +32,13 @@ export default class ActivityStore {
                 cache[stateCode] = {};
                 for (let i = 1; i < activities.data.length; i++) {
                     const datum = this._createActivityDatum(activities.data[i]);
-                    const year = datum.year;
-                    if (!cache[stateCode][year]) {
-                        cache[stateCode][year] = [];
+                    if (datum.name) {
+                        const year = datum.year;
+                        if (!cache[stateCode][year]) {
+                            cache[stateCode][year] = [];
+                        }
+                        cache[stateCode][year].push(datum);
                     }
-                    cache[stateCode][year].push(datum);
                 }
             });
     }
@@ -46,7 +53,7 @@ export default class ActivityStore {
 
     _getActivityImageUrl(name) {
         const lcName = name.toLowerCase();
-        const icon = KNOWN_ACTIVITIES[lcName] ? lcName : 'misc';
+        const icon = KNOWN_ACTIVITIES[lcName] || 'misc';
         return `src/img/icons/activities/${icon}.png`;
     }
 
