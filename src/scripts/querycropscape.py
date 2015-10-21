@@ -5,7 +5,7 @@ import json
 import csv
 
 queryPayload = {
-	"EnvironmentVariableName": "CropScape",
+	"EnvironmentVariableName": "VegScape",
 	"Domain": {
 		"Mask": None,
 		"SpatialRegionType": "CellGrid",
