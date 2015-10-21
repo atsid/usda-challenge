@@ -1,7 +1,6 @@
 "use strict";
 
 import React from "react";
-import {Panel} from "react-bootstrap";
 import debugFactory from "debug";
 import stateData from './states';
 const debug = debugFactory('app:components:ActivitiesPerformed');
@@ -34,14 +33,14 @@ const ActivitiesPerformedComponent = React.createClass({
 
     render() {
         const stateName = stateData.statesByCode[this.props.state].name;
-        const activities = this.state.activities.map((activity, index) => (<ActivityTile key={`activity${index}`} name={activity.name} percent={activity.percent} />));
+        const activities = this.state.activities.map((activity, index) => (<ActivityTile key={`activity${index}`} activity={activity} />));
         return (
-            <Panel>
+            <div>
                 <h4>Percentage of land in <span>{stateName}</span> where certain activities were performed (in <span>{this.props.year}</span>)</h4>
-                <div style={{display: 'inline'}}>
+                <div style={{display: 'flex'}}>
                     {activities.length === 0 ? 'No Activity Data Found' : activities}
                 </div>
-            </Panel>
+            </div>
         );
     },
 });

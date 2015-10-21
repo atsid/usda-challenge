@@ -8,16 +8,24 @@ const debug = debugFactory('app:components:ActivityTile');
 
 const ActivityTile = React.createClass({
     propTypes: {
-        name: React.PropTypes.string.isRequired,
-        percent: React.PropTypes.number.isRequired,
+        activity: React.PropTypes.object.isRequired
     },
 
     render() {
-        const name = this.props.name;
-        const percent = this.props.percent;
+        const name = this.props.activity.name;
+        const percent = this.props.activity.percent;
+        const imageUrl = this.props.activity.imageUrl;
         return (
-            <div>
-                {name} - {percent}%
+            <div style={{display: 'flex', marginLeft: '20px'}}>
+                <img src={imageUrl} style={{
+                    height: "75px",
+                    width: "75px",
+                    display: "inline"
+                }}/>
+                <div>
+                    <div style={{fontSize: '20pt'}}>{Math.round(percent)}%</div>
+                    <div>{name}</div>
+                </div>
             </div>
         );
     },
