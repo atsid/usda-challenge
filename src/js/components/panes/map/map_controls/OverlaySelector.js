@@ -5,7 +5,7 @@ import ReactDOM from "react-dom";
 import debugFactory from "debug";
 const debug = debugFactory('app:components:OverlaySelector');
 
-import {Button, Glyphicon, Tooltip, Overlay, OverlayTrigger} from "react-bootstrap";
+import {Button} from "react-bootstrap";
 
 import VegetationLayer from './layers/VegetationLayer';
 
@@ -34,9 +34,6 @@ const OverlaySelector = React.createClass({
     },
 
     render() {
-        const tooltip = (text, id) => (<Tooltip id={id}>{text}</Tooltip>);
-        const soilTypeTooltip = tooltip('Soil Type', 'soilType');
-        const plantDensityTooltip = tooltip('Plant Density', 'plantDensity');
         const overlayStyle = (enabled) => enabled ? 'success' : 'default';
         const overlays = this.state.overlays;
         const toggleOverlay = (name) => {
@@ -48,14 +45,12 @@ const OverlaySelector = React.createClass({
         return (
             <div className="overlaySelectorGroup">
                 <div>
-                    <OverlayTrigger placement="right" overlay={plantDensityTooltip}>
-                        <Button bsStyle={overlayStyle(overlays.plantDensity)}
-                                onClick={() => toggleOverlay('plantDensity')} className="layerButton">
-                            <img className="layerIcon" src="src/img/icons/plant_density.png"/>
-                            &nbsp;
-                            <span>Plant Density</span>
-                        </Button>
-                    </OverlayTrigger>
+                    <Button bsStyle={overlayStyle(overlays.plantDensity)}
+                            onClick={() => toggleOverlay('plantDensity')} className="layerButton">
+                        <img className="layerIcon" src="src/img/icons/plant_density.png"/>
+                        &nbsp;
+                        <span>Plant Density</span>
+                    </Button>
                 </div>
             </div>
         );
