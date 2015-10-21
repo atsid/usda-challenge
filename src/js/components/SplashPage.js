@@ -6,8 +6,61 @@ import {Link} from "react-router";
 import {Panel, Jumbotron, Button, Input, Navbar, NavBrand} from "react-bootstrap";
 import debugFactory from "debug";
 const debug = debugFactory('app:SplashPage');
+import MapPane from './panes/map/main';
+import CropMetricsPane from './panes/cropmetrics/main';
 
 let SplashPageComponent = React.createClass({
+    contextTypes: {
+        location: React.PropTypes.object.isRequired,
+        history: React.PropTypes.object.isRequired,
+    },
+
+    getInitialState() {
+        const query = this.context.location.query;
+        const state = query.state || 'IA';
+        const lat = parseFloat(query.lat) || 42.0046;
+        const lng = parseFloat(query.lng) || -93.214;
+        const zoom = parseFloat(query.zoom) || 7;
+        const year = parseInt(query.year) || 2012;
+        return {state, year, location: {lat, lng, zoom}};
+    },
+
+    pushLocation() {
+        const state = this.state;
+        const query = {
+            year: state.year,
+            state: state.state,
+            lat: state.location.lat,
+            lng: state.location.lng,
+            zoom: state.location.zoom,
+        };
+        const newQuery = _.merge(this.context.location.query, query);
+        this.context.history.pushState(null, "/", newQuery);
+    },
+
+    handleCenterChange(center) {
+        debug('handling center change');
+        this.setState(_.merge(this.state, {location: center}));
+        this.pushLocation();
+    },
+
+    handleZoomChange(zoom) {
+        debug('handling zoom change');
+        this.setState(_.merge(this.state, {location: {zoom}}));
+        this.pushLocation();
+    },
+
+    handleStateChange(state) {
+        debug('handling state change');
+        this.setState(_.merge(this.state, {state}));
+        this.pushLocation();
+    },
+
+    handleYearChange(year) {
+        debug('handling year change');
+        this.setState(_.merge(this.state, {year}));
+        this.pushLocation();
+    },
 
     componentDidMount() {
         //connect google maps input
@@ -20,7 +73,6 @@ let SplashPageComponent = React.createClass({
             var places = searchBox.getPlace();
             debug('place', places);
         });
-
     },
 
     render: function () {
@@ -41,9 +93,9 @@ let SplashPageComponent = React.createClass({
                         <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul className="nav navbar-nav navbar-right">
                                 <li className="hidden"> <a href="#page-top"></a></li>
-                                <li><a className="page-scroll" href="# ">Home</a></li>
-                                <li><a className="page-scroll" href="#where ">Where</a></li>
-                                <li><a className="page-scroll" href="#rainfall ">Rainfall</a></li>
+                                <li><a className="page-scroll" href="#">Home</a></li>
+                                <li><a className="page-scroll" href="#map">Where</a></li>
+                                <li><a className="page-scroll" href="#metrics">Rainfall</a></li>
                             </ul>
                         </div>
                     </div>
@@ -80,12 +132,22 @@ let SplashPageComponent = React.createClass({
                     </div>
                 </section>
 
-                <section id="blurb">
+                <section id="map">
                     <div className="container">
-                        <div className="row">
-                            <div className="col-lg-12 text-center"/>
-                        </div>
-                        <h4 className="service-heading">Find your farm</h4>
+                        <MapPane
+                            onCenterChange={this.handleCenterChange}
+                            onZoomChange={this.handleZoomChange}
+                            onStateChange={this.handleStateChange}
+                            onYearChange={this.handleYearChange}
+                            year={this.state.year}
+                            state={this.state.state}
+                            location={this.state.location}/>
+                    </div>
+                </section>
+
+                <section id="metrics">
+                    <div className="container">
+                        <CropMetricsPane state={this.state.state} location={this.state.location}/>
                     </div>
                 </section>
 
@@ -95,8 +157,6 @@ let SplashPageComponent = React.createClass({
                             <div className="col-md-4">
                                 <span className="copyright">All content copyright &copy; ATS & EchoUser 2015</span>
                             </div>
-
-
                             <div className="col-md-4">
                                 <ul className="list-inline quicklinks">
                                     <li><a href="#"> </a>
