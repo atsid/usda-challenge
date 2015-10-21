@@ -45,32 +45,34 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	__webpack_require__(483);
-	__webpack_require__(473);
+	__webpack_require__(485);
+	__webpack_require__(475);
 	__webpack_require__(449);
 	__webpack_require__(447);
 	__webpack_require__(448);
 	__webpack_require__(446);
 	__webpack_require__(205);
-	__webpack_require__(481);
-	__webpack_require__(476);
-	__webpack_require__(501);
-	__webpack_require__(502);
+	__webpack_require__(483);
+	__webpack_require__(478);
 	__webpack_require__(503);
-	__webpack_require__(475);
 	__webpack_require__(504);
 	__webpack_require__(505);
-	__webpack_require__(480);
 	__webpack_require__(477);
-	__webpack_require__(482);
-	__webpack_require__(474);
-	__webpack_require__(472);
-	__webpack_require__(479);
 	__webpack_require__(506);
-	__webpack_require__(470);
-	__webpack_require__(478);
-	__webpack_require__(471);
+	__webpack_require__(507);
+	__webpack_require__(482);
+	__webpack_require__(479);
+	__webpack_require__(484);
+	__webpack_require__(476);
+	__webpack_require__(474);
+	__webpack_require__(481);
+	__webpack_require__(508);
+	__webpack_require__(472);
+	__webpack_require__(480);
+	__webpack_require__(473);
 	__webpack_require__(469);
+	__webpack_require__(470);
+	__webpack_require__(471);
 	__webpack_require__(466);
 	__webpack_require__(465);
 	__webpack_require__(450);
@@ -109,7 +111,7 @@
 	
 	var _componentsSplashPage2 = _interopRequireDefault(_componentsSplashPage);
 	
-	var _history = __webpack_require__(483);
+	var _history = __webpack_require__(485);
 	
 	var _history2 = _interopRequireDefault(_history);
 	
@@ -24067,11 +24069,11 @@
 	
 	var _panesMapMain2 = _interopRequireDefault(_panesMapMain);
 	
-	var _panesCropmetricsMain = __webpack_require__(470);
+	var _panesCropmetricsMain = __webpack_require__(472);
 	
 	var _panesCropmetricsMain2 = _interopRequireDefault(_panesCropmetricsMain);
 	
-	var debug = (0, _debug2["default"])('app:SplashPage');
+	var debug = (0, _debug2["default"])('app:components:SplashPage');
 	
 	var SplashPageComponent = _react2["default"].createClass({
 	    displayName: "SplashPageComponent",
@@ -40956,7 +40958,7 @@
 	
 	var _debug2 = _interopRequireDefault(_debug);
 	
-	var debug = (0, _debug2["default"])('app:Header');
+	var debug = (0, _debug2["default"])('app:components:Header');
 	
 	var InfoComponent = _react2["default"].createClass({
 	    displayName: "InfoComponent",
@@ -56171,8 +56173,17 @@
 	
 	var _states2 = _interopRequireDefault(_states);
 	
+	var _ActivityStore = __webpack_require__(470);
+	
+	var _ActivityStore2 = _interopRequireDefault(_ActivityStore);
+	
+	var _ActivityTile = __webpack_require__(471);
+	
+	var _ActivityTile2 = _interopRequireDefault(_ActivityTile);
+	
 	var debug = (0, _debug2["default"])('app:components:ActivitiesPerformed');
 	
+	var activityStore = new _ActivityStore2["default"]();
 	var ActivitiesPerformedComponent = _react2["default"].createClass({
 	    displayName: "ActivitiesPerformedComponent",
 	
@@ -56181,8 +56192,31 @@
 	        year: _react2["default"].PropTypes.number.isRequired
 	    },
 	
+	    getInitialState: function getInitialState() {
+	        return { activities: [] };
+	    },
+	
+	    componentDidMount: function componentDidMount() {
+	        this.loadActivities(this.props.state, this.props.year);
+	    },
+	
+	    componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	        this.loadActivities(nextProps.state, nextProps.year);
+	    },
+	
+	    loadActivities: function loadActivities(state, year) {
+	        var _this = this;
+	
+	        activityStore.getActivities(state, year).then(function (activities) {
+	            return _this.setState({ activities: activities });
+	        });
+	    },
+	
 	    render: function render() {
 	        var stateName = _states2["default"].statesByCode[this.props.state].name;
+	        var activities = this.state.activities.map(function (activity, index) {
+	            return _react2["default"].createElement(_ActivityTile2["default"], { key: "activity" + index, name: activity.name, percent: activity.percent });
+	        });
 	        return _react2["default"].createElement(
 	            _reactBootstrap.Panel,
 	            null,
@@ -56202,6 +56236,11 @@
 	                    this.props.year
 	                ),
 	                ")"
+	            ),
+	            _react2["default"].createElement(
+	                "div",
+	                null,
+	                activities
 	            )
 	        );
 	    }
@@ -56212,6 +56251,89 @@
 
 /***/ },
 /* 470 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var ActivityStore = (function () {
+	    function ActivityStore() {
+	        _classCallCheck(this, ActivityStore);
+	    }
+	
+	    _createClass(ActivityStore, [{
+	        key: "getActivities",
+	        value: function getActivities(stateCode, year) {
+	            // TODO: XHR
+	            return Promise.resolve([{ name: "Pesticide", percent: 91.455 }, { name: "Manure", percent: 50 }, { name: "Herbicide", percent: 25.5 }]);
+	        }
+	    }]);
+	
+	    return ActivityStore;
+	})();
+	
+	exports["default"] = ActivityStore;
+	module.exports = exports["default"];
+
+/***/ },
+/* 471 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactDom = __webpack_require__(158);
+	
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+	
+	var _debug = __webpack_require__(443);
+	
+	var _debug2 = _interopRequireDefault(_debug);
+	
+	var debug = (0, _debug2["default"])('app:components:ActivityTile');
+	
+	var ActivityTile = _react2["default"].createClass({
+	    displayName: "ActivityTile",
+	
+	    propTypes: {
+	        name: _react2["default"].PropTypes.string.isRequired,
+	        percent: _react2["default"].PropTypes.number.isRequired
+	    },
+	
+	    render: function render() {
+	        var name = this.props.name;
+	        var percent = this.props.percent;
+	        return _react2["default"].createElement(
+	            "div",
+	            null,
+	            name,
+	            " - ",
+	            percent,
+	            "%"
+	        );
+	    }
+	});
+	exports["default"] = ActivityTile;
+	module.exports = exports["default"];
+
+/***/ },
+/* 472 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -56232,11 +56354,11 @@
 	
 	var _reactBootstrap = __webpack_require__(206);
 	
-	var _rainfall_vs_yield = __webpack_require__(471);
+	var _rainfall_vs_yield = __webpack_require__(473);
 	
 	var _rainfall_vs_yield2 = _interopRequireDefault(_rainfall_vs_yield);
 	
-	var _monthly_rainfall = __webpack_require__(478);
+	var _monthly_rainfall = __webpack_require__(480);
 	
 	var _monthly_rainfall2 = _interopRequireDefault(_monthly_rainfall);
 	
@@ -56373,7 +56495,7 @@
 	module.exports = CropMetricsPaneComponent;
 
 /***/ },
-/* 471 */
+/* 473 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -56392,15 +56514,15 @@
 	
 	var _debug2 = _interopRequireDefault(_debug);
 	
-	var _chartsCropYieldsVersusRainfall = __webpack_require__(472);
+	var _chartsCropYieldsVersusRainfall = __webpack_require__(474);
 	
 	var _chartsCropYieldsVersusRainfall2 = _interopRequireDefault(_chartsCropYieldsVersusRainfall);
 	
-	var _datasourcesCropYieldsByCrop = __webpack_require__(475);
+	var _datasourcesCropYieldsByCrop = __webpack_require__(477);
 	
 	var _datasourcesCropYieldsByCrop2 = _interopRequireDefault(_datasourcesCropYieldsByCrop);
 	
-	var _datasourcesRainfallJs = __webpack_require__(477);
+	var _datasourcesRainfallJs = __webpack_require__(479);
 	
 	var _datasourcesRainfallJs2 = _interopRequireDefault(_datasourcesRainfallJs);
 	
@@ -56437,7 +56559,7 @@
 	module.exports = RainfallVsYieldChartComponent;
 
 /***/ },
-/* 472 */
+/* 474 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -56455,11 +56577,11 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _commonUtil = __webpack_require__(473);
+	var _commonUtil = __webpack_require__(475);
 	
 	var _commonUtil2 = _interopRequireDefault(_commonUtil);
 	
-	var _colors = __webpack_require__(474);
+	var _colors = __webpack_require__(476);
 	
 	var _colors2 = _interopRequireDefault(_colors);
 	
@@ -56587,7 +56709,7 @@
 	module.exports = CropYieldsVersusRainfall;
 
 /***/ },
-/* 473 */
+/* 475 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56773,7 +56895,7 @@
 	})(undefined);
 
 /***/ },
-/* 474 */
+/* 476 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -56789,7 +56911,7 @@
 	};
 
 /***/ },
-/* 475 */
+/* 477 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -56804,7 +56926,7 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var _cachingDataSource = __webpack_require__(476);
+	var _cachingDataSource = __webpack_require__(478);
 	
 	var _cachingDataSource2 = _interopRequireDefault(_cachingDataSource);
 	
@@ -56848,7 +56970,7 @@
 	module.exports = CropYieldsByCropDataSource;
 
 /***/ },
-/* 476 */
+/* 478 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -56901,7 +57023,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 477 */
+/* 479 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -56916,7 +57038,7 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var _cachingDataSource = __webpack_require__(476);
+	var _cachingDataSource = __webpack_require__(478);
 	
 	var _cachingDataSource2 = _interopRequireDefault(_cachingDataSource);
 	
@@ -56977,7 +57099,7 @@
 	module.exports = RainfallDataSource;
 
 /***/ },
-/* 478 */
+/* 480 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -56996,19 +57118,19 @@
 	
 	var _debug2 = _interopRequireDefault(_debug);
 	
-	var _chartsRainfall = __webpack_require__(479);
+	var _chartsRainfall = __webpack_require__(481);
 	
 	var _chartsRainfall2 = _interopRequireDefault(_chartsRainfall);
 	
-	var _datasourcesMonthlyRainfallJs = __webpack_require__(480);
+	var _datasourcesMonthlyRainfallJs = __webpack_require__(482);
 	
 	var _datasourcesMonthlyRainfallJs2 = _interopRequireDefault(_datasourcesMonthlyRainfallJs);
 	
-	var _datasourcesAverage30RainfallJs = __webpack_require__(481);
+	var _datasourcesAverage30RainfallJs = __webpack_require__(483);
 	
 	var _datasourcesAverage30RainfallJs2 = _interopRequireDefault(_datasourcesAverage30RainfallJs);
 	
-	var _datasourcesStationsJs = __webpack_require__(482);
+	var _datasourcesStationsJs = __webpack_require__(484);
 	
 	var _datasourcesStationsJs2 = _interopRequireDefault(_datasourcesStationsJs);
 	
@@ -57047,7 +57169,7 @@
 	module.exports = RainfallChartComponent;
 
 /***/ },
-/* 479 */
+/* 481 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57069,11 +57191,11 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _commonUtil = __webpack_require__(473);
+	var _commonUtil = __webpack_require__(475);
 	
 	var _commonUtil2 = _interopRequireDefault(_commonUtil);
 	
-	var _colors = __webpack_require__(474);
+	var _colors = __webpack_require__(476);
 	
 	var _colors2 = _interopRequireDefault(_colors);
 	
@@ -57202,7 +57324,7 @@
 	module.exports = Rainfall;
 
 /***/ },
-/* 480 */
+/* 482 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57217,11 +57339,11 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var _cachingDataSource = __webpack_require__(476);
+	var _cachingDataSource = __webpack_require__(478);
 	
 	var _cachingDataSource2 = _interopRequireDefault(_cachingDataSource);
 	
-	var _commonUtil = __webpack_require__(473);
+	var _commonUtil = __webpack_require__(475);
 	
 	var _commonUtil2 = _interopRequireDefault(_commonUtil);
 	
@@ -57272,7 +57394,7 @@
 	module.exports = MonthlyRainfallDataSource;
 
 /***/ },
-/* 481 */
+/* 483 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57289,11 +57411,11 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var _commonUtil = __webpack_require__(473);
+	var _commonUtil = __webpack_require__(475);
 	
 	var _commonUtil2 = _interopRequireDefault(_commonUtil);
 	
-	var _cachingDataSource = __webpack_require__(476);
+	var _cachingDataSource = __webpack_require__(478);
 	
 	var _cachingDataSource2 = _interopRequireDefault(_cachingDataSource);
 	
@@ -57336,7 +57458,7 @@
 	module.exports = Average30RainfallDataSource;
 
 /***/ },
-/* 482 */
+/* 484 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57351,7 +57473,7 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var _cachingDataSource = __webpack_require__(476);
+	var _cachingDataSource = __webpack_require__(478);
 	
 	var _cachingDataSource2 = _interopRequireDefault(_cachingDataSource);
 	
@@ -57389,7 +57511,7 @@
 	module.exports = StationsDataSource;
 
 /***/ },
-/* 483 */
+/* 485 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57399,7 +57521,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
-	var _historyLibCreateBrowserHistory = __webpack_require__(484);
+	var _historyLibCreateBrowserHistory = __webpack_require__(486);
 	
 	var _historyLibCreateBrowserHistory2 = _interopRequireDefault(_historyLibCreateBrowserHistory);
 	
@@ -57407,7 +57529,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 484 */
+/* 486 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57418,19 +57540,19 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _invariant = __webpack_require__(485);
+	var _invariant = __webpack_require__(487);
 	
 	var _invariant2 = _interopRequireDefault(_invariant);
 	
-	var _Actions = __webpack_require__(486);
+	var _Actions = __webpack_require__(488);
 	
-	var _ExecutionEnvironment = __webpack_require__(487);
+	var _ExecutionEnvironment = __webpack_require__(489);
 	
-	var _DOMUtils = __webpack_require__(488);
+	var _DOMUtils = __webpack_require__(490);
 	
-	var _DOMStateStorage = __webpack_require__(489);
+	var _DOMStateStorage = __webpack_require__(491);
 	
-	var _createDOMHistory = __webpack_require__(491);
+	var _createDOMHistory = __webpack_require__(493);
 	
 	var _createDOMHistory2 = _interopRequireDefault(_createDOMHistory);
 	
@@ -57579,7 +57701,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 485 */
+/* 487 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -57639,7 +57761,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ },
-/* 486 */
+/* 488 */
 /***/ function(module, exports) {
 
 	/**
@@ -57675,7 +57797,7 @@
 	};
 
 /***/ },
-/* 487 */
+/* 489 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -57685,7 +57807,7 @@
 	exports.canUseDOM = canUseDOM;
 
 /***/ },
-/* 488 */
+/* 490 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -57765,7 +57887,7 @@
 	}
 
 /***/ },
-/* 489 */
+/* 491 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*eslint-disable no-empty */
@@ -57777,7 +57899,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _warning = __webpack_require__(490);
+	var _warning = __webpack_require__(492);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -57818,7 +57940,7 @@
 	}
 
 /***/ },
-/* 490 */
+/* 492 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -57885,7 +58007,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ },
-/* 491 */
+/* 493 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57896,15 +58018,15 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _invariant = __webpack_require__(485);
+	var _invariant = __webpack_require__(487);
 	
 	var _invariant2 = _interopRequireDefault(_invariant);
 	
-	var _ExecutionEnvironment = __webpack_require__(487);
+	var _ExecutionEnvironment = __webpack_require__(489);
 	
-	var _DOMUtils = __webpack_require__(488);
+	var _DOMUtils = __webpack_require__(490);
 	
-	var _createHistory = __webpack_require__(492);
+	var _createHistory = __webpack_require__(494);
 	
 	var _createHistory2 = _interopRequireDefault(_createHistory);
 	
@@ -57930,7 +58052,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 492 */
+/* 494 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57941,23 +58063,23 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _deepEqual = __webpack_require__(493);
+	var _deepEqual = __webpack_require__(495);
 	
 	var _deepEqual2 = _interopRequireDefault(_deepEqual);
 	
-	var _AsyncUtils = __webpack_require__(496);
+	var _AsyncUtils = __webpack_require__(498);
 	
-	var _Actions = __webpack_require__(486);
+	var _Actions = __webpack_require__(488);
 	
-	var _createLocation2 = __webpack_require__(497);
+	var _createLocation2 = __webpack_require__(499);
 	
 	var _createLocation3 = _interopRequireDefault(_createLocation2);
 	
-	var _runTransitionHook = __webpack_require__(499);
+	var _runTransitionHook = __webpack_require__(501);
 	
 	var _runTransitionHook2 = _interopRequireDefault(_runTransitionHook);
 	
-	var _deprecate = __webpack_require__(500);
+	var _deprecate = __webpack_require__(502);
 	
 	var _deprecate2 = _interopRequireDefault(_deprecate);
 	
@@ -58183,12 +58305,12 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 493 */
+/* 495 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var pSlice = Array.prototype.slice;
-	var objectKeys = __webpack_require__(494);
-	var isArguments = __webpack_require__(495);
+	var objectKeys = __webpack_require__(496);
+	var isArguments = __webpack_require__(497);
 	
 	var deepEqual = module.exports = function (actual, expected, opts) {
 	  if (!opts) opts = {};
@@ -58283,7 +58405,7 @@
 
 
 /***/ },
-/* 494 */
+/* 496 */
 /***/ function(module, exports) {
 
 	exports = module.exports = typeof Object.keys === 'function'
@@ -58298,7 +58420,7 @@
 
 
 /***/ },
-/* 495 */
+/* 497 */
 /***/ function(module, exports) {
 
 	var supportsArgumentsClass = (function(){
@@ -58324,7 +58446,7 @@
 
 
 /***/ },
-/* 496 */
+/* 498 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -58355,7 +58477,7 @@
 	}
 
 /***/ },
-/* 497 */
+/* 499 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58364,9 +58486,9 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _Actions = __webpack_require__(486);
+	var _Actions = __webpack_require__(488);
 	
-	var _parsePath = __webpack_require__(498);
+	var _parsePath = __webpack_require__(500);
 	
 	var _parsePath2 = _interopRequireDefault(_parsePath);
 	
@@ -58396,7 +58518,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 498 */
+/* 500 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58405,7 +58527,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _warning = __webpack_require__(490);
+	var _warning = __webpack_require__(492);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -58449,7 +58571,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 499 */
+/* 501 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58458,7 +58580,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _warning = __webpack_require__(490);
+	var _warning = __webpack_require__(492);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -58478,7 +58600,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 500 */
+/* 502 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58487,7 +58609,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _warning = __webpack_require__(490);
+	var _warning = __webpack_require__(492);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -58502,7 +58624,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 501 */
+/* 503 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58517,7 +58639,7 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var _cachingDataSource = __webpack_require__(476);
+	var _cachingDataSource = __webpack_require__(478);
 	
 	var _cachingDataSource2 = _interopRequireDefault(_cachingDataSource);
 	
@@ -58558,7 +58680,7 @@
 	module.exports = CropYieldsDataSource;
 
 /***/ },
-/* 502 */
+/* 504 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58573,7 +58695,7 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var _cachingDataSource = __webpack_require__(476);
+	var _cachingDataSource = __webpack_require__(478);
 	
 	var _cachingDataSource2 = _interopRequireDefault(_cachingDataSource);
 	
@@ -58614,7 +58736,7 @@
 	module.exports = CropYieldsBUADataSource;
 
 /***/ },
-/* 503 */
+/* 505 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58629,7 +58751,7 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var _cachingDataSource = __webpack_require__(476);
+	var _cachingDataSource = __webpack_require__(478);
 	
 	var _cachingDataSource2 = _interopRequireDefault(_cachingDataSource);
 	
@@ -58674,7 +58796,7 @@
 	module.exports = CropYieldsBaADataSource;
 
 /***/ },
-/* 504 */
+/* 506 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58689,7 +58811,7 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var _cachingDataSource = __webpack_require__(476);
+	var _cachingDataSource = __webpack_require__(478);
 	
 	var _cachingDataSource2 = _interopRequireDefault(_cachingDataSource);
 	
@@ -58730,7 +58852,7 @@
 	module.exports = CropYieldsCWTADataSource;
 
 /***/ },
-/* 505 */
+/* 507 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58745,7 +58867,7 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var _cachingDataSource = __webpack_require__(476);
+	var _cachingDataSource = __webpack_require__(478);
 	
 	var _cachingDataSource2 = _interopRequireDefault(_cachingDataSource);
 	
@@ -58810,7 +58932,7 @@
 	module.exports = HighLowDataSource;
 
 /***/ },
-/* 506 */
+/* 508 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58828,11 +58950,11 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _commonUtil = __webpack_require__(473);
+	var _commonUtil = __webpack_require__(475);
 	
 	var _commonUtil2 = _interopRequireDefault(_commonUtil);
 	
-	var _colors = __webpack_require__(474);
+	var _colors = __webpack_require__(476);
 	
 	var _colors2 = _interopRequireDefault(_colors);
 	
