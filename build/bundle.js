@@ -52,31 +52,21 @@
 	__webpack_require__(448);
 	__webpack_require__(446);
 	__webpack_require__(205);
+	__webpack_require__(480);
+	__webpack_require__(475);
 	__webpack_require__(500);
 	__webpack_require__(501);
 	__webpack_require__(502);
-	__webpack_require__(507);
-	__webpack_require__(480);
-	__webpack_require__(475);
-	__webpack_require__(509);
-	__webpack_require__(511);
-	__webpack_require__(513);
 	__webpack_require__(474);
-	__webpack_require__(515);
-	__webpack_require__(505);
+	__webpack_require__(503);
+	__webpack_require__(504);
 	__webpack_require__(479);
 	__webpack_require__(476);
 	__webpack_require__(481);
 	__webpack_require__(473);
-	__webpack_require__(508);
-	__webpack_require__(510);
-	__webpack_require__(512);
-	__webpack_require__(514);
 	__webpack_require__(471);
-	__webpack_require__(504);
 	__webpack_require__(478);
-	__webpack_require__(503);
-	__webpack_require__(506);
+	__webpack_require__(505);
 	__webpack_require__(469);
 	__webpack_require__(477);
 	__webpack_require__(470);
@@ -58437,117 +58427,55 @@
 
 	"use strict";
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
-	var _lodash = __webpack_require__(452);
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 	
-	var _lodash2 = _interopRequireDefault(_lodash);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _react = __webpack_require__(2);
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _react2 = _interopRequireDefault(_react);
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var _reactBootstrap = __webpack_require__(206);
+	var _cachingDataSource = __webpack_require__(475);
 	
-	var _panesMapMain = __webpack_require__(450);
+	var _cachingDataSource2 = _interopRequireDefault(_cachingDataSource);
 	
-	var _panesMapMain2 = _interopRequireDefault(_panesMapMain);
+	/**
+	 * A datasource wrapping the Cropy Yield, by Tons/Acre
+	 */
 	
-	var _panesCropmetricsMain = __webpack_require__(469);
+	var CropYieldsDataSource = (function (_CachingDataSource) {
+	    _inherits(CropYieldsDataSource, _CachingDataSource);
 	
-	var _panesCropmetricsMain2 = _interopRequireDefault(_panesCropmetricsMain);
+	    function CropYieldsDataSource() {
+	        _classCallCheck(this, CropYieldsDataSource);
 	
-	var _debug = __webpack_require__(443);
-	
-	var _debug2 = _interopRequireDefault(_debug);
-	
-	var debug = (0, _debug2["default"])('app:components:Dashboard');
-	
-	var DashboardComponent = _react2["default"].createClass({
-	    displayName: "DashboardComponent",
-	
-	    contextTypes: {
-	        location: _react2["default"].PropTypes.object.isRequired,
-	        history: _react2["default"].PropTypes.object.isRequired
-	    },
-	
-	    getInitialState: function getInitialState() {
-	        var query = this.context.location.query;
-	        var state = query.state || 'IA';
-	        var lat = parseFloat(query.lat) || 42.0046;
-	        var lng = parseFloat(query.lng) || -93.214;
-	        var zoom = parseFloat(query.zoom) || 7;
-	        var year = parseInt(query.year) || 2012;
-	        return { state: state, year: year, location: { lat: lat, lng: lng, zoom: zoom } };
-	    },
-	
-	    pushLocation: function pushLocation() {
-	        var state = this.state;
-	        var query = {
-	            year: state.year,
-	            state: state.state,
-	            lat: state.location.lat,
-	            lng: state.location.lng,
-	            zoom: state.location.zoom
-	        };
-	        var newQuery = _lodash2["default"].merge(this.context.location.query, query);
-	        this.context.history.pushState(null, "/dashboard", newQuery);
-	    },
-	
-	    handleCenterChange: function handleCenterChange(center) {
-	        debug('handling center change');
-	        this.setState(_lodash2["default"].merge(this.state, { location: center }));
-	        this.pushLocation();
-	    },
-	
-	    handleZoomChange: function handleZoomChange(zoom) {
-	        debug('handling zoom change');
-	        this.setState(_lodash2["default"].merge(this.state, { location: { zoom: zoom } }));
-	        this.pushLocation();
-	    },
-	
-	    handleStateChange: function handleStateChange(state) {
-	        debug('handling state change');
-	        this.setState(_lodash2["default"].merge(this.state, { state: state }));
-	        this.pushLocation();
-	    },
-	
-	    handleYearChange: function handleYearChange(year) {
-	        debug('handling year change');
-	        this.setState(_lodash2["default"].merge(this.state, { year: year }));
-	        this.pushLocation();
-	    },
-	
-	    render: function render() {
-	        return _react2["default"].createElement(
-	            _reactBootstrap.Grid,
-	            { style: { width: "100%" } },
-	            _react2["default"].createElement(
-	                _reactBootstrap.Row,
-	                null,
-	                _react2["default"].createElement(
-	                    _reactBootstrap.Col,
-	                    { md: 6, sm: 12, xs: 12 },
-	                    _react2["default"].createElement(_panesMapMain2["default"], {
-	                        onCenterChange: this.handleCenterChange,
-	                        onZoomChange: this.handleZoomChange,
-	                        onStateChange: this.handleStateChange,
-	                        onYearChange: this.handleYearChange,
-	                        year: this.state.year,
-	                        state: this.state.state,
-	                        location: this.state.location })
-	                ),
-	                _react2["default"].createElement(
-	                    _reactBootstrap.Col,
-	                    { md: 6, sm: 12, xs: 12 },
-	                    _react2["default"].createElement(_panesCropmetricsMain2["default"], { state: this.state.state, location: this.state.location })
-	                )
-	            )
-	        );
+	        _get(Object.getPrototypeOf(CropYieldsDataSource.prototype), 'constructor', this).apply(this, arguments);
 	    }
-	});
 	
-	module.exports = DashboardComponent;
+	    _createClass(CropYieldsDataSource, [{
+	        key: 'retrieveData',
+	        value: function retrieveData() {
+	            return new Promise(function (resolve, reject) {
+	                d3.csv('data/nass-yield-tons-per-acre.csv', function (err, data) {
+	                    if (err) {
+	                        reject(err);
+	                    } else {
+	                        resolve({
+	                            data: data,
+	                            index: crossfilter(data)
+	                        });
+	                    }
+	                });
+	            });
+	        }
+	    }]);
+	
+	    return CropYieldsDataSource;
+	})(_cachingDataSource2['default']);
+	
+	module.exports = CropYieldsDataSource;
 
 /***/ },
 /* 501 */
@@ -58555,125 +58483,55 @@
 
 	"use strict";
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
-	var _react = __webpack_require__(2);
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 	
-	var _react2 = _interopRequireDefault(_react);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _reactDom = __webpack_require__(158);
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _reactDom2 = _interopRequireDefault(_reactDom);
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var _debug = __webpack_require__(443);
+	var _cachingDataSource = __webpack_require__(475);
 	
-	var _debug2 = _interopRequireDefault(_debug);
+	var _cachingDataSource2 = _interopRequireDefault(_cachingDataSource);
 	
-	var debug = (0, _debug2["default"])('app:components:Map');
+	/**
+	 * A datasource wrapping the Crop Yield, by BU/Acre
+	 */
 	
-	var MapComponent = _react2["default"].createClass({
-	    displayName: "MapComponent",
+	var CropYieldsBUADataSource = (function (_CachingDataSource) {
+	    _inherits(CropYieldsBUADataSource, _CachingDataSource);
 	
-	    propTypes: {
-	        dataSource: _react2["default"].PropTypes.object.isRequired
-	    },
+	    function CropYieldsBUADataSource() {
+	        _classCallCheck(this, CropYieldsBUADataSource);
 	
-	    componentDidMount: function componentDidMount() {
-	        var mapEl = _reactDom2["default"].findDOMNode(this.refs.map);
-	        var input = _reactDom2["default"].findDOMNode(this.refs.searchInput);
-	        var map = new google.maps.Map($(mapEl)[0], {
-	            center: { lat: 42, lng: -94 },
-	            zoom: 7
-	        });
-	
-	        //supports map search
-	        var markers = [];
-	        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-	        var searchBox = new google.maps.places.SearchBox(input);
-	
-	        google.maps.event.addListener(searchBox, 'places_changed', function () {
-	            var places = searchBox.getPlaces();
-	
-	            if (places.length === 0) {
-	                return;
-	            }
-	
-	            for (var i = 0, m, l = markers.length; i < l; i++) {
-	                m = markers[i];
-	                m.setMap(null);
-	            }
-	
-	            // For each place, get the icon, place name, and location.
-	            markers = [];
-	            var bounds = new google.maps.LatLngBounds();
-	            for (var j = 0, place, l2 = places.length; j < l2; j++) {
-	                place = places[j];
-	                var image = {
-	                    url: place.icon,
-	                    size: new google.maps.Size(71, 71),
-	                    origin: new google.maps.Point(0, 0),
-	                    anchor: new google.maps.Point(17, 34),
-	                    scaledSize: new google.maps.Size(25, 25)
-	                };
-	
-	                // Create a marker for each place.
-	                var marker = new google.maps.Marker({
-	                    map: map,
-	                    icon: image,
-	                    title: place.name,
-	                    position: place.geometry.location
-	                });
-	
-	                markers.push(marker);
-	
-	                bounds.extend(place.geometry.location);
-	            }
-	
-	            // center the map on the search result
-	            if (places.length === 1) {
-	                map.setCenter(places[0].geometry.location);
-	                //this should be more dynamic
-	                map.setZoom(8);
-	            }
-	        });
-	
-	        google.maps.event.addListener(map, 'bounds_changed', function () {
-	            var bounds = map.getBounds();
-	            searchBox.setBounds(bounds);
-	        });
-	
-	        this.props.dataSource.list().then(function (result) {
-	            //XXX: connecting these via direct access to the map is a temporary kludge. it also doesn't filter
-	            //TODO: event on point clicks to filter dashboard data
-	            Object.keys(result.locations).forEach(function (id) {
-	                var location = result.locations[id];
-	                var latLng = new google.maps.LatLng(location.latitude, location.longitude);
-	                var featureOptions = {
-	                    geometry: new google.maps.Data.Point(latLng),
-	                    properties: { id: id }
-	                };
-	                var feature = new google.maps.Data.Feature(featureOptions);
-	                debug("feature", feature);
-	                map.data.add(feature);
-	            });
-	
-	            map.data.addListener('click', function (event) {
-	                debug('clicked point', event);
-	                debug('station: ' + event.feature.getProperty('id'));
-	            });
-	        });
-	    },
-	
-	    render: function render() {
-	        return _react2["default"].createElement(
-	            "div",
-	            { className: "mapContainer" },
-	            _react2["default"].createElement("input", { ref: "searchInput", className: "searchInput search_control", type: "text", placeholder: "Search" }),
-	            _react2["default"].createElement("div", { ref: "map", className: "map" })
-	        );
+	        _get(Object.getPrototypeOf(CropYieldsBUADataSource.prototype), 'constructor', this).apply(this, arguments);
 	    }
-	});
-	module.exports = MapComponent;
+	
+	    _createClass(CropYieldsBUADataSource, [{
+	        key: 'retrieveData',
+	        value: function retrieveData() {
+	            return new Promise(function (resolve, reject) {
+	                d3.csv('data/nass-yield-bu-per-acre.csv', function (err, data) {
+	                    if (err) {
+	                        reject(err);
+	                    } else {
+	                        resolve({
+	                            data: data,
+	                            index: crossfilter(data)
+	                        });
+	                    }
+	                });
+	            });
+	        }
+	    }]);
+	
+	    return CropYieldsBUADataSource;
+	})(_cachingDataSource2['default']);
+	
+	module.exports = CropYieldsBUADataSource;
 
 /***/ },
 /* 502 */
@@ -58681,145 +58539,59 @@
 
 	"use strict";
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
-	var _react = __webpack_require__(2);
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 	
-	var _react2 = _interopRequireDefault(_react);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _Navigation = __webpack_require__(446);
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _Navigation2 = _interopRequireDefault(_Navigation);
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var _chartsStations = __webpack_require__(503);
+	var _cachingDataSource = __webpack_require__(475);
 	
-	var _chartsStations2 = _interopRequireDefault(_chartsStations);
+	var _cachingDataSource2 = _interopRequireDefault(_cachingDataSource);
 	
-	var _chartsHighLowTrend = __webpack_require__(504);
+	/**
+	 * A datasource wrapping the Cropy Yield, by Ba/Acre
+	 */
 	
-	var _chartsHighLowTrend2 = _interopRequireDefault(_chartsHighLowTrend);
+	var CropYieldsBaADataSource = (function (_CachingDataSource) {
+	    _inherits(CropYieldsBaADataSource, _CachingDataSource);
 	
-	var _datasourcesHighLowJs = __webpack_require__(505);
+	    function CropYieldsBaADataSource() {
+	        _classCallCheck(this, CropYieldsBaADataSource);
 	
-	var _datasourcesHighLowJs2 = _interopRequireDefault(_datasourcesHighLowJs);
-	
-	var _chartsTemperatureReports = __webpack_require__(506);
-	
-	var _chartsTemperatureReports2 = _interopRequireDefault(_chartsTemperatureReports);
-	
-	var _temperatureReportsDataTable = __webpack_require__(507);
-	
-	var _temperatureReportsDataTable2 = _interopRequireDefault(_temperatureReportsDataTable);
-	
-	var _chartsCropYields = __webpack_require__(508);
-	
-	var _chartsCropYields2 = _interopRequireDefault(_chartsCropYields);
-	
-	var _datasourcesCropYields = __webpack_require__(509);
-	
-	var _datasourcesCropYields2 = _interopRequireDefault(_datasourcesCropYields);
-	
-	var _chartsCropYieldsBUA = __webpack_require__(510);
-	
-	var _chartsCropYieldsBUA2 = _interopRequireDefault(_chartsCropYieldsBUA);
-	
-	var _datasourcesCropYieldsBUA = __webpack_require__(511);
-	
-	var _datasourcesCropYieldsBUA2 = _interopRequireDefault(_datasourcesCropYieldsBUA);
-	
-	var _chartsCropYieldsBaA = __webpack_require__(512);
-	
-	var _chartsCropYieldsBaA2 = _interopRequireDefault(_chartsCropYieldsBaA);
-	
-	var _datasourcesCropYieldsBaA = __webpack_require__(513);
-	
-	var _datasourcesCropYieldsBaA2 = _interopRequireDefault(_datasourcesCropYieldsBaA);
-	
-	var _chartsCropYieldsCWTA = __webpack_require__(514);
-	
-	var _chartsCropYieldsCWTA2 = _interopRequireDefault(_chartsCropYieldsCWTA);
-	
-	var _datasourcesCropYieldsCWTA = __webpack_require__(515);
-	
-	var _datasourcesCropYieldsCWTA2 = _interopRequireDefault(_datasourcesCropYieldsCWTA);
-	
-	var _map = __webpack_require__(501);
-	
-	var _map2 = _interopRequireDefault(_map);
-	
-	var dataSource = new _datasourcesHighLowJs2["default"]();
-	var cropYieldsDataSource = new _datasourcesCropYields2["default"]();
-	var cropYieldsBUADataSource = new _datasourcesCropYieldsBUA2["default"]();
-	var cropYieldsBaADataSource = new _datasourcesCropYieldsBaA2["default"]();
-	var cropYieldsCWTADataSource = new _datasourcesCropYieldsCWTA2["default"]();
-	
-	var SandboxComponent = _react2["default"].createClass({
-	    displayName: "SandboxComponent",
-	
-	    render: function render() {
-	        return _react2["default"].createElement(
-	            "div",
-	            null,
-	            _react2["default"].createElement(
-	                "div",
-	                { className: "container-fluid" },
-	                _react2["default"].createElement(
-	                    "div",
-	                    { className: "row" },
-	                    _react2["default"].createElement(
-	                        "div",
-	                        { className: "col-sm-3 sidebar" },
-	                        "Sidebar content goes here"
-	                    ),
-	                    _react2["default"].createElement(
-	                        "div",
-	                        { className: "col-sm-9 col-sm-offset-3 main" },
-	                        _react2["default"].createElement(
-	                            "h2",
-	                            { className: "sub-header" },
-	                            "Dashboard"
-	                        ),
-	                        _react2["default"].createElement(
-	                            "div",
-	                            { className: "row" },
-	                            _react2["default"].createElement(_chartsStations2["default"], { dataSource: dataSource }),
-	                            _react2["default"].createElement(_chartsTemperatureReports2["default"], { dataSource: dataSource })
-	                        ),
-	                        _react2["default"].createElement(
-	                            "div",
-	                            { className: "row" },
-	                            _react2["default"].createElement(_chartsHighLowTrend2["default"], { dataSource: dataSource })
-	                        ),
-	                        _react2["default"].createElement(
-	                            "div",
-	                            { className: "row" },
-	                            _react2["default"].createElement(_chartsCropYields2["default"], { dataSource: cropYieldsDataSource })
-	                        ),
-	                        _react2["default"].createElement(
-	                            "div",
-	                            { className: "row" },
-	                            _react2["default"].createElement(_chartsCropYieldsBUA2["default"], { dataSource: cropYieldsBUADataSource })
-	                        ),
-	                        _react2["default"].createElement(
-	                            "div",
-	                            { className: "row" },
-	                            _react2["default"].createElement(_chartsCropYieldsBaA2["default"], { dataSource: cropYieldsBaADataSource })
-	                        ),
-	                        _react2["default"].createElement(
-	                            "div",
-	                            { className: "row" },
-	                            _react2["default"].createElement(_chartsCropYieldsCWTA2["default"], { dataSource: cropYieldsCWTADataSource })
-	                        ),
-	                        _react2["default"].createElement(_map2["default"], { dataSource: dataSource }),
-	                        _react2["default"].createElement(_temperatureReportsDataTable2["default"], { dataSource: dataSource })
-	                    )
-	                )
-	            )
-	        );
+	        _get(Object.getPrototypeOf(CropYieldsBaADataSource.prototype), 'constructor', this).apply(this, arguments);
 	    }
-	});
 	
-	module.exports = SandboxComponent;
+	    _createClass(CropYieldsBaADataSource, [{
+	        key: 'retrieveData',
+	        value: function retrieveData() {
+	            return new Promise(function (resolve, reject) {
+	                d3.csv('data/nass-yield-bales-per-acre.csv', function (d) {
+	                    d.yearTime = d3.time.year(new Date(d.Year, 1, 1)); // coerce to date object
+	                    d.monthTime = d3.time.month(new Date(d.Year, 1, 1)); // coerce to date object
+	                    return d;
+	                }, function (err, data) {
+	                    if (err) {
+	                        reject(err);
+	                    } else {
+	                        resolve({
+	                            data: data,
+	                            index: crossfilter(data)
+	                        });
+	                    }
+	                });
+	            });
+	        }
+	    }]);
+	
+	    return CropYieldsBaADataSource;
+	})(_cachingDataSource2['default']);
+	
+	module.exports = CropYieldsBaADataSource;
 
 /***/ },
 /* 503 */
@@ -58827,197 +58599,58 @@
 
 	"use strict";
 	
-	// import dc from 'dc';
-	// import d3 from 'd3';
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 	
-	var _react = __webpack_require__(2);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _react2 = _interopRequireDefault(_react);
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _commonUtil = __webpack_require__(472);
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var _commonUtil2 = _interopRequireDefault(_commonUtil);
+	var _cachingDataSource = __webpack_require__(475);
 	
-	var _colors = __webpack_require__(473);
+	var _cachingDataSource2 = _interopRequireDefault(_cachingDataSource);
 	
-	var _colors2 = _interopRequireDefault(_colors);
+	/**
+	 * A datasource wrapping the Crop Yield, by CWT/Acre
+	 */
 	
-	var _reactDom = __webpack_require__(158);
+	var CropYieldsCWTADataSource = (function (_CachingDataSource) {
+	    _inherits(CropYieldsCWTADataSource, _CachingDataSource);
 	
-	var _reactDom2 = _interopRequireDefault(_reactDom);
+	    function CropYieldsCWTADataSource() {
+	        _classCallCheck(this, CropYieldsCWTADataSource);
 	
-	var Stations = _react2["default"].createClass({
-	    displayName: "Stations",
-	
-	    propTypes: {
-	        dataSource: _react2["default"].PropTypes.object.isRequired
-	    },
-	
-	    getInitialState: function getInitialState() {
-	        return {};
-	    },
-	
-	    componentDidMount: function componentDidMount() {
-	        var _this = this;
-	
-	        var el = _reactDom2["default"].findDOMNode(this);
-	
-	        var locations = {};
-	        this.props.dataSource.list().then(function (results) {
-	
-	            var locations = results.locations;
-	            var data = results.data;
-	            var index = results.index;
-	
-	            var stations = index.dimension(function (d) {
-	                return d.id;
-	            });
-	
-	            var stationGroup = stations.group().reduce(_commonUtil2["default"].reducers.location.add(), _commonUtil2["default"].reducers.location.remove(), _commonUtil2["default"].reducers.location.init());
-	
-	            var stationsChart = dc.rowChart(el);
-	
-	            stationsChart.width($(el).innerWidth() - 30).height(200).margins({ top: 10, left: 5, right: 10, bottom: 20 }).colors(_colors2["default"].main).group(stationGroup).dimension(stations).label(function (d) {
-	                return d.value.label;
-	            }).valueAccessor(function (d) {
-	                return d.value.count;
-	            }).elasticX(true).gap(2).ordering(function (i) {
-	                return -i.value;
-	            }).labelOffsetY(8).xAxis().ticks(3);
-	
-	            dc.renderAll();
-	
-	            _this.state.myChart = stationsChart;
-	        });
-	    },
-	    reset: function reset() {
-	        if (this.state && this.state.myChart) {
-	            this.state.myChart.filterAll();
-	            dc.redrawAll();
-	        }
-	    },
-	    render: function render() {
-	        return _react2["default"].createElement(
-	            "div",
-	            { className: "col-xs-4" },
-	            _react2["default"].createElement(
-	                "h4",
-	                null,
-	                "Stations"
-	            ),
-	            _react2["default"].createElement(
-	                "span",
-	                { className: "text-muted" },
-	                "Station location readings"
-	            ),
-	            _react2["default"].createElement(
-	                "a",
-	                { className: "reset", onClick: this.reset, style: { display: "none" } },
-	                "reset"
-	            )
-	        );
+	        _get(Object.getPrototypeOf(CropYieldsCWTADataSource.prototype), 'constructor', this).apply(this, arguments);
 	    }
-	});
 	
-	module.exports = Stations;
+	    _createClass(CropYieldsCWTADataSource, [{
+	        key: 'retrieveData',
+	        value: function retrieveData() {
+	            return new Promise(function (resolve, reject) {
+	                d3.csv('data/nass-yield-cwt-per-acre.csv', function (err, data) {
+	                    if (err) {
+	                        reject(err);
+	                    } else {
+	                        resolve({
+	                            data: data,
+	                            index: crossfilter(data)
+	                        });
+	                    }
+	                });
+	            });
+	        }
+	    }]);
+	
+	    return CropYieldsCWTADataSource;
+	})(_cachingDataSource2['default']);
+	
+	module.exports = CropYieldsCWTADataSource;
 
 /***/ },
 /* 504 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	// import dc from 'dc';
-	// import d3 from 'd3';
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-	
-	var _react = __webpack_require__(2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _commonUtil = __webpack_require__(472);
-	
-	var _commonUtil2 = _interopRequireDefault(_commonUtil);
-	
-	var _colors = __webpack_require__(473);
-	
-	var _colors2 = _interopRequireDefault(_colors);
-	
-	var _reactDom = __webpack_require__(158);
-	
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-	
-	var HighLowTrend = _react2["default"].createClass({
-	    displayName: "HighLowTrend",
-	
-	    propTypes: {
-	        dataSource: _react2["default"].PropTypes.object.isRequired
-	    },
-	
-	    getInitialState: function getInitialState() {
-	        return {};
-	    },
-	
-	    componentDidMount: function componentDidMount() {
-	        var _this = this;
-	
-	        var el = _reactDom2["default"].findDOMNode(this);
-	        var startDate = new Date('2015-01-01');
-	        var endDate = new Date('2015-12-31');
-	        this.props.dataSource.list().then(function (results) {
-	            var index = results.index;
-	            var dates = index.dimension(function (d) {
-	                return d3.time.day(d.date);
-	            });
-	            var highGroup = dates.group().reduce(_commonUtil2["default"].reducers.average.add('high'), _commonUtil2["default"].reducers.average.remove('high'), _commonUtil2["default"].reducers.average.init());
-	            var lowGroup = dates.group().reduce(_commonUtil2["default"].reducers.average.add('low'), _commonUtil2["default"].reducers.average.remove('low'), _commonUtil2["default"].reducers.average.init());
-	            //composite chart - set shared values, then use `compose` to add individual graphs
-	            var tempChart = dc.compositeChart(el);
-	            tempChart.width($(el).innerWidth() - 30).height(200).margins({ top: 10, left: 30, right: 10, bottom: 20 }).x(d3.time.scale().domain([startDate, endDate])).dimension(dates).compose([dc.lineChart(tempChart).group(highGroup).colors(_colors2["default"].highTemp).elasticX(true).valueAccessor(function (d) {
-	                return d.value.avg;
-	            }), dc.lineChart(tempChart).group(lowGroup).colors(_colors2["default"].lowTemp).elasticX(true).valueAccessor(function (d) {
-	                return d.value.avg;
-	            })]);
-	            _this.state.myChart = tempChart;
-	            dc.renderAll();
-	        });
-	    },
-	    reset: function reset() {
-	        if (this.state && this.state.myChart) {
-	            this.state.myChart.filterAll();
-	            dc.redrawAll();
-	        }
-	    },
-	    render: function render() {
-	        return _react2["default"].createElement(
-	            "div",
-	            { className: "col-xs-12", id: "hilowtrend" },
-	            _react2["default"].createElement(
-	                "h4",
-	                null,
-	                "Temperature"
-	            ),
-	            _react2["default"].createElement(
-	                "span",
-	                { className: "text-muted" },
-	                "High and low per day, degrees C"
-	            ),
-	            _react2["default"].createElement(
-	                "a",
-	                { className: "reset", onClick: this.reset, style: { display: "none" } },
-	                "reset"
-	            )
-	        );
-	    }
-	});
-	
-	module.exports = HighLowTrend;
-
-/***/ },
-/* 505 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -59097,7 +58730,7 @@
 	module.exports = HighLowDataSource;
 
 /***/ },
-/* 506 */
+/* 505 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -59184,854 +58817,6 @@
 	});
 	
 	module.exports = TemperatureReports;
-
-/***/ },
-/* 507 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-	
-	var _react = __webpack_require__(2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactDom = __webpack_require__(158);
-	
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-	
-	// import dc from "dc";
-	
-	var TemperatureReportsDataTable = _react2["default"].createClass({
-	    displayName: "TemperatureReportsDataTable",
-	
-	    propTypes: {
-	        dataSource: _react2["default"].PropTypes.object.isRequired
-	    },
-	
-	    getInitialState: function getInitialState() {
-	        return {};
-	    },
-	
-	    componentDidMount: function componentDidMount() {
-	        var el = _reactDom2["default"].findDOMNode(this);
-	        this.props.dataSource.list().then(function (results) {
-	            var dataTable = dc.dataTable($(el).find(".data-table")[0]);
-	            var index = results.index;
-	            var dates = index.dimension(function (d) {
-	                return d3.time.day(d.date);
-	            });
-	            dataTable.dimension(dates).group(function (d) {
-	                return d.name;
-	            }).size(100) // (optional) max number of records to be shown, :default = 25
-	            .columns([function (d) {
-	                return d.date;
-	            }, function (d) {
-	                return d.high;
-	            }, function (d) {
-	                return d.low;
-	            }, function (d) {
-	                return d.lat;
-	            }, function (d) {
-	                return d.lon;
-	            }, function (d) {
-	                return d.elevation;
-	            }]).sortBy(function (d) {
-	                return d.date;
-	            }).order(d3.descending);
-	
-	            dc.renderAll();
-	        });
-	    },
-	
-	    render: function render() {
-	        return _react2["default"].createElement(
-	            "div",
-	            null,
-	            _react2["default"].createElement(
-	                "h2",
-	                { className: "sub-header" },
-	                "Raw Data"
-	            ),
-	            _react2["default"].createElement(
-	                "span",
-	                { className: "text-muted" },
-	                "(Last 100 readings)"
-	            ),
-	            _react2["default"].createElement(
-	                "div",
-	                { className: "row" },
-	                _react2["default"].createElement(
-	                    "div",
-	                    { className: "col-xs-12" },
-	                    _react2["default"].createElement(
-	                        "table",
-	                        { className: "table table-bordered table-hover table-striped table-condensed data-table",
-	                            id: "temperatureDataTable" },
-	                        _react2["default"].createElement(
-	                            "thead",
-	                            null,
-	                            _react2["default"].createElement(
-	                                "tr",
-	                                null,
-	                                _react2["default"].createElement(
-	                                    "th",
-	                                    { className: "col-xs-2" },
-	                                    "Date"
-	                                ),
-	                                _react2["default"].createElement(
-	                                    "th",
-	                                    { className: "col-xs-1" },
-	                                    "High T"
-	                                ),
-	                                _react2["default"].createElement(
-	                                    "th",
-	                                    { className: "col-xs-1" },
-	                                    "Low T"
-	                                ),
-	                                _react2["default"].createElement(
-	                                    "th",
-	                                    { className: "col-xs-1" },
-	                                    "Lat"
-	                                ),
-	                                _react2["default"].createElement(
-	                                    "th",
-	                                    { className: "col-xs-1" },
-	                                    "Long"
-	                                ),
-	                                _react2["default"].createElement(
-	                                    "th",
-	                                    { className: "col-xs-3" },
-	                                    "Elev"
-	                                )
-	                            )
-	                        )
-	                    )
-	                )
-	            )
-	        );
-	    }
-	});
-	
-	module.exports = TemperatureReportsDataTable;
-
-/***/ },
-/* 508 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	// import dc from 'dc';
-	// import d3 from 'd3';
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-	
-	var _react = __webpack_require__(2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _commonUtil = __webpack_require__(472);
-	
-	var _commonUtil2 = _interopRequireDefault(_commonUtil);
-	
-	var _colors = __webpack_require__(473);
-	
-	var _colors2 = _interopRequireDefault(_colors);
-	
-	var _debug = __webpack_require__(443);
-	
-	var _debug2 = _interopRequireDefault(_debug);
-	
-	var _reactDom = __webpack_require__(158);
-	
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-	
-	var debug = (0, _debug2["default"])('app:components:CropYields');
-	
-	var COMMODITIES = ['SUGARBEETS', 'CORN', 'SUGARCANE', 'HAY', 'HAYLAGE'];
-	
-	var CropYields = _react2["default"].createClass({
-	    displayName: "CropYields",
-	
-	    propTypes: {
-	        dataSource: _react2["default"].PropTypes.object.isRequired
-	    },
-	
-	    getInitialState: function getInitialState() {
-	        return {};
-	    },
-	
-	    componentDidMount: function componentDidMount() {
-	        var _this = this;
-	
-	        var el = _reactDom2["default"].findDOMNode(this);
-	        this.props.dataSource.list().then(function (results) {
-	
-	            var data = results.data;
-	            var ndx = results.index;
-	
-	            data.forEach(function (item) {
-	                item.yearTime = d3.time.year(new Date(item.Year, 1, 1)); // coerce to date object
-	            });
-	
-	            var yearlyDim = ndx.dimension(function (d) {
-	                return d.yearTime;
-	            });
-	            debug('yearlyDim', yearlyDim.top(10));
-	
-	            var yearlyYieldGroup = yearlyDim.group().reduceSum(function (d) {
-	                return d.Value;
-	            });
-	            debug('yearlyYieldGroup: ', yearlyYieldGroup.all());
-	
-	            var yieldTimeScale = d3.time.scale().domain([new Date(2000, 1, 1), new Date(2015, 1, 1)]);
-	
-	            yieldTimeScale.ticks(d3.time.year);
-	
-	            var gap = 80,
-	                translate = 10;
-	            var yearlyYieldGroupByCommodity = yearlyDim.group().reduce(function (p, v) {
-	                p[v.Commodity].count++;
-	                p[v.Commodity].total += parseFloat(v.Value);
-	                return p;
-	            }, function reduceRemove(p, v) {
-	                p[v.Commodity].count--;
-	                p[v.Commodity].total -= parseFloat(v.Value);
-	                return p;
-	            }, function reduceInitial() {
-	                var initial = {
-	                    commodities: {}
-	                };
-	                COMMODITIES.forEach(function (c) {
-	                    return initial[c] = {
-	                        count: 0,
-	                        total: 0
-	                    };
-	                });
-	                return initial;
-	            });
-	
-	            var tempChart = dc.compositeChart(el);
-	            tempChart.width($(el).innerWidth() - 30).height(250).margins({ top: 10, left: 50, right: 10, bottom: 40 }).x(yieldTimeScale).xUnits(d3.time.years).yAxisLabel("Tons / Arce").xAxisLabel("Survey Year")
-	            // .colors(colors.main)
-	            .dimension(yearlyDim).brushOn(false).compose(COMMODITIES.map(function (c) {
-	                return dc.barChart(tempChart).group(yearlyYieldGroupByCommodity).gap(gap).brushOn(false).colors(["#" + intToRGB(hashCode(c))]).valueAccessor(function (d) {
-	                    return d.value[c].total;
-	                });
-	            })).renderlet(function (chart) {
-	                COMMODITIES.forEach(function (c, i) {
-	                    var tip = d3.tip().attr('class', 'd3-tip').offset([-10, 0]).html(function (d) {
-	                        return "<span style='color: #f0027f'>(" + d.data.key.getFullYear() + ") " + c + ": " + d.data.value[c].total.toFixed(2) + " Tons/Acre " + "</span>";
-	                    });
-	                    var rect = chart.selectAll("g._" + i + " rect");
-	                    rect.attr("transform", "translate(" + i * translate + ", 0)");
-	
-	                    rect.call(tip);
-	                    rect.on('mouseover', tip.show).on('mouseout', tip.hide);
-	                });
-	            });
-	            _this.state.myChart = tempChart;
-	            dc.renderAll();
-	        });
-	    },
-	    reset: function reset() {
-	        if (this.state && this.state.myChart) {
-	            this.state.myChart.filterAll();
-	            dc.redrawAll();
-	        }
-	    },
-	    render: function render() {
-	        return _react2["default"].createElement(
-	            "div",
-	            { className: "col-xs-12", id: "cropYieldsChart" },
-	            _react2["default"].createElement(
-	                "h4",
-	                null,
-	                "Crop Yields"
-	            ),
-	            _react2["default"].createElement(
-	                "span",
-	                { className: "text-muted" },
-	                "Crop yields in Terms of Tons / Acre"
-	            ),
-	            _react2["default"].createElement(
-	                "a",
-	                { className: "reset", onClick: this.reset, style: { display: "none" } },
-	                "reset"
-	            )
-	        );
-	    }
-	});
-	
-	function hashCode(str) {
-	    // java String#hashCode
-	    var hash = 0;
-	    for (var i = 0; i < str.length; i++) {
-	        hash = str.charCodeAt(i) + ((hash << 5) - hash);
-	    }
-	    return hash;
-	}
-	
-	function intToRGB(i) {
-	    var c = (i & 0x00FFFFFF).toString(16).toUpperCase();
-	
-	    return "00000".substring(0, 6 - c.length) + c;
-	}
-	
-	module.exports = CropYields;
-
-/***/ },
-/* 509 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var _cachingDataSource = __webpack_require__(475);
-	
-	var _cachingDataSource2 = _interopRequireDefault(_cachingDataSource);
-	
-	/**
-	 * A datasource wrapping the Cropy Yield, by Tons/Acre
-	 */
-	
-	var CropYieldsDataSource = (function (_CachingDataSource) {
-	    _inherits(CropYieldsDataSource, _CachingDataSource);
-	
-	    function CropYieldsDataSource() {
-	        _classCallCheck(this, CropYieldsDataSource);
-	
-	        _get(Object.getPrototypeOf(CropYieldsDataSource.prototype), 'constructor', this).apply(this, arguments);
-	    }
-	
-	    _createClass(CropYieldsDataSource, [{
-	        key: 'retrieveData',
-	        value: function retrieveData() {
-	            return new Promise(function (resolve, reject) {
-	                d3.csv('data/nass-yield-tons-per-acre.csv', function (err, data) {
-	                    if (err) {
-	                        reject(err);
-	                    } else {
-	                        resolve({
-	                            data: data,
-	                            index: crossfilter(data)
-	                        });
-	                    }
-	                });
-	            });
-	        }
-	    }]);
-	
-	    return CropYieldsDataSource;
-	})(_cachingDataSource2['default']);
-	
-	module.exports = CropYieldsDataSource;
-
-/***/ },
-/* 510 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	// import dc from 'dc';
-	// import d3 from 'd3';
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-	
-	var _react = __webpack_require__(2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactDom = __webpack_require__(158);
-	
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-	
-	var _commonUtil = __webpack_require__(472);
-	
-	var _commonUtil2 = _interopRequireDefault(_commonUtil);
-	
-	var _colors = __webpack_require__(473);
-	
-	var _colors2 = _interopRequireDefault(_colors);
-	
-	var _debug = __webpack_require__(443);
-	
-	var _debug2 = _interopRequireDefault(_debug);
-	
-	var debug = (0, _debug2["default"])('app:components:CropYieldsBUA');
-	
-	var CropYieldsBUA = _react2["default"].createClass({
-	    displayName: "CropYieldsBUA",
-	
-	    propTypes: {
-	        dataSource: _react2["default"].PropTypes.object.isRequired
-	    },
-	
-	    getInitialState: function getInitialState() {
-	        return {};
-	    },
-	
-	    componentDidMount: function componentDidMount() {
-	        var _this = this;
-	
-	        var el = _reactDom2["default"].findDOMNode(this);
-	        this.props.dataSource.list().then(function (results) {
-	
-	            var data = results.data;
-	            var ndx = results.index;
-	
-	            data.forEach(function (item) {
-	                item.yearTime = d3.time.year(new Date(item.Year, 1, 1)); // coerce to date object
-	            });
-	
-	            var yearlyDim = ndx.dimension(function (d) {
-	                return d.yearTime;
-	            });
-	            debug('yearlyDim:', yearlyDim.top(10));
-	
-	            var yearlyYieldGroup = yearlyDim.group().reduceSum(function (d) {
-	                return d.Value;
-	            });
-	            debug('yearlyDim:', yearlyYieldGroup.all());
-	
-	            var yieldTimeScale = d3.time.scale().domain([new Date(2000, 1, 1), new Date(2015, 1, 1)]);
-	            yieldTimeScale.ticks(d3.time.year);
-	
-	            var yieldTonsChart = dc.barChart(el);
-	            yieldTonsChart.width($(el).innerWidth() - 30).height(200).margins({ top: 10, left: 90, right: 10, bottom: 20 }).x(yieldTimeScale).xUnits(d3.time.years).colors(_colors2["default"].main).dimension(yearlyDim).group(yearlyYieldGroup);
-	            dc.renderAll();
-	            _this.state.myChart = yieldTonsChart;
-	        });
-	    },
-	    reset: function reset() {
-	        if (this.state && this.state.myChart) {
-	            this.state.myChart.filterAll();
-	            dc.redrawAll();
-	        }
-	    },
-	    render: function render() {
-	        return _react2["default"].createElement(
-	            "div",
-	            { className: "col-xs-12", id: "cropYieldsChartBUA" },
-	            _react2["default"].createElement(
-	                "h4",
-	                null,
-	                "Crop Yields"
-	            ),
-	            _react2["default"].createElement(
-	                "span",
-	                { className: "text-muted" },
-	                "Crop yields in Terms of BU / Acre"
-	            ),
-	            _react2["default"].createElement(
-	                "a",
-	                { className: "reset", onClick: this.reset, style: { display: "none" } },
-	                "reset"
-	            )
-	        );
-	    }
-	});
-	
-	module.exports = CropYieldsBUA;
-
-/***/ },
-/* 511 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var _cachingDataSource = __webpack_require__(475);
-	
-	var _cachingDataSource2 = _interopRequireDefault(_cachingDataSource);
-	
-	/**
-	 * A datasource wrapping the Crop Yield, by BU/Acre
-	 */
-	
-	var CropYieldsBUADataSource = (function (_CachingDataSource) {
-	    _inherits(CropYieldsBUADataSource, _CachingDataSource);
-	
-	    function CropYieldsBUADataSource() {
-	        _classCallCheck(this, CropYieldsBUADataSource);
-	
-	        _get(Object.getPrototypeOf(CropYieldsBUADataSource.prototype), 'constructor', this).apply(this, arguments);
-	    }
-	
-	    _createClass(CropYieldsBUADataSource, [{
-	        key: 'retrieveData',
-	        value: function retrieveData() {
-	            return new Promise(function (resolve, reject) {
-	                d3.csv('data/nass-yield-bu-per-acre.csv', function (err, data) {
-	                    if (err) {
-	                        reject(err);
-	                    } else {
-	                        resolve({
-	                            data: data,
-	                            index: crossfilter(data)
-	                        });
-	                    }
-	                });
-	            });
-	        }
-	    }]);
-	
-	    return CropYieldsBUADataSource;
-	})(_cachingDataSource2['default']);
-	
-	module.exports = CropYieldsBUADataSource;
-
-/***/ },
-/* 512 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	// import dc from 'dc';
-	// import d3 from 'd3';
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-	
-	var _react = __webpack_require__(2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactDom = __webpack_require__(158);
-	
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-	
-	var _commonUtil = __webpack_require__(472);
-	
-	var _commonUtil2 = _interopRequireDefault(_commonUtil);
-	
-	var _colors = __webpack_require__(473);
-	
-	var _colors2 = _interopRequireDefault(_colors);
-	
-	var _debug = __webpack_require__(443);
-	
-	var _debug2 = _interopRequireDefault(_debug);
-	
-	var debug = (0, _debug2["default"])('app:components:CropYieldsBaA');
-	
-	var CropYieldsBaA = _react2["default"].createClass({
-	    displayName: "CropYieldsBaA",
-	
-	    propTypes: {
-	        dataSource: _react2["default"].PropTypes.object.isRequired
-	    },
-	
-	    getInitialState: function getInitialState() {
-	        return {};
-	    },
-	
-	    componentDidMount: function componentDidMount() {
-	        var _this = this;
-	
-	        var el = _reactDom2["default"].findDOMNode(this);
-	        var startDate = new Date('2015-01-01');
-	        var endDate = new Date('2015-12-31');
-	        this.props.dataSource.list().then(function (results) {
-	
-	            var data = results.data;
-	            var ndx = results.index;
-	
-	            data.forEach(function (item) {
-	                item.yearTime = d3.time.year(new Date(item.Year, 1, 1)); // coerce to date object
-	            });
-	
-	            var yearlyDim = ndx.dimension(function (d) {
-	                return d.yearTime;
-	            });
-	            debug('yearlyDim:', yearlyDim.top(10));
-	
-	            var yearlyYieldGroup = yearlyDim.group().reduceSum(function (d) {
-	                return d.Value;
-	            });
-	            debug('yearlyYieldGroup:', yearlyYieldGroup.all());
-	
-	            var yieldTimeScale = d3.time.scale().domain([new Date(2000, 1, 1), new Date(2015, 1, 1)]);
-	
-	            yieldTimeScale.ticks(d3.time.year);
-	
-	            var yieldTonsChart = dc.barChart(el);
-	            yieldTonsChart.width($(el).innerWidth() - 30).height(200).margins({ top: 10, left: 90, right: 10, bottom: 20 }).x(yieldTimeScale).xUnits(d3.time.years).colors(_colors2["default"].main).dimension(yearlyDim).group(yearlyYieldGroup);
-	            dc.renderAll();
-	            _this.state.myChart = yieldTonsChart;
-	        });
-	    },
-	    reset: function reset() {
-	        if (this.state && this.state.myChart) {
-	            this.state.myChart.filterAll();
-	            dc.redrawAll();
-	        }
-	    },
-	    render: function render() {
-	        return _react2["default"].createElement(
-	            "div",
-	            { className: "col-xs-12", id: "cropYieldsChartBaA" },
-	            _react2["default"].createElement(
-	                "h4",
-	                null,
-	                "Crop Yields"
-	            ),
-	            _react2["default"].createElement(
-	                "span",
-	                { className: "text-muted" },
-	                "Crop yields in Terms of Bales / Acre"
-	            ),
-	            _react2["default"].createElement(
-	                "a",
-	                { className: "reset", onClick: this.reset, style: { display: "none" } },
-	                "reset"
-	            )
-	        );
-	    }
-	});
-	
-	module.exports = CropYieldsBaA;
-
-/***/ },
-/* 513 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var _cachingDataSource = __webpack_require__(475);
-	
-	var _cachingDataSource2 = _interopRequireDefault(_cachingDataSource);
-	
-	/**
-	 * A datasource wrapping the Cropy Yield, by Ba/Acre
-	 */
-	
-	var CropYieldsBaADataSource = (function (_CachingDataSource) {
-	    _inherits(CropYieldsBaADataSource, _CachingDataSource);
-	
-	    function CropYieldsBaADataSource() {
-	        _classCallCheck(this, CropYieldsBaADataSource);
-	
-	        _get(Object.getPrototypeOf(CropYieldsBaADataSource.prototype), 'constructor', this).apply(this, arguments);
-	    }
-	
-	    _createClass(CropYieldsBaADataSource, [{
-	        key: 'retrieveData',
-	        value: function retrieveData() {
-	            return new Promise(function (resolve, reject) {
-	                d3.csv('data/nass-yield-bales-per-acre.csv', function (d) {
-	                    d.yearTime = d3.time.year(new Date(d.Year, 1, 1)); // coerce to date object
-	                    d.monthTime = d3.time.month(new Date(d.Year, 1, 1)); // coerce to date object
-	                    return d;
-	                }, function (err, data) {
-	                    if (err) {
-	                        reject(err);
-	                    } else {
-	                        resolve({
-	                            data: data,
-	                            index: crossfilter(data)
-	                        });
-	                    }
-	                });
-	            });
-	        }
-	    }]);
-	
-	    return CropYieldsBaADataSource;
-	})(_cachingDataSource2['default']);
-	
-	module.exports = CropYieldsBaADataSource;
-
-/***/ },
-/* 514 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	// import dc from 'dc';
-	// import d3 from 'd3';
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-	
-	var _react = __webpack_require__(2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _commonUtil = __webpack_require__(472);
-	
-	var _commonUtil2 = _interopRequireDefault(_commonUtil);
-	
-	var _colors = __webpack_require__(473);
-	
-	var _colors2 = _interopRequireDefault(_colors);
-	
-	var _debug = __webpack_require__(443);
-	
-	var _debug2 = _interopRequireDefault(_debug);
-	
-	var _reactDom = __webpack_require__(158);
-	
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-	
-	var debug = (0, _debug2["default"])('app:components:CropYieldsCWTA');
-	
-	var CropYieldsCWTA = _react2["default"].createClass({
-	    displayName: "CropYieldsCWTA",
-	
-	    propTypes: {
-	        dataSource: _react2["default"].PropTypes.object.isRequired
-	    },
-	
-	    getInitialState: function getInitialState() {
-	        return {};
-	    },
-	
-	    componentDidMount: function componentDidMount() {
-	        var _this = this;
-	
-	        var el = _reactDom2["default"].findDOMNode(this);
-	        this.props.dataSource.list().then(function (results) {
-	
-	            var data = results.data;
-	            var ndx = results.index;
-	
-	            data.forEach(function (item) {
-	                item.yearTime = d3.time.year(new Date(item.Year, 1, 1)); // coerce to date object
-	            });
-	
-	            var yearlyDim = ndx.dimension(function (d) {
-	                return d.yearTime;
-	            });
-	            debug('yearlyDim', yearlyDim.top(10));
-	
-	            var yearlyYieldGroup = yearlyDim.group().reduceSum(function (d) {
-	                return d.Value;
-	            });
-	            debug('yearlyYieldGroup', yearlyYieldGroup.all());
-	
-	            var yieldTimeScale = d3.time.scale().domain([new Date(2000, 1, 1), new Date(2015, 1, 1)]);
-	            yieldTimeScale.ticks(d3.time.year);
-	
-	            var yieldTonsChart = dc.barChart(el);
-	            yieldTonsChart.width($(el).innerWidth() - 30).height(200).margins({ top: 10, left: 90, right: 10, bottom: 20 }).x(yieldTimeScale).xUnits(d3.time.years).colors(_colors2["default"].main).dimension(yearlyDim).group(yearlyYieldGroup);
-	            dc.renderAll();
-	            _this.state.myChart = yieldTonsChart;
-	        });
-	    },
-	    reset: function reset() {
-	        if (this.state && this.state.myChart) {
-	            this.state.myChart.filterAll();
-	            dc.redrawAll();
-	        }
-	    },
-	    render: function render() {
-	        return _react2["default"].createElement(
-	            "div",
-	            { className: "col-xs-12", id: "cropYieldsChartCWTA" },
-	            _react2["default"].createElement(
-	                "h4",
-	                null,
-	                "Crop Yields"
-	            ),
-	            _react2["default"].createElement(
-	                "span",
-	                { className: "text-muted" },
-	                "Crop yields in Terms of CWT / Acre"
-	            ),
-	            _react2["default"].createElement(
-	                "a",
-	                { className: "reset", onClick: this.reset, style: { display: "none" } },
-	                "reset"
-	            )
-	        );
-	    }
-	});
-	
-	module.exports = CropYieldsCWTA;
-
-/***/ },
-/* 515 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var _cachingDataSource = __webpack_require__(475);
-	
-	var _cachingDataSource2 = _interopRequireDefault(_cachingDataSource);
-	
-	/**
-	 * A datasource wrapping the Crop Yield, by CWT/Acre
-	 */
-	
-	var CropYieldsCWTADataSource = (function (_CachingDataSource) {
-	    _inherits(CropYieldsCWTADataSource, _CachingDataSource);
-	
-	    function CropYieldsCWTADataSource() {
-	        _classCallCheck(this, CropYieldsCWTADataSource);
-	
-	        _get(Object.getPrototypeOf(CropYieldsCWTADataSource.prototype), 'constructor', this).apply(this, arguments);
-	    }
-	
-	    _createClass(CropYieldsCWTADataSource, [{
-	        key: 'retrieveData',
-	        value: function retrieveData() {
-	            return new Promise(function (resolve, reject) {
-	                d3.csv('data/nass-yield-cwt-per-acre.csv', function (err, data) {
-	                    if (err) {
-	                        reject(err);
-	                    } else {
-	                        resolve({
-	                            data: data,
-	                            index: crossfilter(data)
-	                        });
-	                    }
-	                });
-	            });
-	        }
-	    }]);
-	
-	    return CropYieldsCWTADataSource;
-	})(_cachingDataSource2['default']);
-	
-	module.exports = CropYieldsCWTADataSource;
 
 /***/ }
 /******/ ]);
