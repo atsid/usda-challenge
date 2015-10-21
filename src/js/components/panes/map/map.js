@@ -12,6 +12,7 @@ import WaitSpinner from "./map_controls/WaitSpinner";
 
 let MapComponent = React.createClass({
     propTypes: {
+        year: React.PropTypes.number.isRequired,
         onCenterChange: React.PropTypes.func.isRequired,
         onZoomChange: React.PropTypes.func.isRequired,
         location: React.PropTypes.object.isRequired,
@@ -29,13 +30,24 @@ let MapComponent = React.createClass({
         let onLoadingChange = {handle: null};
         const registerVisibleCallback = (cb) => onLoadingChange.handle = cb;
         const waitSpinnerComponent = (<WaitSpinner visible={false} visibleCallback={registerVisibleCallback} />);
-        const overlayComponent = (<OverlaySelector map={map} onLoadingChange={onLoadingChange} />);
 
+        const updateYear = (cb) => this.state.yearCallback = cb;
+
+        const overlayComponent = (
+            <OverlaySelector
+                map={map}
+                onLoadingChange={onLoadingChange}
+                onYearUpdate={updateYear}
+            />);
 
         const overlaySelector = new MapControl(overlayComponent);
         const waitSpinner = new MapControl(waitSpinnerComponent);
         overlaySelector.register(map, google.maps.ControlPosition.LEFT_BOTTOM, 1);
         waitSpinner.register(map, google.maps.ControlPosition.BOTTOM, 2);
+    },
+
+    componentWillReceiveProps (nextProps) {
+        this.state.yearCallback(nextProps.year);
     },
 
     createMap() {

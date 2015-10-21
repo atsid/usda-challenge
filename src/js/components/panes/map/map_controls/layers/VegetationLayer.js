@@ -15,7 +15,13 @@ let postReq = null, getReq = null;
 class VegetationLayer extends Layer {
     constructor(map, isVisible) {
         super(map, isVisible);
+        this.year = 2014;
         this.onLoadingChangeCallbacks =[];
+    }
+
+    setYear(year) {
+        this.year = year;
+        this.rerender();
     }
 
     generateMapArtifacts(map) {
@@ -37,7 +43,6 @@ class VegetationLayer extends Layer {
         }
 
         const bounds = map.getBounds();
-        this.clear();
         this.emitLoadingChange(true);
         return this.initiateDataRequest(bounds)
             .then((data) => this.receiveData(data, currentIndex))
@@ -70,7 +75,7 @@ class VegetationLayer extends Layer {
                     "Lats": lats,
                     "Lons": lngs,
                     "TimeRegion": {
-                        "Years": [2014],
+                        "Years": [this.year],
                         "Days": [1, 366],
                         "Hours": [0, 24],
                         "IsIntervalsGridYears": false,
@@ -127,18 +132,20 @@ class VegetationLayer extends Layer {
             debug(`vegetation load #${currentIndex} aborted`);
             return;
         }
-        this.clear();
-        this.emitLoadingChange(false);
+        const newArtifacts = [];
         for (let lngIndex = 0; lngIndex < data.values.length; lngIndex++) {
             for (let latIndex = 0; latIndex <= data.values[lngIndex].length; latIndex++) {
                 const vegValue = data.values[lngIndex][latIndex];
                 var tileBounds = this.getTileBounds(data, latIndex, lngIndex);
                 const tile = this.vegetationTile(vegValue, map, tileBounds);
                 if (tile) {
-                    this.artifacts.push(tile);
+                    newArtifacts.push(tile);
                 }
             }
         }
+        this.clear();
+        this.artifacts = newArtifacts;
+        this.emitLoadingChange(false);
     }
 
     getTileBounds(data, latIndex, lngIndex) {

@@ -114,6 +114,7 @@ let MapPaneComponent = React.createClass({
                 </div>
                 <div className="mapContainer">
                     <Map ref="map"
+                         year={this.props.year}
                          location={this.props.location}
                          onCenterChange={this.props.onCenterChange}
                          onZoomChange={this.props.onZoomChange}/>

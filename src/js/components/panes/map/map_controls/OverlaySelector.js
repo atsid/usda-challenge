@@ -13,6 +13,7 @@ const OverlaySelector = React.createClass({
     propTypes: {
         map: React.PropTypes.object.isRequired,
         onLoadingChange: React.PropTypes.object.isRequired,
+        onYearUpdate: React.PropTypes.object.isRequired,
     },
 
     getInitialState() {
@@ -28,6 +29,7 @@ const OverlaySelector = React.createClass({
     },
 
     componentDidMount() {
+        this.props.onYearUpdate((year) => this.state.layers.plantDensity.setYear(year));
         this.state.layers.plantDensity.onLoadingChange(this.props.onLoadingChange);
     },
 
