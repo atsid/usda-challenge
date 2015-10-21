@@ -5,9 +5,11 @@ import debugFactory from "debug";
 const debug = debugFactory('app:components:MapPane');
 const stateData = require('./states');
 import {Grid, Row, Col, Button, PageHeader, Input, Glyphicon, DropdownButton, MenuItem, Panel} from "react-bootstrap";
+
 import Map from "./map";
 import YearSelector from "./YearSelector";
 import StateSelector from "./StateSelector";
+import ActivitiesPerformed from "./ActivitiesPerformed";
 
 let MapPaneComponent = React.createClass({
 
@@ -119,9 +121,7 @@ let MapPaneComponent = React.createClass({
                          onCenterChange={this.props.onCenterChange}
                          onZoomChange={this.props.onZoomChange}/>
                 </div>
-                <Panel>
-                    <h4>Activities Performed</h4>
-                </Panel>
+                <ActivitiesPerformed state={this.props.state} year={this.props.year} />
             </div>
         );
     }

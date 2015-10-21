@@ -21,6 +21,7 @@ const OverlaySelector = React.createClass({
             isLoading: false,
             overlays: {
                 plantDensity: false,
+                soilType: false,
             },
             layers: {
                 plantDensity: new VegetationLayer(this.props.map),
@@ -44,6 +45,13 @@ const OverlaySelector = React.createClass({
 
         return (
             <div className="overlaySelectorGroup">
+                <div>
+                    <Button disabled bsStyle={overlayStyle(overlays.soilType)} onClick={() => toggleOverlay('soilType')} className="layerButton">
+                        <img className="layerIcon" src="src/img/icons/soil.png"/>
+                        &nbsp;
+                        <span>Soil Type</span>
+                    </Button>
+                </div>
                 <div>
                     <Button bsStyle={overlayStyle(overlays.plantDensity)}
                             onClick={() => toggleOverlay('plantDensity')} className="layerButton">
