@@ -53834,15 +53834,6 @@
 	    render: function render() {
 	        var _this2 = this;
 	
-	        var tooltip = function tooltip(text, id) {
-	            return _react2["default"].createElement(
-	                _reactBootstrap.Tooltip,
-	                { id: id },
-	                text
-	            );
-	        };
-	        var soilTypeTooltip = tooltip('Soil Type', 'soilType');
-	        var plantDensityTooltip = tooltip('Plant Density', 'plantDensity');
 	        var overlayStyle = function overlayStyle(enabled) {
 	            return enabled ? 'success' : 'default';
 	        };
@@ -53860,21 +53851,17 @@
 	                "div",
 	                null,
 	                _react2["default"].createElement(
-	                    _reactBootstrap.OverlayTrigger,
-	                    { placement: "right", overlay: plantDensityTooltip },
+	                    _reactBootstrap.Button,
+	                    { bsStyle: overlayStyle(overlays.plantDensity),
+	                        onClick: function () {
+	                            return toggleOverlay('plantDensity');
+	                        }, className: "layerButton" },
+	                    _react2["default"].createElement("img", { className: "layerIcon", src: "src/img/icons/plant_density.png" }),
+	                    " ",
 	                    _react2["default"].createElement(
-	                        _reactBootstrap.Button,
-	                        { bsStyle: overlayStyle(overlays.plantDensity),
-	                            onClick: function () {
-	                                return toggleOverlay('plantDensity');
-	                            }, className: "layerButton" },
-	                        _react2["default"].createElement("img", { className: "layerIcon", src: "src/img/icons/plant_density.png" }),
-	                        " ",
-	                        _react2["default"].createElement(
-	                            "span",
-	                            null,
-	                            "Plant Density"
-	                        )
+	                        "span",
+	                        null,
+	                        "Plant Density"
 	                    )
 	                )
 	            )
