@@ -38,8 +38,8 @@ const ActivitiesPerformedComponent = React.createClass({
         return (
             <Panel>
                 <h4>Percentage of land in <span>{stateName}</span> where certain activities were performed (in <span>{this.props.year}</span>)</h4>
-                <div>
-                    {activities}
+                <div style={{display: 'inline'}}>
+                    {activities.length === 0 ? 'No Activity Data Found' : activities}
                 </div>
             </Panel>
         );
