@@ -56239,8 +56239,8 @@
 	            ),
 	            _react2["default"].createElement(
 	                "div",
-	                null,
-	                activities
+	                { style: { display: 'inline' } },
+	                activities.length === 0 ? 'No Activity Data Found' : activities
 	            )
 	        );
 	    }
@@ -56251,17 +56251,20 @@
 
 /***/ },
 /* 470 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
+	Object.defineProperty(exports, '__esModule', {
 	    value: true
 	});
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	var request = __webpack_require__(461);
+	var debug = __webpack_require__(443)('app:stores:ActivityStore');
+	var cache = {};
 	
 	var ActivityStore = (function () {
 	    function ActivityStore() {
@@ -56269,18 +56272,59 @@
 	    }
 	
 	    _createClass(ActivityStore, [{
-	        key: "getActivities",
+	        key: 'getActivities',
 	        value: function getActivities(stateCode, year) {
-	            // TODO: XHR
-	            return Promise.resolve([{ name: "Pesticide", percent: 91.455 }, { name: "Manure", percent: 50 }, { name: "Herbicide", percent: 25.5 }]);
+	            if (cache[stateCode]) {
+	                return Promise.resolve(cache[stateCode][year] || []);
+	            }
+	            return this._loadStateData(stateCode).then(function () {
+	                return cache[stateCode][year] || [];
+	            });
+	        }
+	    }, {
+	        key: '_loadStateData',
+	        value: function _loadStateData(stateCode) {
+	            return this._getActivitiesInState(stateCode).then(this._parseCsv).then(function (activities) {
+	                debug('received activity data', activities);
+	                cache[stateCode] = {};
+	                for (var i = 1; i < activities.data.length; i++) {
+	                    var currentActivity = activities.data[i];
+	                    var _name = currentActivity[0];
+	                    var year = parseInt(currentActivity[1]);
+	                    var percent = parseFloat(currentActivity[2]);
+	                    var datum = { name: _name, percent: percent };
+	                    if (!cache[stateCode][year]) {
+	                        cache[stateCode][year] = [];
+	                    }
+	                    cache[stateCode][year].push(datum);
+	                }
+	            });
+	        }
+	    }, {
+	        key: '_getActivitiesInState',
+	        value: function _getActivitiesInState(stateCode) {
+	            return new Promise(function (resolve, reject) {
+	                request.get('/usda-challenge/data/activities/' + stateCode.toUpperCase() + '/activities.csv').end(function (err, res) {
+	                    if (err) {
+	                        reject(err);
+	                    } else {
+	                        resolve(res.text);
+	                    }
+	                });
+	            });
+	        }
+	    }, {
+	        key: '_parseCsv',
+	        value: function _parseCsv(text) {
+	            return Papa.parse(text);
 	        }
 	    }]);
 	
 	    return ActivityStore;
 	})();
 	
-	exports["default"] = ActivityStore;
-	module.exports = exports["default"];
+	exports['default'] = ActivityStore;
+	module.exports = exports['default'];
 
 /***/ },
 /* 471 */
