@@ -3,9 +3,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {Panel, Jumbotron, Button, Input} from "react-bootstrap";
-import Navbar from './navbar';
+
 import debugFactory from "debug";
 const debug = debugFactory('app:SplashPage');
+
+import Navigation from './Navigation';
+import Header from './Header';
+import Info from './Info';
+import Footer from './Footer';
 import MapPane from './panes/map/main';
 import CropMetricsPane from './panes/cropmetrics/main';
 
@@ -75,78 +80,28 @@ let SplashPageComponent = React.createClass({
         this.pushLocation();
     },
 
-    render: function () {
+    render() {
         return (
             <div>
-                <Navbar />
-
-                <header>
-                    <div className="container">
-                        <div className="intro-text">
-                            <div className="intro-lead-in">Harness the power of data to feed the world</div>
-                            <div className="intro-heading">We make USDA data meaningful to you.</div>
-                        </div>
-                    </div>
-                </header>
-
-                <section id="where">
-                    <div className="container">
-                        <div className="col-md-3 col-md-offset-3">
-                            <span className="fa-stack fa-2x">
-                                <i className="fa fa-circle fa-stack-2x text-primary"></i>
-                                <i className="fa fa-search fa-stack-1x fa-inverse"></i>
-                            </span>
-                            <h4 className="service-heading">Do you know your soil?</h4>
-                            <p className="text-muted">See how soil type and crop growth are related on a map of your farm land.</p>
-                        </div>
-
-                        <div className="col-md-3">
-                            <span className="fa-stack fa-2x">
-                                <i className="fa fa-circle fa-stack-2x text-primary"></i>
-                                <i className="fa fa-tint fa-stack-1x fa-inverse"></i>
-                            </span>
-                            <h4 className="service-heading">Rainfall</h4>
-                            <p className="text-muted">Get a sense for how much your farm can produce per year compared to detailed historical precipitation data.</p>
-                        </div>
-                    </div>
+                <Navigation />
+                <Header />
+                <section id="info">
+                    <Info />
                 </section>
-
-                <section id="map">
-                    <div className="container">
-                        <MapPane
-                            onCenterChange={this.handleCenterChange}
-                            onZoomChange={this.handleZoomChange}
-                            onStateChange={this.handleStateChange}
-                            onYearChange={this.handleYearChange}
-                            year={this.state.year}
-                            state={this.state.state}
-                            location={this.state.location}/>
-                    </div>
+                <section id="map" className="container">
+                    <MapPane
+                        onCenterChange={this.handleCenterChange}
+                        onZoomChange={this.handleZoomChange}
+                        onStateChange={this.handleStateChange}
+                        onYearChange={this.handleYearChange}
+                        year={this.state.year}
+                        state={this.state.state}
+                        location={this.state.location}/>
                 </section>
-
-                <section id="metrics">
-                    <div className="container">
-                        <CropMetricsPane state={this.state.state} location={this.state.location}/>
-                    </div>
+                <section id="metrics" className="container">
+                    <CropMetricsPane state={this.state.state} location={this.state.location}/>
                 </section>
-
-                <footer>
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-md-4">
-                                <span className="copyright">All content copyright &copy; ATS & EchoUser 2015</span>
-                            </div>
-                            <div className="col-md-4">
-                                <ul className="list-inline quicklinks">
-                                    <li><a href="#"> </a>
-                                    </li>
-                                    <li><a href="#"> </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
+                <Footer />
             </div>);
     },
 });

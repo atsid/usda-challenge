@@ -1,7 +1,7 @@
 "use strict";
 
 import React from "react";
-import Navbar from "./navbar";
+import Navig from "./Navigation";
 import StationsChart from "./charts/stations";
 import HighLowTrend from "./charts/highLowTrend";
 import HighLowDataSource from "../datasources/highLow.js";
