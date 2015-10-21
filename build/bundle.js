@@ -56163,8 +56163,6 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactBootstrap = __webpack_require__(206);
-	
 	var _debug = __webpack_require__(443);
 	
 	var _debug2 = _interopRequireDefault(_debug);
@@ -56215,10 +56213,10 @@
 	    render: function render() {
 	        var stateName = _states2["default"].statesByCode[this.props.state].name;
 	        var activities = this.state.activities.map(function (activity, index) {
-	            return _react2["default"].createElement(_ActivityTile2["default"], { key: "activity" + index, name: activity.name, percent: activity.percent });
+	            return _react2["default"].createElement(_ActivityTile2["default"], { key: "activity" + index, activity: activity });
 	        });
 	        return _react2["default"].createElement(
-	            _reactBootstrap.Panel,
+	            "div",
 	            null,
 	            _react2["default"].createElement(
 	                "h4",
@@ -56239,7 +56237,7 @@
 	            ),
 	            _react2["default"].createElement(
 	                "div",
-	                { style: { display: 'inline' } },
+	                { style: { display: 'flex' } },
 	                activities.length === 0 ? 'No Activity Data Found' : activities
 	            )
 	        );
@@ -56266,6 +56264,12 @@
 	var debug = __webpack_require__(443)('app:stores:ActivityStore');
 	var cache = {};
 	
+	var KNOWN_ACTIVITIES = {
+	    herbicide: true,
+	    manure: true,
+	    pesticide: true
+	};
+	
 	var ActivityStore = (function () {
 	    function ActivityStore() {
 	        _classCallCheck(this, ActivityStore);
@@ -56284,21 +56288,36 @@
 	    }, {
 	        key: '_loadStateData',
 	        value: function _loadStateData(stateCode) {
+	            var _this = this;
+	
 	            return this._getActivitiesInState(stateCode).then(this._parseCsv).then(function (activities) {
 	                debug('received activity data', activities);
 	                cache[stateCode] = {};
 	                for (var i = 1; i < activities.data.length; i++) {
-	                    var currentActivity = activities.data[i];
-	                    var _name = currentActivity[0];
-	                    var year = parseInt(currentActivity[1]);
-	                    var percent = parseFloat(currentActivity[2]);
-	                    var datum = { name: _name, percent: percent };
+	                    var datum = _this._createActivityDatum(activities.data[i]);
+	                    var year = datum.year;
 	                    if (!cache[stateCode][year]) {
 	                        cache[stateCode][year] = [];
 	                    }
 	                    cache[stateCode][year].push(datum);
 	                }
 	            });
+	        }
+	    }, {
+	        key: '_createActivityDatum',
+	        value: function _createActivityDatum(row) {
+	            var name = row[0];
+	            var year = row[1];
+	            var percent = parseFloat(row[2]);
+	            var imageUrl = this._getActivityImageUrl(name);
+	            return { name: name, percent: percent, year: year, imageUrl: imageUrl };
+	        }
+	    }, {
+	        key: '_getActivityImageUrl',
+	        value: function _getActivityImageUrl(name) {
+	            var lcName = name.toLowerCase();
+	            var icon = KNOWN_ACTIVITIES[lcName] ? lcName : 'misc';
+	            return 'src/img/icons/activities/' + icon + '.png';
 	        }
 	    }, {
 	        key: '_getActivitiesInState',
@@ -56356,20 +56375,36 @@
 	    displayName: "ActivityTile",
 	
 	    propTypes: {
-	        name: _react2["default"].PropTypes.string.isRequired,
-	        percent: _react2["default"].PropTypes.number.isRequired
+	        activity: _react2["default"].PropTypes.object.isRequired
 	    },
 	
 	    render: function render() {
-	        var name = this.props.name;
-	        var percent = this.props.percent;
+	        var name = this.props.activity.name;
+	        var percent = this.props.activity.percent;
+	        var imageUrl = this.props.activity.imageUrl;
 	        return _react2["default"].createElement(
 	            "div",
-	            null,
-	            name,
-	            " - ",
-	            percent,
-	            "%"
+	            { style: { display: 'flex', marginLeft: '20px' } },
+	            _react2["default"].createElement("img", { src: imageUrl, style: {
+	                    height: "75px",
+	                    width: "75px",
+	                    display: "inline"
+	                } }),
+	            _react2["default"].createElement(
+	                "div",
+	                null,
+	                _react2["default"].createElement(
+	                    "div",
+	                    { style: { fontSize: '20pt' } },
+	                    Math.round(percent),
+	                    "%"
+	                ),
+	                _react2["default"].createElement(
+	                    "div",
+	                    null,
+	                    name
+	                )
+	            )
 	        );
 	    }
 	});
