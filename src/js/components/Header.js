@@ -4,7 +4,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import debugFactory from "debug";
-const debug = debugFactory('app:Header');
+const debug = debugFactory('app:components:Header');
 
 const InfoComponent = React.createClass({
     render() {

@@ -5,7 +5,7 @@ import ReactDOM from "react-dom";
 import {Panel, Jumbotron, Button, Input} from "react-bootstrap";
 
 import debugFactory from "debug";
-const debug = debugFactory('app:SplashPage');
+const debug = debugFactory('app:components:SplashPage');
 
 import Navigation from './Navigation';
 import Header from './Header';
