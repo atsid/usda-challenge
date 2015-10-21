@@ -58636,57 +58636,29 @@
 	                            _react2["default"].createElement(
 	                                "li",
 	                                null,
-	                                " ",
-	                                _react2["default"].createElement(
-	                                    "a",
-	                                    { className: "page-scroll", href: "# " },
-	                                    " "
-	                                ),
-	                                " "
-	                            ),
-	                            _react2["default"].createElement(
-	                                "li",
-	                                null,
-	                                " ",
-	                                _react2["default"].createElement(
-	                                    "a",
-	                                    { className: "page-scroll", href: "# " },
-	                                    " "
-	                                ),
-	                                " "
-	                            ),
-	                            _react2["default"].createElement(
-	                                "li",
-	                                null,
-	                                " ",
 	                                _react2["default"].createElement(
 	                                    "a",
 	                                    { className: "page-scroll", href: "# " },
 	                                    "Home"
-	                                ),
-	                                " "
+	                                )
 	                            ),
 	                            _react2["default"].createElement(
 	                                "li",
 	                                null,
-	                                " ",
 	                                _react2["default"].createElement(
 	                                    "a",
 	                                    { className: "page-scroll", href: "#where " },
 	                                    "Where"
-	                                ),
-	                                " "
+	                                )
 	                            ),
 	                            _react2["default"].createElement(
 	                                "li",
 	                                null,
-	                                " ",
 	                                _react2["default"].createElement(
 	                                    "a",
 	                                    { className: "page-scroll", href: "#rainfall " },
 	                                    "Rainfall"
-	                                ),
-	                                " "
+	                                )
 	                            )
 	                        )
 	                    )
@@ -58722,17 +58694,7 @@
 	                    { className: "container" },
 	                    _react2["default"].createElement(
 	                        "div",
-	                        { className: "row" },
-	                        _react2["default"].createElement("div", { className: "col-lg-12 text-center" })
-	                    ),
-	                    _react2["default"].createElement(
-	                        "div",
-	                        { className: "row text-left" },
-	                        _react2["default"].createElement("div", { className: "col-md-3" })
-	                    ),
-	                    _react2["default"].createElement(
-	                        "div",
-	                        { className: "col-md-3" },
+	                        { className: "col-md-3 col-md-offset-3" },
 	                        _react2["default"].createElement(
 	                            "span",
 	                            { className: "fa-stack fa-2x" },
@@ -58769,15 +58731,6 @@
 	                            { className: "text-muted" },
 	                            "Get a sense for how much your farm can produce per year compared to detailed historical precipitation data."
 	                        )
-	                    ),
-	                    _react2["default"].createElement(
-	                        "div",
-	                        { className: "container" },
-	                        _react2["default"].createElement(
-	                            "div",
-	                            { className: "row" },
-	                            _react2["default"].createElement("div", { className: "col-lg-12 text-center" })
-	                        )
 	                    )
 	                )
 	            ),
@@ -58795,21 +58748,7 @@
 	                    _react2["default"].createElement(
 	                        "h4",
 	                        { className: "service-heading" },
-	                        "Do you know your soil?"
-	                    ),
-	                    _react2["default"].createElement(
-	                        "p",
-	                        { className: "text-muted" },
-	                        "See how soil type and crop growth are related on a map of your farm land."
-	                    )
-	                ),
-	                _react2["default"].createElement(
-	                    "div",
-	                    { className: "container" },
-	                    _react2["default"].createElement(
-	                        "div",
-	                        { className: "row" },
-	                        _react2["default"].createElement("div", { className: "col-lg-12 text-center" })
+	                        "Find your farm"
 	                    )
 	                )
 	            ),
