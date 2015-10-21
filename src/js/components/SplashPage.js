@@ -41,11 +41,9 @@ let SplashPageComponent = React.createClass({
                         <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul className="nav navbar-nav navbar-right">
                                 <li className="hidden"> <a href="#page-top"></a></li>
-                                <li> <a className="page-scroll" href="# "> </a> </li>
-                                <li> <a className="page-scroll" href="# "> </a> </li>
-                                <li> <a className="page-scroll" href="# ">Home</a> </li>
-                                <li> <a className="page-scroll" href="#where ">Where</a> </li>
-                                <li> <a className="page-scroll" href="#rainfall ">Rainfall</a> </li>
+                                <li><a className="page-scroll" href="# ">Home</a></li>
+                                <li><a className="page-scroll" href="#where ">Where</a></li>
+                                <li><a className="page-scroll" href="#rainfall ">Rainfall</a></li>
                             </ul>
                         </div>
                     </div>
@@ -62,15 +60,7 @@ let SplashPageComponent = React.createClass({
 
                 <section id="where">
                     <div className="container">
-                        <div className="row">
-                            <div className="col-lg-12 text-center">
-                            </div>
-                        </div>
-
-                        <div className="row text-left">
-                            <div className="col-md-3"/>
-                        </div>
-                        <div className="col-md-3">
+                        <div className="col-md-3 col-md-offset-3">
                             <span className="fa-stack fa-2x">
                                 <i className="fa fa-circle fa-stack-2x text-primary"></i>
                                 <i className="fa fa-search fa-stack-1x fa-inverse"></i>
@@ -87,12 +77,6 @@ let SplashPageComponent = React.createClass({
                             <h4 className="service-heading">Rainfall</h4>
                             <p className="text-muted">Get a sense for how much your farm can produce per year compared to detailed historical precipitation data.</p>
                         </div>
-
-                        <div className="container">
-                            <div className="row">
-                                <div className="col-lg-12 text-center"/>
-                            </div>
-                        </div>
                     </div>
                 </section>
 
@@ -101,15 +85,7 @@ let SplashPageComponent = React.createClass({
                         <div className="row">
                             <div className="col-lg-12 text-center"/>
                         </div>
-                        <h4 className="service-heading">Do you know your soil?</h4>
-                        <p className="text-muted">See how soil type and crop growth are related on a map of your farm land.</p>
-                    </div>
-
-
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-lg-12 text-center"/>
-                        </div>
+                        <h4 className="service-heading">Find your farm</h4>
                     </div>
                 </section>
 
