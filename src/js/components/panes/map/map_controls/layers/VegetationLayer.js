@@ -69,7 +69,7 @@ class VegetationLayer extends Layer {
             const lats = this.dimensionRange(minLat, maxLat);
             const lngs = this.dimensionRange(minLng, maxLng);
             const payload = {
-                "EnvironmentVariableName": "CropScape",
+                "EnvironmentVariableName": "VegScape",
                 "Domain": {
                     "SpatialRegionType": "CellGrid",
                     "Lats": lats,
