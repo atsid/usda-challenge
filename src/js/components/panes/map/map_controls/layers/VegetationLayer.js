@@ -162,22 +162,20 @@ class VegetationLayer extends Layer {
     }
 
     getVegetationColor(value) {
-        function interpolate(start, end, steps, count) {
-            const s = start,
-                e = end,
-                final = s + (((e - s) / steps) * count);
-            return Math.floor(final);
-        }
-
+        const interpolate = (start, end, steps, count) => Math.floor(start + (((end - start) / steps) * count));
         function rgb(r, g, b) {
             return {r,g,b};
         }
-
-        const start = rgb(255,255,255);
-        const end = rgb(6, 170, 9);
-        const r = interpolate(start.r, end.r, 255, value);
-        const g = interpolate(start.g, end.g, 255, value);
-        const b = interpolate(start.b, end.b, 255, value);
+        const normalize = (v) => {
+            const p = Math.min(255, (v / 255.0));
+            return v * Math.pow(p, 3);
+        };
+        const nVal  = normalize(value);
+        const start = rgb(255,0,0);
+        const end = rgb(0,255,0);
+        const r = interpolate(start.r, end.r, 255, nVal);
+        const g = interpolate(start.g, end.g, 255, nVal);
+        const b = interpolate(start.b, end.b, 255, nVal);
         return `rgb(${r},${g},${b})`;
     }
 
