@@ -2,8 +2,8 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import {Link} from "react-router";
-import {Panel, Jumbotron, Button, Input, Navbar, NavBrand} from "react-bootstrap";
+import {Panel, Jumbotron, Button, Input} from "react-bootstrap";
+import Navbar from './navbar';
 import debugFactory from "debug";
 const debug = debugFactory('app:SplashPage');
 import MapPane from './panes/map/main';
@@ -23,6 +23,19 @@ let SplashPageComponent = React.createClass({
         const zoom = parseFloat(query.zoom) || 7;
         const year = parseInt(query.year) || 2012;
         return {state, year, location: {lat, lng, zoom}};
+    },
+
+    componentDidMount() {
+        //connect google maps input
+        let input = ReactDOM.findDOMNode(this.refs.searchInput);
+        let searchBox = new google.maps.places.Autocomplete(input);
+
+        //TODO: this "functions" but not with autocomplete, so the place is undefined
+        debug('maps autocomplete', searchBox);
+        google.maps.event.addListener(searchBox, 'place_changed', function () {
+            var places = searchBox.getPlace();
+            debug('place', places);
+        });
     },
 
     pushLocation() {
@@ -62,44 +75,10 @@ let SplashPageComponent = React.createClass({
         this.pushLocation();
     },
 
-    componentDidMount() {
-        //connect google maps input
-        let input = ReactDOM.findDOMNode(this.refs.searchInput);
-        let searchBox = new google.maps.places.Autocomplete(input);
-
-        //TODO: this "functions" but not with autocomplete, so the place is undefined
-        debug('maps autocomplete', searchBox);
-        google.maps.event.addListener(searchBox, 'place_changed', function () {
-            var places = searchBox.getPlace();
-            debug('place', places);
-        });
-    },
-
     render: function () {
         return (
             <div>
-                <nav className="navbar navbar-default navbar-fixed-top">
-                    <div className="container">
-                        <div className="navbar-header page-scroll">
-                            <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                                <span className="sr-only">Toggle navigation</span>
-                                <span className="icon-bar"></span>
-                                <span className="icon-bar"></span>
-                                <span className="icon-bar"></span>
-                            </button>
-                            <a className="navbar-brand page-scroll" href="#page-top">ATS & EchoUser USDA Innovation Challenge</a>
-                        </div>
-
-                        <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                            <ul className="nav navbar-nav navbar-right">
-                                <li className="hidden"> <a href="#page-top"></a></li>
-                                <li><a className="page-scroll" href="#">Home</a></li>
-                                <li><a className="page-scroll" href="#map">Where</a></li>
-                                <li><a className="page-scroll" href="#metrics">Rainfall</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
+                <Navbar />
 
                 <header>
                     <div className="container">

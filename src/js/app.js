@@ -11,7 +11,7 @@ debug.enable('*');
 function initialize() {
     ReactDOM.render((
         <Router>
-            <Route path="/" component={SplashPage}/>
+            <Route path="*" component={SplashPage}/>
         </Router>
     ), document.getElementById("app"));
 }

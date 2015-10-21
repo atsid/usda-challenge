@@ -13,7 +13,7 @@ const OverlaySelector = React.createClass({
     propTypes: {
         map: React.PropTypes.object.isRequired,
         onLoadingChange: React.PropTypes.object.isRequired,
-        onYearUpdate: React.PropTypes.object.isRequired,
+        onYearUpdate: React.PropTypes.func.isRequired,
     },
 
     getInitialState() {

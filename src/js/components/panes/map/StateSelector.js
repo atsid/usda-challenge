@@ -5,7 +5,6 @@ import ReactDOM from "react-dom";
 import debugFactory from "debug";
 import stateData from "./states";
 const debug = debugFactory('app:components:StateSelector');
-import {Link} from "react-router";
 
 import {DropdownButton, MenuItem} from "react-bootstrap";
 
