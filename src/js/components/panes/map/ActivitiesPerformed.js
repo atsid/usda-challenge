@@ -41,7 +41,7 @@ const ActivitiesPerformedComponent = React.createClass({
             const isLast = index === this.state.activities.length - 1;
             return (<ActivityTile key={`activity${index}`} activity={activity} isLast={isLast} />);
         });
-        const noData = `No Activity Data Found. ${stateName} has data available for years ${this.state.yearsForState.join(', ')}`;
+        const noData = `${stateName} has data available for years ${this.state.yearsForState.join(', ')}`;
         return (
             <div>
                 <div className="activitiesPerformedHeader">Percentage of land in <span>{stateName}</span> where certain activities were performed (in <span>{this.props.year}</span>)</div >
