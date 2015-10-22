@@ -6,7 +6,7 @@ const debug = debugFactory('app:components:CropMetricsPane');
 
 import {Glyphicon, Button, DropdownButton, MenuItem} from "react-bootstrap";
 import RainfallVsYieldChart from './rainfall_vs_yield';
-import MonthlyRainfallChart from './monthly_rainfall';
+//import MonthlyRainfallChart from './monthly_rainfall';
 
 let CropMetricsPaneComponent = React.createClass({
     propTypes: {
@@ -20,7 +20,7 @@ let CropMetricsPaneComponent = React.createClass({
             crop: 'CORN'
         };
     },
-    
+
     handleSelect(e, k) {
         this.setState({crop: k});
     },
@@ -29,7 +29,7 @@ let CropMetricsPaneComponent = React.createClass({
         return (
             <div className="pane">
                 <div className="paneHeader">
-                    <h4 className="paneHeaderContent">What do you grow in your farm?</h4>
+                    <h4 className="paneHeaderContent">What do you grow on your farm?</h4>
                     <DropdownButton className="firstAction" id="selectCrop" title="+" noCaret onSelect={this.handleSelect}>
                         <MenuItem eventKey="BARLEY">Barley</MenuItem>
                         <MenuItem eventKey="BEANS">Beans</MenuItem>
