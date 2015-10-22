@@ -56212,9 +56212,12 @@
 	    },
 	
 	    render: function render() {
+	        var _this2 = this;
+	
 	        var stateName = _states2["default"].statesByCode[this.props.state].name;
 	        var activities = this.state.activities.map(function (activity, index) {
-	            return _react2["default"].createElement(_ActivityTile2["default"], { key: "activity" + index, activity: activity });
+	            var isLast = index === _this2.state.activities.length - 1;
+	            return _react2["default"].createElement(_ActivityTile2["default"], { key: "activity" + index, activity: activity, isLast: isLast });
 	        });
 	        var noData = "No Activity Data Found. " + stateName + " has data available for years " + this.state.yearsForState.join(', ');
 	        return _react2["default"].createElement(
@@ -56385,16 +56388,18 @@
 	    displayName: "ActivityTile",
 	
 	    propTypes: {
-	        activity: _react2["default"].PropTypes.object.isRequired
+	        activity: _react2["default"].PropTypes.object.isRequired,
+	        isLast: _react2["default"].PropTypes.bool.isRequired
 	    },
 	
 	    render: function render() {
 	        var name = this.props.activity.name;
 	        var percent = Math.round(this.props.activity.percent);
 	        var imageUrl = this.props.activity.imageUrl;
+	        var tileClass = this.props.isLast ? "activityTile" : "activityTile innerActivityTile";
 	        return _react2["default"].createElement(
 	            "div",
-	            { className: "activityTile" },
+	            { className: tileClass },
 	            _react2["default"].createElement("img", { src: imageUrl }),
 	            _react2["default"].createElement(
 	                "div",

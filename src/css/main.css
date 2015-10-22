@@ -250,8 +250,13 @@ h4 {
 }
 
 .activityTile {
-    margin-left: 20px;
+    padding-left: 10px;
     display: inline-flex;
+}
+
+.innerActivityTile {
+    padding-right: 15px;
+    border-right: 1px solid lightgrey;
 }
 
 .activityTile img {
