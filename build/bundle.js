@@ -56733,7 +56733,7 @@
 	            var timeScale = d3.time.scale().domain([new Date(2000, 1, 1), new Date(2015, 12, 31)]);
 	
 	            var compChart = dc.compositeChart(el);
-	            compChart.width($(el).innerWidth() - 30).height(250).margins({ top: 10, left: 50, right: 80, bottom: 40 }).x(timeScale).xUnits(d3.time.years).xAxisLabel("Date").yAxisLabel('Rainfall (inches)').rightYAxisLabel(_this.cropLabel(_this.props.crop)).dimension(yearlyYieldDim).brushOn(false).compose([dc.barChart(compChart).colors(_colors2["default"].yearlyAverageRainfall).barPadding(0.3).group(yearlyAverageRainGroup), dc.barChart(compChart).colors(_colors2["default"]["yield"]).barPadding(0.3).useRightYAxis(true).group(yearlyYieldGroup)]);
+	            compChart.width($(el).innerWidth() - 30).height(250).margins({ top: 10, left: 50, right: 80, bottom: 40 }).x(timeScale).xUnits(d3.time.years).yAxisLabel('Actual Rainfall (inch)').rightYAxisLabel(_this.cropLabel(_this.props.crop)).dimension(yearlyYieldDim).brushOn(false).compose([dc.barChart(compChart).colors(_colors2["default"].yearlyAverageRainfall).barPadding(0.3).group(yearlyAverageRainGroup), dc.barChart(compChart).colors(_colors2["default"]["yield"]).barPadding(0.3).useRightYAxis(true).group(yearlyYieldGroup)]);
 	
 	            dc.renderAll();
 	            _this.state.myChart = compChart;
