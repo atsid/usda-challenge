@@ -56994,10 +56994,10 @@
 	    main: ['purple'],
 	    highTemp: ['orange'],
 	    lowTemp: ['lightblue'],
-	    'yield': ['orange'],
+	    'yield': ['#92C73F'],
 	    monthlyRainfall: ['blue'],
 	    monthlyAverageRainfall: ['lightblue'],
-	    yearlyAverageRainfall: ['lightblue']
+	    yearlyAverageRainfall: ['#4A90E2']
 	};
 
 /***/ },
