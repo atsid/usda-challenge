@@ -6,7 +6,7 @@ const debug = debugFactory('app:components:CropMetricsPane');
 
 import {Glyphicon, Button, DropdownButton, MenuItem} from "react-bootstrap";
 import RainfallVsYieldChart from './rainfall_vs_yield';
-//import MonthlyRainfallChart from './monthly_rainfall';
+import MonthlyRainfallChart from './monthly_rainfall';
 
 let CropMetricsPaneComponent = React.createClass({
     propTypes: {
