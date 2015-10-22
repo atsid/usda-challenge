@@ -65,7 +65,7 @@ var CropYieldsVersusRainfall = React.createClass({
                 .margins({top: 10, left:50, right: 80, bottom:40})
                 .x(timeScale)
                 .xUnits(d3.time.years)
-                .yAxisLabel('Rainfall (inches)')
+                .yAxisLabel('Actual Rainfall (inch)')
                 .rightYAxisLabel(this.cropLabel(this.props.crop))
                 .dimension(yearlyYieldDim)
                 .brushOn(false)
