@@ -45,30 +45,30 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	__webpack_require__(485);
+	__webpack_require__(480);
 	__webpack_require__(475);
 	__webpack_require__(449);
 	__webpack_require__(447);
 	__webpack_require__(448);
 	__webpack_require__(446);
 	__webpack_require__(205);
-	__webpack_require__(483);
+	__webpack_require__(498);
 	__webpack_require__(478);
+	__webpack_require__(499);
+	__webpack_require__(500);
+	__webpack_require__(501);
+	__webpack_require__(477);
+	__webpack_require__(502);
 	__webpack_require__(503);
 	__webpack_require__(504);
-	__webpack_require__(505);
-	__webpack_require__(477);
-	__webpack_require__(506);
-	__webpack_require__(507);
-	__webpack_require__(482);
 	__webpack_require__(479);
-	__webpack_require__(484);
+	__webpack_require__(505);
 	__webpack_require__(476);
 	__webpack_require__(474);
-	__webpack_require__(481);
-	__webpack_require__(508);
+	__webpack_require__(506);
+	__webpack_require__(507);
 	__webpack_require__(472);
-	__webpack_require__(480);
+	__webpack_require__(508);
 	__webpack_require__(473);
 	__webpack_require__(469);
 	__webpack_require__(470);
@@ -111,7 +111,7 @@
 	
 	var _componentsSplashPage2 = _interopRequireDefault(_componentsSplashPage);
 	
-	var _history = __webpack_require__(485);
+	var _history = __webpack_require__(480);
 	
 	var _history2 = _interopRequireDefault(_history);
 	
@@ -56448,9 +56448,7 @@
 	
 	var _rainfall_vs_yield2 = _interopRequireDefault(_rainfall_vs_yield);
 	
-	var _monthly_rainfall = __webpack_require__(480);
-	
-	var _monthly_rainfall2 = _interopRequireDefault(_monthly_rainfall);
+	//import MonthlyRainfallChart from './monthly_rainfall';
 	
 	var debug = (0, _debug2["default"])('app:components:CropMetricsPane');
 	
@@ -56483,7 +56481,7 @@
 	                _react2["default"].createElement(
 	                    "h4",
 	                    { className: "paneHeaderContent" },
-	                    "What do you grow in your farm?"
+	                    "What do you grow on your farm?"
 	                ),
 	                _react2["default"].createElement(
 	                    _reactBootstrap.DropdownButton,
@@ -56576,7 +56574,7 @@
 	            _react2["default"].createElement(
 	                "div",
 	                null,
-	                _react2["default"].createElement(_monthly_rainfall2["default"], { state: this.props.state, location: this.props.location })
+	                _react2["default"].createElement(MonthlyRainfallChart, { state: this.props.state, location: this.props.location })
 	            )
 	        );
 	    }
@@ -57193,425 +57191,13 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-	
-	var _react = __webpack_require__(2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactDom = __webpack_require__(158);
-	
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-	
-	var _debug = __webpack_require__(443);
-	
-	var _debug2 = _interopRequireDefault(_debug);
-	
-	var _chartsRainfall = __webpack_require__(481);
-	
-	var _chartsRainfall2 = _interopRequireDefault(_chartsRainfall);
-	
-	var _datasourcesMonthlyRainfallJs = __webpack_require__(482);
-	
-	var _datasourcesMonthlyRainfallJs2 = _interopRequireDefault(_datasourcesMonthlyRainfallJs);
-	
-	var _datasourcesAverage30RainfallJs = __webpack_require__(483);
-	
-	var _datasourcesAverage30RainfallJs2 = _interopRequireDefault(_datasourcesAverage30RainfallJs);
-	
-	var _datasourcesStationsJs = __webpack_require__(484);
-	
-	var _datasourcesStationsJs2 = _interopRequireDefault(_datasourcesStationsJs);
-	
-	var _reactBootstrap = __webpack_require__(206);
-	
-	// Rainfall Data
-	
-	var debug = (0, _debug2["default"])('app:components:RainfallChartComponent');
-	
-	var monthlyRainfallData = new _datasourcesMonthlyRainfallJs2["default"]();
-	var average30Source = new _datasourcesAverage30RainfallJs2["default"]();
-	var stationData = new _datasourcesStationsJs2["default"]();
-	
-	var RainfallChartComponent = _react2["default"].createClass({
-	    displayName: "RainfallChartComponent",
-	
-	    propTypes: {
-	        state: _react2["default"].PropTypes.string.isRequired,
-	        location: _react2["default"].PropTypes.object.isRequired
-	    },
-	
-	    render: function render() {
-	        return _react2["default"].createElement(
-	            "div",
-	            null,
-	            _react2["default"].createElement(_chartsRainfall2["default"], {
-	                monthlySource: monthlyRainfallData,
-	                average30Source: average30Source,
-	                stationSource: stationData,
-	                radius: 100,
-	                state: this.props.state,
-	                location: this.props.location })
-	        );
-	    }
-	});
-	module.exports = RainfallChartComponent;
-
-/***/ },
-/* 481 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	// import dc from 'dc';
-	// import d3 from 'd3';
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-	
-	var _lodash = __webpack_require__(452);
-	
-	var _lodash2 = _interopRequireDefault(_lodash);
-	
-	var _react = __webpack_require__(2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactDom = __webpack_require__(158);
-	
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-	
-	var _commonUtil = __webpack_require__(475);
-	
-	var _commonUtil2 = _interopRequireDefault(_commonUtil);
-	
-	var _colors = __webpack_require__(476);
-	
-	var _colors2 = _interopRequireDefault(_colors);
-	
-	var _debug = __webpack_require__(443);
-	
-	var _debug2 = _interopRequireDefault(_debug);
-	
-	var debug = (0, _debug2["default"])('app:components:MonthlyRainfall');
-	
-	var Rainfall = _react2["default"].createClass({
-	    displayName: "Rainfall",
-	
-	    propTypes: {
-	        monthlySource: _react2["default"].PropTypes.object.isRequired,
-	        average30Source: _react2["default"].PropTypes.object.isRequired,
-	        stationSource: _react2["default"].PropTypes.object.isRequired,
-	        state: _react2["default"].PropTypes.string.isRequired,
-	        location: _react2["default"].PropTypes.object.isRequired,
-	        radius: _react2["default"].PropTypes.number.isRequired
-	    },
-	
-	    getInitialState: function getInitialState() {
-	        return {};
-	    },
-	
-	    componentDidMount: function componentDidMount() {
-	        this.drawChart();
-	    },
-	
-	    componentDidUpdate: function componentDidUpdate(prevProps) {
-	        if (prevProps.state !== this.props.state || prevProps.radius !== this.props.radius || prevProps.location.lat !== this.props.location.lat || prevProps.location.lng !== this.props.location.lng) {
-	            this.drawChart();
-	        }
-	    },
-	
-	    //subsets stations by a fixed radius, so we can constrain the plotted data to a reasonable spatial range
-	    subsetStations: function subsetStations(stations, coords, radius) {
-	        return _commonUtil2["default"].geospatial.hitTestPoints(stations, coords, radius);
-	    },
-	
-	    //subsets the weather data to only include stations in the subset map
-	    subsetWeatherData: function subsetWeatherData(data, stations) {
-	        var output = data.filter(function (d) {
-	            return stations[d.id];
-	        });
-	        return output;
-	    },
-	
-	    drawChart: function drawChart() {
-	        var _this = this;
-	
-	        debug('redrawing rainfall chart');
-	        var el = _reactDom2["default"].findDOMNode(this);
-	
-	        Promise.all([
-	        //TODO: push the state/location into all of these functions, so results are already filtered
-	        //if this was done, we could reduce iteration of the monthly by 12, since each station has one row per year
-	        this.props.monthlySource.list(this.props.state), this.props.average30Source.list(), this.props.stationSource.list()]).then(function (results) {
-	
-	            var monthlyData = results[0].data;
-	            var average30Data = results[1].data;
-	
-	            var stationSubset = _this.subsetStations(results[2].data, _this.props.location, _this.props.radius);
-	
-	            var monthlySubset = _this.subsetWeatherData(monthlyData, stationSubset);
-	            var average30Subset = _this.subsetWeatherData(average30Data, stationSubset);
-	
-	            var monthlyIndex = crossfilter(monthlySubset);
-	            var average30Index = crossfilter(average30Subset);
-	
-	            var monthlyRainDim = monthlyIndex.dimension(function (d) {
-	                return d3.time.month(d.date);
-	            });
-	            var average30RainDim = average30Index.dimension(function (d) {
-	                return d3.time.month(d.date);
-	            });
-	
-	            //this group averages all the selected stations for a monthly reading
-	            var monthlyRainGroup = monthlyRainDim.group().reduce(_commonUtil2["default"].reducers.average.add('value'), _commonUtil2["default"].reducers.average.remove('value'), _commonUtil2["default"].reducers.average.init());
-	
-	            var average30RainGroup = average30RainDim.group().reduce(_commonUtil2["default"].reducers.average.add('value'), _commonUtil2["default"].reducers.average.remove('value'), _commonUtil2["default"].reducers.average.init());
-	
-	            var timeScale = d3.time.scale().domain([new Date(2000, 1, 1), new Date(2015, 12, 31)]);
-	
-	            var compChart = dc.compositeChart(el);
-	            compChart.width($(el).innerWidth() - 30).height(250).margins({ top: 10, left: 50, right: 80, bottom: 40 }).x(timeScale).xUnits(d3.time.months).xAxisLabel("Date").yAxisLabel('Rainfall (inches)').dimension(monthlyRainDim).brushOn(false).compose([dc.lineChart(compChart).colors(_colors2["default"].monthlyRainfall).group(monthlyRainGroup).valueAccessor(function (d) {
-	                return d.value.avg;
-	            }), dc.lineChart(compChart).colors(_colors2["default"].monthlyAverageRainfall).group(average30RainGroup).valueAccessor(function (d) {
-	                return d.value.avg;
-	            })]);
-	
-	            dc.renderAll();
-	            _this.state.myChart = compChart;
-	        });
-	    },
-	    reset: function reset() {
-	        if (this.state && this.state.myChart) {
-	            this.state.myChart.filterAll();
-	            dc.redrawAll();
-	        }
-	    },
-	    render: function render() {
-	        return _react2["default"].createElement(
-	            "div",
-	            { className: "col-xs-12", id: "monthlyRainfallChart" },
-	            _react2["default"].createElement(
-	                "h4",
-	                null,
-	                "Monthly Rainfall"
-	            ),
-	            _react2["default"].createElement(
-	                "span",
-	                { className: "text-muted" },
-	                "Total rainfall per month versus 30-year average monthly rainfall"
-	            ),
-	            _react2["default"].createElement(
-	                "a",
-	                { className: "reset", onClick: this.reset, style: { display: "none" } },
-	                "reset"
-	            )
-	        );
-	    }
-	
-	});
-	
-	module.exports = Rainfall;
-
-/***/ },
-/* 482 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var _cachingDataSource = __webpack_require__(478);
-	
-	var _cachingDataSource2 = _interopRequireDefault(_cachingDataSource);
-	
-	var _commonUtil = __webpack_require__(475);
-	
-	var _commonUtil2 = _interopRequireDefault(_commonUtil);
-	
-	var _debug = __webpack_require__(443);
-	
-	var _debug2 = _interopRequireDefault(_debug);
-	
-	var debug = (0, _debug2["default"])('app:data_sources:MonthlyRainfall');
-	
-	/**
-	 * A datasource wrapping the monthly average rainfall
-	 */
-	
-	var MonthlyRainfallDataSource = (function (_CachingDataSource) {
-	    _inherits(MonthlyRainfallDataSource, _CachingDataSource);
-	
-	    function MonthlyRainfallDataSource() {
-	        _classCallCheck(this, MonthlyRainfallDataSource);
-	
-	        _get(Object.getPrototypeOf(MonthlyRainfallDataSource.prototype), "constructor", this).apply(this, arguments);
-	    }
-	
-	    _createClass(MonthlyRainfallDataSource, [{
-	        key: "retrieveData",
-	        value: function retrieveData(state) {
-	            debug('retrieving rainfall data for ', state, this);
-	            var dataUrl = "data/weather/state/" + state.toUpperCase() + "/rain.csv";
-	            return new Promise(function (resolve, reject) {
-	                d3.csv(dataUrl, function (err, data) {
-	                    if (err) {
-	                        reject(err);
-	                    } else {
-	                        //transpose and summarize the data into monthly and annual with real dates
-	                        var monthly = _commonUtil2["default"].rainfall.monthly(data);
-	                        resolve({
-	                            data: monthly,
-	                            index: crossfilter(monthly)
-	                        });
-	                    }
-	                });
-	            });
-	        }
-	    }]);
-	
-	    return MonthlyRainfallDataSource;
-	})(_cachingDataSource2["default"]);
-	
-	module.exports = MonthlyRainfallDataSource;
-
-/***/ },
-/* 483 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	// import d3 from 'd3';
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var _commonUtil = __webpack_require__(475);
-	
-	var _commonUtil2 = _interopRequireDefault(_commonUtil);
-	
-	var _cachingDataSource = __webpack_require__(478);
-	
-	var _cachingDataSource2 = _interopRequireDefault(_cachingDataSource);
-	
-	/**
-	 * A datasource wrapping the monthly average 30-year rainfall
-	 */
-	
-	var Average30RainfallDataSource = (function (_CachingDataSource) {
-	    _inherits(Average30RainfallDataSource, _CachingDataSource);
-	
-	    function Average30RainfallDataSource() {
-	        _classCallCheck(this, Average30RainfallDataSource);
-	
-	        _get(Object.getPrototypeOf(Average30RainfallDataSource.prototype), "constructor", this).apply(this, arguments);
-	    }
-	
-	    _createClass(Average30RainfallDataSource, [{
-	        key: "retrieveData",
-	        value: function retrieveData() {
-	            return new Promise(function (resolve, reject) {
-	                d3.csv('data/monthly-precip-avg.csv', function (err, data) {
-	                    if (err) {
-	                        reject(err);
-	                    } else {
-	                        //transpose and summarize the data into monthly and annual with real dates
-	                        var average30 = _commonUtil2["default"].rainfall.monthlyAverage30(data);
-	                        resolve({
-	                            data: average30,
-	                            index: crossfilter(average30)
-	                        });
-	                    }
-	                });
-	            });
-	        }
-	    }]);
-	
-	    return Average30RainfallDataSource;
-	})(_cachingDataSource2["default"]);
-	
-	module.exports = Average30RainfallDataSource;
-
-/***/ },
-/* 484 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var _cachingDataSource = __webpack_require__(478);
-	
-	var _cachingDataSource2 = _interopRequireDefault(_cachingDataSource);
-	
-	/**
-	 * A datasource wrapping the stations geo data
-	 */
-	
-	var StationsDataSource = (function (_CachingDataSource) {
-	    _inherits(StationsDataSource, _CachingDataSource);
-	
-	    function StationsDataSource() {
-	        _classCallCheck(this, StationsDataSource);
-	
-	        _get(Object.getPrototypeOf(StationsDataSource.prototype), 'constructor', this).apply(this, arguments);
-	    }
-	
-	    _createClass(StationsDataSource, [{
-	        key: 'retrieveData',
-	        value: function retrieveData() {
-	            return new Promise(function (resolve, reject) {
-	                d3.csv('data/weather/stations.csv', function (err, data) {
-	                    if (err) {
-	                        reject(err);
-	                    } else {
-	                        resolve({ data: data });
-	                    }
-	                });
-	            });
-	        }
-	    }]);
-	
-	    return StationsDataSource;
-	})(_cachingDataSource2['default']);
-	
-	module.exports = StationsDataSource;
-
-/***/ },
-/* 485 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
-	var _historyLibCreateBrowserHistory = __webpack_require__(486);
+	var _historyLibCreateBrowserHistory = __webpack_require__(481);
 	
 	var _historyLibCreateBrowserHistory2 = _interopRequireDefault(_historyLibCreateBrowserHistory);
 	
@@ -57619,7 +57205,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 486 */
+/* 481 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57630,19 +57216,19 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _invariant = __webpack_require__(487);
+	var _invariant = __webpack_require__(482);
 	
 	var _invariant2 = _interopRequireDefault(_invariant);
 	
-	var _Actions = __webpack_require__(488);
+	var _Actions = __webpack_require__(483);
 	
-	var _ExecutionEnvironment = __webpack_require__(489);
+	var _ExecutionEnvironment = __webpack_require__(484);
 	
-	var _DOMUtils = __webpack_require__(490);
+	var _DOMUtils = __webpack_require__(485);
 	
-	var _DOMStateStorage = __webpack_require__(491);
+	var _DOMStateStorage = __webpack_require__(486);
 	
-	var _createDOMHistory = __webpack_require__(493);
+	var _createDOMHistory = __webpack_require__(488);
 	
 	var _createDOMHistory2 = _interopRequireDefault(_createDOMHistory);
 	
@@ -57791,7 +57377,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 487 */
+/* 482 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -57851,7 +57437,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ },
-/* 488 */
+/* 483 */
 /***/ function(module, exports) {
 
 	/**
@@ -57887,7 +57473,7 @@
 	};
 
 /***/ },
-/* 489 */
+/* 484 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -57897,7 +57483,7 @@
 	exports.canUseDOM = canUseDOM;
 
 /***/ },
-/* 490 */
+/* 485 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -57977,7 +57563,7 @@
 	}
 
 /***/ },
-/* 491 */
+/* 486 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*eslint-disable no-empty */
@@ -57989,7 +57575,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _warning = __webpack_require__(492);
+	var _warning = __webpack_require__(487);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -58030,7 +57616,7 @@
 	}
 
 /***/ },
-/* 492 */
+/* 487 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -58097,7 +57683,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ },
-/* 493 */
+/* 488 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58108,15 +57694,15 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _invariant = __webpack_require__(487);
+	var _invariant = __webpack_require__(482);
 	
 	var _invariant2 = _interopRequireDefault(_invariant);
 	
-	var _ExecutionEnvironment = __webpack_require__(489);
+	var _ExecutionEnvironment = __webpack_require__(484);
 	
-	var _DOMUtils = __webpack_require__(490);
+	var _DOMUtils = __webpack_require__(485);
 	
-	var _createHistory = __webpack_require__(494);
+	var _createHistory = __webpack_require__(489);
 	
 	var _createHistory2 = _interopRequireDefault(_createHistory);
 	
@@ -58142,7 +57728,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 494 */
+/* 489 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58153,23 +57739,23 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _deepEqual = __webpack_require__(495);
+	var _deepEqual = __webpack_require__(490);
 	
 	var _deepEqual2 = _interopRequireDefault(_deepEqual);
 	
-	var _AsyncUtils = __webpack_require__(498);
+	var _AsyncUtils = __webpack_require__(493);
 	
-	var _Actions = __webpack_require__(488);
+	var _Actions = __webpack_require__(483);
 	
-	var _createLocation2 = __webpack_require__(499);
+	var _createLocation2 = __webpack_require__(494);
 	
 	var _createLocation3 = _interopRequireDefault(_createLocation2);
 	
-	var _runTransitionHook = __webpack_require__(501);
+	var _runTransitionHook = __webpack_require__(496);
 	
 	var _runTransitionHook2 = _interopRequireDefault(_runTransitionHook);
 	
-	var _deprecate = __webpack_require__(502);
+	var _deprecate = __webpack_require__(497);
 	
 	var _deprecate2 = _interopRequireDefault(_deprecate);
 	
@@ -58395,12 +57981,12 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 495 */
+/* 490 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var pSlice = Array.prototype.slice;
-	var objectKeys = __webpack_require__(496);
-	var isArguments = __webpack_require__(497);
+	var objectKeys = __webpack_require__(491);
+	var isArguments = __webpack_require__(492);
 	
 	var deepEqual = module.exports = function (actual, expected, opts) {
 	  if (!opts) opts = {};
@@ -58495,7 +58081,7 @@
 
 
 /***/ },
-/* 496 */
+/* 491 */
 /***/ function(module, exports) {
 
 	exports = module.exports = typeof Object.keys === 'function'
@@ -58510,7 +58096,7 @@
 
 
 /***/ },
-/* 497 */
+/* 492 */
 /***/ function(module, exports) {
 
 	var supportsArgumentsClass = (function(){
@@ -58536,7 +58122,7 @@
 
 
 /***/ },
-/* 498 */
+/* 493 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -58567,7 +58153,7 @@
 	}
 
 /***/ },
-/* 499 */
+/* 494 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58576,9 +58162,9 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _Actions = __webpack_require__(488);
+	var _Actions = __webpack_require__(483);
 	
-	var _parsePath = __webpack_require__(500);
+	var _parsePath = __webpack_require__(495);
 	
 	var _parsePath2 = _interopRequireDefault(_parsePath);
 	
@@ -58608,7 +58194,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 500 */
+/* 495 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58617,7 +58203,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _warning = __webpack_require__(492);
+	var _warning = __webpack_require__(487);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -58661,7 +58247,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 501 */
+/* 496 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58670,7 +58256,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _warning = __webpack_require__(492);
+	var _warning = __webpack_require__(487);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -58690,7 +58276,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 502 */
+/* 497 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58699,7 +58285,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _warning = __webpack_require__(492);
+	var _warning = __webpack_require__(487);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -58714,7 +58300,71 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 503 */
+/* 498 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	// import d3 from 'd3';
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var _commonUtil = __webpack_require__(475);
+	
+	var _commonUtil2 = _interopRequireDefault(_commonUtil);
+	
+	var _cachingDataSource = __webpack_require__(478);
+	
+	var _cachingDataSource2 = _interopRequireDefault(_cachingDataSource);
+	
+	/**
+	 * A datasource wrapping the monthly average 30-year rainfall
+	 */
+	
+	var Average30RainfallDataSource = (function (_CachingDataSource) {
+	    _inherits(Average30RainfallDataSource, _CachingDataSource);
+	
+	    function Average30RainfallDataSource() {
+	        _classCallCheck(this, Average30RainfallDataSource);
+	
+	        _get(Object.getPrototypeOf(Average30RainfallDataSource.prototype), "constructor", this).apply(this, arguments);
+	    }
+	
+	    _createClass(Average30RainfallDataSource, [{
+	        key: "retrieveData",
+	        value: function retrieveData() {
+	            return new Promise(function (resolve, reject) {
+	                d3.csv('data/monthly-precip-avg.csv', function (err, data) {
+	                    if (err) {
+	                        reject(err);
+	                    } else {
+	                        //transpose and summarize the data into monthly and annual with real dates
+	                        var average30 = _commonUtil2["default"].rainfall.monthlyAverage30(data);
+	                        resolve({
+	                            data: average30,
+	                            index: crossfilter(average30)
+	                        });
+	                    }
+	                });
+	            });
+	        }
+	    }]);
+	
+	    return Average30RainfallDataSource;
+	})(_cachingDataSource2["default"]);
+	
+	module.exports = Average30RainfallDataSource;
+
+/***/ },
+/* 499 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58770,7 +58420,7 @@
 	module.exports = CropYieldsDataSource;
 
 /***/ },
-/* 504 */
+/* 500 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58826,7 +58476,7 @@
 	module.exports = CropYieldsBUADataSource;
 
 /***/ },
-/* 505 */
+/* 501 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58886,7 +58536,7 @@
 	module.exports = CropYieldsBaADataSource;
 
 /***/ },
-/* 506 */
+/* 502 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58942,7 +58592,7 @@
 	module.exports = CropYieldsCWTADataSource;
 
 /***/ },
-/* 507 */
+/* 503 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -59022,7 +58672,285 @@
 	module.exports = HighLowDataSource;
 
 /***/ },
-/* 508 */
+/* 504 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var _cachingDataSource = __webpack_require__(478);
+	
+	var _cachingDataSource2 = _interopRequireDefault(_cachingDataSource);
+	
+	var _commonUtil = __webpack_require__(475);
+	
+	var _commonUtil2 = _interopRequireDefault(_commonUtil);
+	
+	var _debug = __webpack_require__(443);
+	
+	var _debug2 = _interopRequireDefault(_debug);
+	
+	var debug = (0, _debug2["default"])('app:data_sources:MonthlyRainfall');
+	
+	/**
+	 * A datasource wrapping the monthly average rainfall
+	 */
+	
+	var MonthlyRainfallDataSource = (function (_CachingDataSource) {
+	    _inherits(MonthlyRainfallDataSource, _CachingDataSource);
+	
+	    function MonthlyRainfallDataSource() {
+	        _classCallCheck(this, MonthlyRainfallDataSource);
+	
+	        _get(Object.getPrototypeOf(MonthlyRainfallDataSource.prototype), "constructor", this).apply(this, arguments);
+	    }
+	
+	    _createClass(MonthlyRainfallDataSource, [{
+	        key: "retrieveData",
+	        value: function retrieveData(state) {
+	            debug('retrieving rainfall data for ', state, this);
+	            var dataUrl = "data/weather/state/" + state.toUpperCase() + "/rain.csv";
+	            return new Promise(function (resolve, reject) {
+	                d3.csv(dataUrl, function (err, data) {
+	                    if (err) {
+	                        reject(err);
+	                    } else {
+	                        //transpose and summarize the data into monthly and annual with real dates
+	                        var monthly = _commonUtil2["default"].rainfall.monthly(data);
+	                        resolve({
+	                            data: monthly,
+	                            index: crossfilter(monthly)
+	                        });
+	                    }
+	                });
+	            });
+	        }
+	    }]);
+	
+	    return MonthlyRainfallDataSource;
+	})(_cachingDataSource2["default"]);
+	
+	module.exports = MonthlyRainfallDataSource;
+
+/***/ },
+/* 505 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var _cachingDataSource = __webpack_require__(478);
+	
+	var _cachingDataSource2 = _interopRequireDefault(_cachingDataSource);
+	
+	/**
+	 * A datasource wrapping the stations geo data
+	 */
+	
+	var StationsDataSource = (function (_CachingDataSource) {
+	    _inherits(StationsDataSource, _CachingDataSource);
+	
+	    function StationsDataSource() {
+	        _classCallCheck(this, StationsDataSource);
+	
+	        _get(Object.getPrototypeOf(StationsDataSource.prototype), 'constructor', this).apply(this, arguments);
+	    }
+	
+	    _createClass(StationsDataSource, [{
+	        key: 'retrieveData',
+	        value: function retrieveData() {
+	            return new Promise(function (resolve, reject) {
+	                d3.csv('data/weather/stations.csv', function (err, data) {
+	                    if (err) {
+	                        reject(err);
+	                    } else {
+	                        resolve({ data: data });
+	                    }
+	                });
+	            });
+	        }
+	    }]);
+	
+	    return StationsDataSource;
+	})(_cachingDataSource2['default']);
+	
+	module.exports = StationsDataSource;
+
+/***/ },
+/* 506 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	// import dc from 'dc';
+	// import d3 from 'd3';
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
+	var _lodash = __webpack_require__(452);
+	
+	var _lodash2 = _interopRequireDefault(_lodash);
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactDom = __webpack_require__(158);
+	
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+	
+	var _commonUtil = __webpack_require__(475);
+	
+	var _commonUtil2 = _interopRequireDefault(_commonUtil);
+	
+	var _colors = __webpack_require__(476);
+	
+	var _colors2 = _interopRequireDefault(_colors);
+	
+	var _debug = __webpack_require__(443);
+	
+	var _debug2 = _interopRequireDefault(_debug);
+	
+	var debug = (0, _debug2["default"])('app:components:MonthlyRainfall');
+	
+	var Rainfall = _react2["default"].createClass({
+	    displayName: "Rainfall",
+	
+	    propTypes: {
+	        monthlySource: _react2["default"].PropTypes.object.isRequired,
+	        average30Source: _react2["default"].PropTypes.object.isRequired,
+	        stationSource: _react2["default"].PropTypes.object.isRequired,
+	        state: _react2["default"].PropTypes.string.isRequired,
+	        location: _react2["default"].PropTypes.object.isRequired,
+	        radius: _react2["default"].PropTypes.number.isRequired
+	    },
+	
+	    getInitialState: function getInitialState() {
+	        return {};
+	    },
+	
+	    componentDidMount: function componentDidMount() {
+	        this.drawChart();
+	    },
+	
+	    componentDidUpdate: function componentDidUpdate(prevProps) {
+	        if (prevProps.state !== this.props.state || prevProps.radius !== this.props.radius || prevProps.location.lat !== this.props.location.lat || prevProps.location.lng !== this.props.location.lng) {
+	            this.drawChart();
+	        }
+	    },
+	
+	    //subsets stations by a fixed radius, so we can constrain the plotted data to a reasonable spatial range
+	    subsetStations: function subsetStations(stations, coords, radius) {
+	        return _commonUtil2["default"].geospatial.hitTestPoints(stations, coords, radius);
+	    },
+	
+	    //subsets the weather data to only include stations in the subset map
+	    subsetWeatherData: function subsetWeatherData(data, stations) {
+	        var output = data.filter(function (d) {
+	            return stations[d.id];
+	        });
+	        return output;
+	    },
+	
+	    drawChart: function drawChart() {
+	        var _this = this;
+	
+	        debug('redrawing rainfall chart');
+	        var el = _reactDom2["default"].findDOMNode(this);
+	
+	        Promise.all([
+	        //TODO: push the state/location into all of these functions, so results are already filtered
+	        //if this was done, we could reduce iteration of the monthly by 12, since each station has one row per year
+	        this.props.monthlySource.list(this.props.state), this.props.average30Source.list(), this.props.stationSource.list()]).then(function (results) {
+	
+	            var monthlyData = results[0].data;
+	            var average30Data = results[1].data;
+	
+	            var stationSubset = _this.subsetStations(results[2].data, _this.props.location, _this.props.radius);
+	
+	            var monthlySubset = _this.subsetWeatherData(monthlyData, stationSubset);
+	            var average30Subset = _this.subsetWeatherData(average30Data, stationSubset);
+	
+	            var monthlyIndex = crossfilter(monthlySubset);
+	            var average30Index = crossfilter(average30Subset);
+	
+	            var monthlyRainDim = monthlyIndex.dimension(function (d) {
+	                return d3.time.month(d.date);
+	            });
+	            var average30RainDim = average30Index.dimension(function (d) {
+	                return d3.time.month(d.date);
+	            });
+	
+	            //this group averages all the selected stations for a monthly reading
+	            var monthlyRainGroup = monthlyRainDim.group().reduce(_commonUtil2["default"].reducers.average.add('value'), _commonUtil2["default"].reducers.average.remove('value'), _commonUtil2["default"].reducers.average.init());
+	
+	            var average30RainGroup = average30RainDim.group().reduce(_commonUtil2["default"].reducers.average.add('value'), _commonUtil2["default"].reducers.average.remove('value'), _commonUtil2["default"].reducers.average.init());
+	
+	            var timeScale = d3.time.scale().domain([new Date(2000, 1, 1), new Date(2015, 12, 31)]);
+	
+	            var compChart = dc.compositeChart(el);
+	            compChart.width($(el).innerWidth() - 30).height(250).margins({ top: 10, left: 50, right: 80, bottom: 40 }).x(timeScale).xUnits(d3.time.months).xAxisLabel("Date").yAxisLabel('Rainfall (inches)').dimension(monthlyRainDim).brushOn(false).compose([dc.lineChart(compChart).colors(_colors2["default"].monthlyRainfall).group(monthlyRainGroup).valueAccessor(function (d) {
+	                return d.value.avg;
+	            }), dc.lineChart(compChart).colors(_colors2["default"].monthlyAverageRainfall).group(average30RainGroup).valueAccessor(function (d) {
+	                return d.value.avg;
+	            })]);
+	
+	            dc.renderAll();
+	            _this.state.myChart = compChart;
+	        });
+	    },
+	    reset: function reset() {
+	        if (this.state && this.state.myChart) {
+	            this.state.myChart.filterAll();
+	            dc.redrawAll();
+	        }
+	    },
+	    render: function render() {
+	        return _react2["default"].createElement(
+	            "div",
+	            { className: "col-xs-12", id: "monthlyRainfallChart" },
+	            _react2["default"].createElement(
+	                "h4",
+	                null,
+	                "Monthly Rainfall"
+	            ),
+	            _react2["default"].createElement(
+	                "span",
+	                { className: "text-muted" },
+	                "Total rainfall per month versus 30-year average monthly rainfall"
+	            ),
+	            _react2["default"].createElement(
+	                "a",
+	                { className: "reset", onClick: this.reset, style: { display: "none" } },
+	                "reset"
+	            )
+	        );
+	    }
+	
+	});
+	
+	module.exports = Rainfall;
+
+/***/ },
+/* 507 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -59109,6 +59037,76 @@
 	});
 	
 	module.exports = TemperatureReports;
+
+/***/ },
+/* 508 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactDom = __webpack_require__(158);
+	
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+	
+	var _debug = __webpack_require__(443);
+	
+	var _debug2 = _interopRequireDefault(_debug);
+	
+	var _chartsRainfall = __webpack_require__(506);
+	
+	var _chartsRainfall2 = _interopRequireDefault(_chartsRainfall);
+	
+	var _datasourcesMonthlyRainfallJs = __webpack_require__(504);
+	
+	var _datasourcesMonthlyRainfallJs2 = _interopRequireDefault(_datasourcesMonthlyRainfallJs);
+	
+	var _datasourcesAverage30RainfallJs = __webpack_require__(498);
+	
+	var _datasourcesAverage30RainfallJs2 = _interopRequireDefault(_datasourcesAverage30RainfallJs);
+	
+	var _datasourcesStationsJs = __webpack_require__(505);
+	
+	var _datasourcesStationsJs2 = _interopRequireDefault(_datasourcesStationsJs);
+	
+	var _reactBootstrap = __webpack_require__(206);
+	
+	// Rainfall Data
+	
+	var debug = (0, _debug2["default"])('app:components:RainfallChartComponent');
+	
+	var monthlyRainfallData = new _datasourcesMonthlyRainfallJs2["default"]();
+	var average30Source = new _datasourcesAverage30RainfallJs2["default"]();
+	var stationData = new _datasourcesStationsJs2["default"]();
+	
+	var RainfallChartComponent = _react2["default"].createClass({
+	    displayName: "RainfallChartComponent",
+	
+	    propTypes: {
+	        state: _react2["default"].PropTypes.string.isRequired,
+	        location: _react2["default"].PropTypes.object.isRequired
+	    },
+	
+	    render: function render() {
+	        return _react2["default"].createElement(
+	            "div",
+	            null,
+	            _react2["default"].createElement(_chartsRainfall2["default"], {
+	                monthlySource: monthlyRainfallData,
+	                average30Source: average30Source,
+	                stationSource: stationData,
+	                radius: 100,
+	                state: this.props.state,
+	                location: this.props.location })
+	        );
+	    }
+	});
+	module.exports = RainfallChartComponent;
 
 /***/ }
 /******/ ]);
