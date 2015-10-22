@@ -56221,8 +56221,8 @@
 	            "div",
 	            null,
 	            _react2["default"].createElement(
-	                "h4",
-	                null,
+	                "div",
+	                { className: "activitiesPerformedHeader" },
 	                "Percentage of land in ",
 	                _react2["default"].createElement(
 	                    "span",
