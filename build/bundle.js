@@ -56219,7 +56219,7 @@
 	            var isLast = index === _this2.state.activities.length - 1;
 	            return _react2["default"].createElement(_ActivityTile2["default"], { key: "activity" + index, activity: activity, isLast: isLast });
 	        });
-	        var noData = "No Activity Data Found. " + stateName + " has data available for years " + this.state.yearsForState.join(', ');
+	        var noData = stateName + " has data available for years " + this.state.yearsForState.join(', ');
 	        return _react2["default"].createElement(
 	            "div",
 	            null,
