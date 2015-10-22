@@ -37,7 +37,10 @@ const ActivitiesPerformedComponent = React.createClass({
 
     render() {
         const stateName = stateData.statesByCode[this.props.state].name;
-        const activities = this.state.activities.map((activity, index) => (<ActivityTile key={`activity${index}`} activity={activity} />));
+        const activities = this.state.activities.map((activity, index) => {
+            const isLast = index === this.state.activities.length - 1;
+            return (<ActivityTile key={`activity${index}`} activity={activity} isLast={isLast} />);
+        });
         const noData = `No Activity Data Found. ${stateName} has data available for years ${this.state.yearsForState.join(', ')}`;
         return (
             <div>
