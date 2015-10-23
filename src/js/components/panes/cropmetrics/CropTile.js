@@ -14,7 +14,7 @@ const CropTile = React.createClass({
     },
 
     handleSelect(e, k) {
-        this.props.onSelect(this.props.crop.name);
+        this.props.onSelect(this.props.crop);
     },
 
 

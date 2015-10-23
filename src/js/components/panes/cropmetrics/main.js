@@ -14,13 +14,13 @@ let CropMetricsPaneComponent = React.createClass({
     propTypes: {
         state: React.PropTypes.string,
         location: React.PropTypes.object,
-        crop: React.PropTypes.string,
+        crop: React.PropTypes.object
     },
 
     getInitialState() {
 //        debug({crop: 'CORN', state: 'IA'})
         return {
-            crop: 'CORN',
+            crop: {name:'CORN', imageUrl: 'src/img/icons/crops/corn.png'},
             state: 'IA'
         };
     },
@@ -41,9 +41,6 @@ let CropMetricsPaneComponent = React.createClass({
                 <div className="paneHeader">
                     <h4 className="paneHeaderContent">What do you grow on your farm?</h4>
                     <CropSelection state={this.state.state} onSelect={this.handleSelect}/>
-                </div>
-                <div>
-                    <h4 className="paneHeaderContent"><small>{this.state.crop}</small></h4>
                 </div>
                 <div>
                     <RainfallVsYieldChart crop={this.state.crop} state={this.props.state} location={this.props.location} />

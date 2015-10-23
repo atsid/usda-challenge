@@ -14,7 +14,7 @@ const CropSelectionComponent = React.createClass({
     },
 
     getInitialState() {
-        return { crops: [], selectedCrop:"corn"};
+        return { crops: [], selectedCrop:{}};
     },
 
     componentDidMount() {
@@ -28,9 +28,7 @@ const CropSelectionComponent = React.createClass({
 
     loadCrops(state) {
         cropStore.getCrops().then((crops) => {
-        this.setState({crops, state})
-        debug("loading Crops");
-        debug(this.state.crops);
+          this.setState({crops, state})
       });
     },
 
@@ -48,7 +46,7 @@ const CropSelectionComponent = React.createClass({
         const localStateCode = this.props.state;
 //        const state = "{state}";
         const crops = this.state.crops.map((crop, index) => {
-            const isSelected = this.state.selectedCrop === crop.name;
+            const isSelected = this.state.selectedCrop.name === crop.name;
             return (<CropTile key={`crop${index}`} crop={crop} isSelected={isSelected} onSelect={this.handleSelect}/>);
         });
         const noData = `{localStateName} has data available for this.state.crop`;
