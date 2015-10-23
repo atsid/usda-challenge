@@ -25043,7 +25043,7 @@
 /* 220 */
 /***/ function(module, exports) {
 
-	var core = module.exports = {version: '1.2.2'};
+	var core = module.exports = {version: '1.2.3'};
 	if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
 
 /***/ },
@@ -25126,9 +25126,9 @@
 /* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// indexed object, fallback for non-array-like ES3 strings
+	// fallback for non-array-like ES3 and non-enumerable old V8 strings
 	var cof = __webpack_require__(226);
-	module.exports = 0 in Object('z') ? Object : function(it){
+	module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
 	  return cof(it) == 'String' ? it.split('') : Object(it);
 	};
 
@@ -56219,7 +56219,7 @@
 	            var isLast = index === _this2.state.activities.length - 1;
 	            return _react2["default"].createElement(_ActivityTile2["default"], { key: "activity" + index, activity: activity, isLast: isLast });
 	        });
-	        var noData = stateName + " has data available for years " + this.state.yearsForState.join(', ');
+	        var noData = stateName + " has data available for " + this.state.yearsForState.join(', ');
 	        return _react2["default"].createElement(
 	            "div",
 	            null,
