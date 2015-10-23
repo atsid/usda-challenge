@@ -11,6 +11,7 @@ const cropStore = new CropStore();
 const CropSelectionComponent = React.createClass({
     propTypes: {
         state: React.PropTypes.string.isRequired,
+        onSelect: React.propTypes.func.isRequired
     },
 
     getInitialState() {

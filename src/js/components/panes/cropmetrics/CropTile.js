@@ -9,7 +9,8 @@ const debug = debugFactory('app:components:CropTile');
 const CropTile = React.createClass({
     propTypes: {
         crop: React.PropTypes.object.isRequired,
-        isSelected: React.PropTypes.bool.isRequired
+        isSelected: React.PropTypes.bool.isRequired,
+        onSelect: React.propTypes.func.isRequired
     },
 
     handleSelect(e, k) {
