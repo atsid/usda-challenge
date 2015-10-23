@@ -8,7 +8,7 @@ import CachingDataSource from './cachingDataSource';
 class CropYieldsByCropDataSource extends CachingDataSource {
     retrieveData(crop) {
         return new Promise((resolve, reject) => {
-            d3.csv('data/crops/' + crop + '-yield.csv',
+            d3.csv('data/crops/' + crop.toUpperCase() + '-yield.csv',
                 function (d) {
                     d.date = new Date(d.year, 1, 1); // coerce to date object
                     return d;
