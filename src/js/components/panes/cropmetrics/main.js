@@ -18,13 +18,21 @@ let CropMetricsPaneComponent = React.createClass({
     },
 
     getInitialState() {
+//        debug({crop: 'CORN', state: 'IA'})
         return {
-            crop: 'CORN'
+            crop: 'CORN',
+            state: 'IA'
         };
     },
 
     handleSelect(k) {
-        this.setState({crop: k});
+      debug("main: " + k + ", st:" + this.state.state)
+        this.setState({crop: k, state: this.state.state});
+    },
+
+    componentWillReceiveProps(nextProps) {
+      this.setState( {crop: this.state.crop, state: nextProps.state })
+
     },
 
     render() {
@@ -32,7 +40,7 @@ let CropMetricsPaneComponent = React.createClass({
             <div className="pane">
                 <div className="paneHeader">
                     <h4 className="paneHeaderContent">What do you grow on your farm?</h4>
-                    <CropSelection stateObj={this.state} onSelect={this.handleSelect}/>
+                    <CropSelection state={this.state.state} onSelect={this.handleSelect}/>
                 </div>
                 <div>
                     <h4 className="paneHeaderContent"><small>{this.state.crop}</small></h4>
@@ -41,7 +49,6 @@ let CropMetricsPaneComponent = React.createClass({
                     <RainfallVsYieldChart crop={this.state.crop} state={this.props.state} location={this.props.location} />
                 </div>
                 <div>
-                    <MonthlyRainfallChart state={this.props.state} location={this.props.location} />
                 </div>
             </div>
         );
