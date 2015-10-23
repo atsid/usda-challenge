@@ -57574,7 +57574,7 @@
 	
 	    propTypes: {
 	        state: _react2["default"].PropTypes.string.isRequired,
-	        onSelect: _react2["default"].propTypes.func.isRequired
+	        onSelect: _react2["default"].PropTypes.func.isRequired
 	    },
 	
 	    getInitialState: function getInitialState() {
@@ -57754,7 +57754,7 @@
 	    propTypes: {
 	        crop: _react2["default"].PropTypes.object.isRequired,
 	        isSelected: _react2["default"].PropTypes.bool.isRequired,
-	        onSelect: _react2["default"].propTypes.func.isRequired
+	        onSelect: _react2["default"].PropTypes.func.isRequired
 	    },
 	
 	    handleSelect: function handleSelect(e, k) {
