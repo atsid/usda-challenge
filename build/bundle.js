@@ -41245,8 +41245,10 @@
 	        this.props.onStateChange(state.code);
 	    },
 	
-	    loadState: function loadState(state) {
+	    loadState: function loadState(state, requestedBounds) {
 	        debug('loading state', state);
+	
+	        // Default to the state bounds
 	        var bounds = {
 	            sw: {
 	                lat: state.bounds.minLat,
@@ -41257,6 +41259,27 @@
 	                lng: state.bounds.maxLng
 	            }
 	        };
+	        // If we have some bounds that have been requested by the state selector
+	        if (requestedBounds) {
+	            // We only have a center point, do some finagling to get it to center better
+	            if (requestedBounds.c) {
+	                bounds = {
+	                    // Some magic numbers to get a closer view on a given item
+	                    sw: {
+	                        lat: requestedBounds.c.lat * .9999,
+	                        lng: requestedBounds.c.lng * 1.0001
+	                    },
+	                    ne: {
+	                        lat: requestedBounds.c.lat * 1.0001,
+	                        lng: requestedBounds.c.lng * .9999
+	                    }
+	                };
+	            } else {
+	
+	                // We have a rectangular bounds use that
+	                bounds = requestedBounds;
+	            }
+	        }
 	
 	        if (this.state.selectedState) {
 	            this.refs.map.disable(this.state.selectedState.polygon);
@@ -41265,13 +41288,14 @@
 	        this.setState({ selectedState: state });
 	        this.refs.map.enable(state.polygon);
 	        this.refs.map.setBounds(bounds);
+	
 	        this.props.onStateChange(state.code);
 	    },
 	
-	    onSelectState: function onSelectState(state) {
+	    onSelectState: function onSelectState(state, bounds) {
 	        if (state) {
 	            debug('Selected State', state);
-	            this.loadState(state);
+	            this.loadState(state, bounds);
 	        }
 	    },
 	
@@ -41287,26 +41311,7 @@
 	                    { className: "paneHeaderContent" },
 	                    "Where's your farm?"
 	                ),
-	                _react2["default"].createElement(
-	                    _reactBootstrap.Button,
-	                    {
-	                        id: "locateMe",
-	                        className: "paneHeaderContent firstAction",
-	                        onClick: this.onLocateMe,
-	                        disabled: this.state.acquiringLocation },
-	                    _react2["default"].createElement(_reactBootstrap.Glyphicon, { glyph: "map-marker" }),
-	                    " ",
-	                    this.state.acquiringLocation ? "Locating..." : "Locate Me",
-	                    " "
-	                ),
-	                _react2["default"].createElement(
-	                    "span",
-	                    null,
-	                    " or "
-	                ),
-	                _react2["default"].createElement(_StateSelector2["default"], {
-	                    onStateSelected: this.onSelectState,
-	                    state: this.props.state })
+	                _react2["default"].createElement(_StateSelector2["default"], { onStateSelected: this.onSelectState })
 	            ),
 	            _react2["default"].createElement(
 	                "div",
@@ -56064,16 +56069,13 @@
 	
 	var _states2 = _interopRequireDefault(_states);
 	
-	var _reactBootstrap = __webpack_require__(206);
-	
 	var debug = (0, _debug2["default"])('app:components:StateSelector');
 	
 	var StateSelector = _react2["default"].createClass({
 	    displayName: "StateSelector",
 	
 	    propTypes: {
-	        onStateSelected: _react2["default"].PropTypes.func.isRequired,
-	        state: _react2["default"].PropTypes.string.isRequired
+	        onStateSelected: _react2["default"].PropTypes.func.isRequired
 	    },
 	
 	    contextTypes: {
@@ -56081,37 +56083,64 @@
 	    },
 	
 	    componentDidMount: function componentDidMount() {
-	        //this.props.onStateSelected(stateData.statesByCode[this.getSelectedStateCode()]);
+	        this.loadStateAutoComplete();
 	    },
 	
-	    getSelectedState: function getSelectedState() {
-	        return _states2["default"].statesByCode[this.props.state];
+	    loadStateAutoComplete: function loadStateAutoComplete() {
+	        var _this = this;
+	
+	        var autoComplete = new google.maps.places.Autocomplete(this.refs.stateSearchBox);
+	        autoComplete.addListener('place_changed', function () {
+	            var place = autoComplete.getPlace();
+	            var viewport = place.geometry.viewport;
+	            var location = place.geometry.location;
+	            var addressComponents = place.address_components;
+	            var stateComponents = addressComponents.filter(function (ac) {
+	                return ac.types.indexOf("administrative_area_level_1") >= 0;
+	            });
+	            if (stateComponents && stateComponents.length > 0) {
+	                var stateCode = stateComponents[0].short_name;
+	                var state = _states2["default"].statesByCode[stateCode];
+	                if (state) {
+	                    var bounds = undefined;
+	                    if (viewport) {
+	                        var vpCenter = viewport.getCenter();
+	                        var vpNE = viewport.getNorthEast();
+	                        var vpSW = viewport.getSouthWest();
+	                        bounds = {
+	                            ne: {
+	                                lat: vpNE.lat(),
+	                                lng: vpNE.lng()
+	                            },
+	                            sw: {
+	                                lat: vpSW.lat(),
+	                                lng: vpSW.lng()
+	                            }
+	                        };
+	                    } else if (location) {
+	                        bounds = {
+	                            c: {
+	                                lat: location.lat(),
+	                                lng: location.lng()
+	                            }
+	                        };
+	                    }
+	                    _this.selectState(state, bounds);
+	                } else {
+	                    debug("State not found!");
+	                }
+	            }
+	        });
+	        // Bias' the auto complete box to the bounds of the map
+	        // autocomplete.bindTo('bounds', map);
 	    },
 	
-	    selectState: function selectState(state) {
-	        this.props.onStateSelected(state);
+	    selectState: function selectState(state, bounds) {
+	        this.props.onStateSelected(state, bounds);
 	    },
 	
 	    render: function render() {
-	        var _this = this;
-	
-	        var selectedState = this.getSelectedState();
-	        var stateSelections = _states2["default"].states.map(function (state) {
-	            return _react2["default"].createElement(
-	                _reactBootstrap.MenuItem,
-	                { key: state.code, onSelect: function () {
-	                        return _this.props.onStateSelected(state);
-	                    } },
-	                state.name
-	            );
-	        });
-	
-	        var stateTitle = this.context.location.query.state ? selectedState.name : "Select State";
-	        return _react2["default"].createElement(
-	            _reactBootstrap.DropdownButton,
-	            { id: "selectState", title: stateTitle },
-	            stateSelections
-	        );
+	        return _react2["default"].createElement("input", { ref: "stateSearchBox", className: "firstAction stateSearchBox", placeholder: "Enter your farm's address", type: "text" });
 	    }
 	});
 	
