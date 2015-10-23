@@ -95,18 +95,7 @@ let MapPaneComponent = React.createClass({
             <div className="pane">
                 <div className="paneHeader">
                     <h4 className="paneHeaderContent">Where's your farm?</h4>
-                    <Button
-                        id="locateMe"
-                        className="paneHeaderContent firstAction"
-                        onClick={this.onLocateMe}
-                        disabled={this.state.acquiringLocation}>
-                        <Glyphicon glyph="map-marker"/>
-                        &nbsp;{this.state.acquiringLocation ? "Locating..." : "Locate Me"}&nbsp;
-                    </Button>
-                    <span>&nbsp;or&nbsp;</span>
-                    <StateSelector
-                        onStateSelected={this.onSelectState}
-                        state={this.props.state} />
+                    <StateSelector onStateSelected={this.onSelectState} />
                 </div>
                 <div className="yearSelectorContainer">
                     <YearSelector

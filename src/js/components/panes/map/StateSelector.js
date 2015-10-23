@@ -6,12 +6,9 @@ import debugFactory from "debug";
 import stateData from "./states";
 const debug = debugFactory('app:components:StateSelector');
 
-import {DropdownButton, MenuItem} from "react-bootstrap";
-
 const StateSelector = React.createClass({
     propTypes: {
-        onStateSelected: React.PropTypes.func.isRequired,
-        state: React.PropTypes.string.isRequired,
+        onStateSelected: React.PropTypes.func.isRequired
     },
 
     contextTypes: {
@@ -19,9 +16,28 @@ const StateSelector = React.createClass({
     },
 
     componentDidMount() {
-        //this.props.onStateSelected(stateData.statesByCode[this.getSelectedStateCode()]);
+        this.loadStateAutoComplete();
     },
 
+    loadStateAutoComplete() {
+        let autoComplete = new google.maps.places.Autocomplete(this.refs.stateSearchBox);
+        autoComplete.addListener('place_changed', () => {
+            let place = autoComplete.getPlace();
+            let addressComponents = place.address_components;
+            let stateComponents = addressComponents.filter((ac) => ac.types.indexOf("administrative_area_level_1") >= 0);
+            if (stateComponents && stateComponents.length > 0) {
+                let stateCode = stateComponents[0].short_name;
+                let state = stateData.statesByCode[stateCode];
+                if (state) {
+                    this.selectState(state);
+                } else {
+                    debug("State not found!");
+                }
+            }
+        });
+        // Bias' the auto complete box to the bounds of the map
+        // autocomplete.bindTo('bounds', map);
+    },
 
     getSelectedState() {
         return stateData.statesByCode[this.props.state];
@@ -32,20 +48,8 @@ const StateSelector = React.createClass({
     },
 
     render() {
-        const selectedState = this.getSelectedState();
-        const stateSelections = stateData.states.map((state) => {
-            return (
-                <MenuItem key={state.code} onSelect={() => this.props.onStateSelected(state)}>
-                    {state.name}
-                </MenuItem>
-            );
-        });
-
-        const stateTitle = (this.context.location.query.state ? selectedState.name : "Select State");
         return (
-            <DropdownButton id="selectState" title={stateTitle}>
-                {stateSelections}
-            </DropdownButton>
+            <input ref="stateSearchBox" className="firstAction stateSearchBox" placeholder="Enter your farm's address" type="text"></input>
         );
     }
 });
