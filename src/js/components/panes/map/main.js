@@ -60,9 +60,11 @@ let MapPaneComponent = React.createClass({
         this.props.onStateChange(state.code);
     },
 
-    loadState(state) {
+    loadState(state, requestedBounds) {
         debug('loading state', state);
-        const bounds = {
+
+        // Default to the state bounds
+        let bounds = {
             sw: {
                 lat: state.bounds.minLat,
                 lng: state.bounds.minLng,
@@ -70,8 +72,29 @@ let MapPaneComponent = React.createClass({
             ne: {
                 lat: state.bounds.maxLat,
                 lng: state.bounds.maxLng,
-            },
+            }
         };
+        // If we have some bounds that have been requested by the state selector
+        if (requestedBounds) {
+            // We only have a center point, do some finagling to get it to center better
+            if (requestedBounds.c) {
+                bounds = {
+                    // Some magic numbers to get a closer view on a given item
+                    sw: {
+                        lat: requestedBounds.c.lat * .9999,
+                        lng: requestedBounds.c.lng * 1.0001
+                    },
+                    ne: {
+                        lat: requestedBounds.c.lat * 1.0001,
+                        lng: requestedBounds.c.lng * .9999
+                    }
+                }
+            } else {
+
+                // We have a rectangular bounds use that
+                bounds = requestedBounds;
+            }
+        }
 
         if (this.state.selectedState) {
             this.refs.map.disable(this.state.selectedState.polygon);
@@ -80,13 +103,14 @@ let MapPaneComponent = React.createClass({
         this.setState({selectedState: state});
         this.refs.map.enable(state.polygon);
         this.refs.map.setBounds(bounds);
+
         this.props.onStateChange(state.code);
     },
 
-    onSelectState(state) {
+    onSelectState(state, bounds) {
         if (state) {
             debug('Selected State', state);
-            this.loadState(state);
+            this.loadState(state, bounds);
         }
     },
 
@@ -95,18 +119,7 @@ let MapPaneComponent = React.createClass({
             <div className="pane">
                 <div className="paneHeader">
                     <h4 className="paneHeaderContent">Where's your farm?</h4>
-                    <Button
-                        id="locateMe"
-                        className="paneHeaderContent firstAction"
-                        onClick={this.onLocateMe}
-                        disabled={this.state.acquiringLocation}>
-                        <Glyphicon glyph="map-marker"/>
-                        &nbsp;{this.state.acquiringLocation ? "Locating..." : "Locate Me"}&nbsp;
-                    </Button>
-                    <span>&nbsp;or&nbsp;</span>
-                    <StateSelector
-                        onStateSelected={this.onSelectState}
-                        state={this.props.state} />
+                    <StateSelector onStateSelected={this.onSelectState} />
                 </div>
                 <div className="yearSelectorContainer">
                     <YearSelector
