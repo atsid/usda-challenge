@@ -23,13 +23,38 @@ const StateSelector = React.createClass({
         let autoComplete = new google.maps.places.Autocomplete(this.refs.stateSearchBox);
         autoComplete.addListener('place_changed', () => {
             let place = autoComplete.getPlace();
+            let viewport = place.geometry.viewport;
+            let location = place.geometry.location;
             let addressComponents = place.address_components;
             let stateComponents = addressComponents.filter((ac) => ac.types.indexOf("administrative_area_level_1") >= 0);
             if (stateComponents && stateComponents.length > 0) {
                 let stateCode = stateComponents[0].short_name;
                 let state = stateData.statesByCode[stateCode];
                 if (state) {
-                    this.selectState(state);
+                    let bounds;
+                    if (viewport) {
+                        let vpCenter = viewport.getCenter();
+                        let vpNE = viewport.getNorthEast();
+                        let vpSW = viewport.getSouthWest();
+                        bounds = {
+                            ne: {
+                                lat: vpNE.lat(),
+                                lng: vpNE.lng()
+                            },
+                            sw: {
+                                lat: vpSW.lat(),
+                                lng: vpSW.lng()
+                            }
+                        };
+                    } else if (location) {
+                        bounds = {
+                            c: {
+                                lat: location.lat(),
+                                lng: location.lng()
+                            }
+                        };
+                    }
+                    this.selectState(state, bounds);
                 } else {
                     debug("State not found!");
                 }
@@ -39,8 +64,8 @@ const StateSelector = React.createClass({
         // autocomplete.bindTo('bounds', map);
     },
 
-    selectState(state) {
-        this.props.onStateSelected(state);
+    selectState(state, bounds) {
+        this.props.onStateSelected(state, bounds);
     },
 
     render() {
