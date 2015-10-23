@@ -17,6 +17,7 @@ class VegetationLayer extends Layer {
         super(map, isVisible);
         this.year = 2014;
         this.onLoadingChangeCallbacks =[];
+        this.onDataLoadedCallbacks =[];
     }
 
     setYear(year) {
@@ -54,10 +55,22 @@ class VegetationLayer extends Layer {
         this.onLoadingChangeCallbacks.push(cb);
     }
 
+    onDataLoaded(cb) {
+        this.onDataLoadedCallbacks.push(cb);
+    }
+
     emitLoadingChange(value) {
         this.onLoadingChangeCallbacks.forEach((cb) => {
             if (cb && cb.handle) {
                 cb.handle(value);
+            }
+        });
+    }
+
+    emitOnDataLoaded(min, max) {
+        this.onDataLoadedCallbacks.forEach((cb) => {
+            if (cb) {
+                cb(min, max);
             }
         });
     }
@@ -133,16 +146,33 @@ class VegetationLayer extends Layer {
             return;
         }
         const newArtifacts = [];
+        let min = 255;
+        let max = 0;
+
+        for (let lngIndex = 0; lngIndex < data.values.length; lngIndex++) {
+            for (let latIndex = 0; latIndex <= data.values[lngIndex].length; latIndex++) {
+                const vegValue = data.values[lngIndex][latIndex];
+                if (vegValue > max) {
+                    max = vegValue;
+                }
+                if (vegValue < min) {
+                    min = vegValue;
+                }
+            }
+        }
+
         for (let lngIndex = 0; lngIndex < data.values.length; lngIndex++) {
             for (let latIndex = 0; latIndex <= data.values[lngIndex].length; latIndex++) {
                 const vegValue = data.values[lngIndex][latIndex];
                 var tileBounds = this.getTileBounds(data, latIndex, lngIndex);
-                const tile = this.vegetationTile(vegValue, map, tileBounds);
+                const tile = this.vegetationTile(vegValue, min, max, map, tileBounds);
                 if (tile) {
                     newArtifacts.push(tile);
                 }
             }
         }
+
+        this.emitOnDataLoaded(min, max);
         this.clear();
         this.artifacts = newArtifacts;
         this.emitLoadingChange(false);
@@ -154,29 +184,20 @@ class VegetationLayer extends Layer {
             new google.maps.LatLng(data.lat[latIndex + 1], data.lon[lngIndex + 1]));
     }
 
-    vegetationTile(value, map, tileBounds) {
+    vegetationTile(value, min, max, map, tileBounds) {
         if (value) {
-            const color = this.getVegetationColor(value);
-            return new ColorTile(tileBounds, map, color, 0.6);
+            const color = this.getVegitationOpacity(value, min, max);
+            return new ColorTile(tileBounds, map, 'rgb(77,127,23)', color * .8);
         }
     }
 
-    getVegetationColor(value) {
-        const interpolate = (start, end, steps, count) => Math.floor(start + (((end - start) / steps) * count));
-        function rgb(r, g, b) {
-            return {r,g,b};
-        }
+    getVegitationOpacity(value, min, max) {
+        var diff = max - min;
         const normalize = (v) => {
-            const p = Math.min(255, (v / 255.0));
-            return v * Math.pow(p, 3);
+            const p = ((v - min) / diff);
+            return p;
         };
-        const nVal  = normalize(value);
-        const start = rgb(255,0,0);
-        const end = rgb(0,255,0);
-        const r = interpolate(start.r, end.r, 255, nVal);
-        const g = interpolate(start.g, end.g, 255, nVal);
-        const b = interpolate(start.b, end.b, 255, nVal);
-        return `rgb(${r},${g},${b})`;
+        return normalize(value);
     }
 
     dimensionRange(min, max) {
