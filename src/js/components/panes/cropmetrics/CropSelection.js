@@ -14,7 +14,7 @@ const CropSelectionComponent = React.createClass({
     },
 
     getInitialState() {
-        return { crops: []};
+        return { crops: [], selectedCrop:"corn"};
     },
 
     componentDidMount() {
@@ -36,6 +36,7 @@ const CropSelectionComponent = React.createClass({
 
     handleSelect(k) {
         this.props.onSelect(k);
+        this.setState({selectedCrop: k, crops: this.state.crops})
     },
 
 
@@ -44,8 +45,8 @@ const CropSelectionComponent = React.createClass({
 //        const stateName = stateData.statesByCode[this.props.stateObj].name;
         const stateName = "CONST STATE FOR NOW";
         const crops = this.state.crops.map((crop, index) => {
-            const isLast = index === this.state.crops.length - 1;
-            return (<CropTile key={`crop${index}`} crop={crop} isLast={isLast} onSelect={this.handleSelect}/>);
+            const isSelected = this.state.selectedCrop === crop.name;
+            return (<CropTile key={`crop${index}`} crop={crop} isSelected={isSelected} onSelect={this.handleSelect}/>);
         });
         const noData = `ZZZZZ has data available for CORNNN`;
         return (

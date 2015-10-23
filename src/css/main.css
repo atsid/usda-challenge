@@ -281,24 +281,31 @@ h4 {
 
 .cropTile {
     padding-left: 10px;
-    display: inline-flex;
-}
-
-.innerCropTile {
-    padding-right: 15px;
-    border-right: 1px solid lightgrey;
+    padding-right: 10px;
+    display: inline-block;
     border-top: 1px solid lightgrey;
     border-bottom: 1px solid lightgrey;
+    border-right: 1px solid lightgrey;
+}
+
+.selectedCropTile {
+    border: 1px solid black;
 }
 
 .cropTile img {
     width: 50px;
     height: 50px;
 }
+.cropTile .cropName {
+    text-align: center;
+}
 
 .cropTileContainer {
     display: inline-flex;
     margin-top: 20px;
+}
+.cropTileContainer:nth-child(n+1) {
+  border-left: 1px solid lightgrey;
 }
 
 .cropSelectionHeader {
