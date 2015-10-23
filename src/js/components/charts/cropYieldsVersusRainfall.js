@@ -12,7 +12,7 @@ const debug = debugFactory('app:components:CropYieldsVersusRainfall');
 var CropYieldsVersusRainfall = React.createClass({
 
     propTypes: {
-        crop: React.PropTypes.string.isRequired,
+        crop: React.PropTypes.object.isRequired,
         cropSource: React.PropTypes.object.isRequired,
         rainSource: React.PropTypes.object.isRequired,
         state: React.PropTypes.string.isRequired,
@@ -32,7 +32,8 @@ var CropYieldsVersusRainfall = React.createClass({
         if (prevProps.state !== this.props.state ||
             prevProps.radius !== this.props.radius ||
             prevProps.location.lat !== this.props.location.lat ||
-            prevProps.location.lng !== this.props.location.lng
+            prevProps.location.lng !== this.props.location.lng ||
+            prevProps.crop.name !== this.props.crop.name
         ) {
             this.drawChart();
         }
@@ -43,7 +44,7 @@ var CropYieldsVersusRainfall = React.createClass({
 
         //TODO: we don't need to re-get the rain data each time, only selected crop
         Promise.all([
-            this.props.cropSource.list(this.props.crop),
+            this.props.cropSource.list(this.props.crop.name),
             this.props.rainSource.list()
         ]).then((results) => {
 
@@ -112,16 +113,17 @@ var CropYieldsVersusRainfall = React.createClass({
 
     //'COTTON' -> Cotton (Bales / Acre)
     cropLabel(crop) {
-        let units = this.cropMap[crop];
-        let prefix = crop.substring(0, 1) + crop.substring(1, crop.length).toLowerCase();
+        let units = this.cropMap[crop.name.toUpperCase()];
+        let prefix = crop.name.substring(0, 1) + crop.name.substring(1, crop.name.length).toLowerCase();
         return prefix + ' (' + units + ')';
     },
 
     render() {
+      debug(this.props)
+      const imageUrl = this.props.crop.imageUrl;
         return (
-            <div className={"col-xs-12"} id="cropYieldsChartGeneric">
-                <h4>Crop Yields versus Rainfall</h4>
-                <span className={"text-muted"}>Crop yields versus average annual rainfall</span>
+            <div className={"cropYieldChart"} id="cropYieldsChartGeneric">
+                <span className={"text-muted"}>Historical {this.props.crop.name}<img src={imageUrl} /> to rainfall in {this.props.state}</span>
                 <a className={"reset"} onClick={this.reset} style={{display: "none"}}>reset</a>
             </div>
         );

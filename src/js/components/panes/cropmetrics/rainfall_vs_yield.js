@@ -16,7 +16,7 @@ const rainfallDataSource = new RainfallDataSource();
 let RainfallVsYieldChartComponent = React.createClass({
 
     propTypes: {
-        crop: React.PropTypes.string.isRequired,
+        crop: React.PropTypes.object.isRequired,
         state: React.PropTypes.string.isRequired,
         location: React.PropTypes.object.isRequired,
     },
