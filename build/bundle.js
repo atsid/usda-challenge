@@ -45,7 +45,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	__webpack_require__(485);
+	__webpack_require__(488);
 	__webpack_require__(475);
 	__webpack_require__(449);
 	__webpack_require__(447);
@@ -54,19 +54,22 @@
 	__webpack_require__(205);
 	__webpack_require__(483);
 	__webpack_require__(478);
-	__webpack_require__(503);
-	__webpack_require__(504);
-	__webpack_require__(505);
-	__webpack_require__(477);
 	__webpack_require__(506);
 	__webpack_require__(507);
+	__webpack_require__(508);
+	__webpack_require__(477);
+	__webpack_require__(509);
+	__webpack_require__(510);
 	__webpack_require__(482);
 	__webpack_require__(479);
 	__webpack_require__(484);
 	__webpack_require__(476);
 	__webpack_require__(474);
 	__webpack_require__(481);
-	__webpack_require__(508);
+	__webpack_require__(511);
+	__webpack_require__(485);
+	__webpack_require__(486);
+	__webpack_require__(487);
 	__webpack_require__(472);
 	__webpack_require__(480);
 	__webpack_require__(473);
@@ -111,7 +114,7 @@
 	
 	var _componentsSplashPage2 = _interopRequireDefault(_componentsSplashPage);
 	
-	var _history = __webpack_require__(485);
+	var _history = __webpack_require__(488);
 	
 	var _history2 = _interopRequireDefault(_history);
 	
@@ -56452,6 +56455,10 @@
 	
 	var _monthly_rainfall2 = _interopRequireDefault(_monthly_rainfall);
 	
+	var _CropSelection = __webpack_require__(485);
+	
+	var _CropSelection2 = _interopRequireDefault(_CropSelection);
+	
 	var debug = (0, _debug2["default"])('app:components:CropMetricsPane');
 	
 	var CropMetricsPaneComponent = _react2["default"].createClass({
@@ -56460,17 +56467,24 @@
 	    propTypes: {
 	        state: _react2["default"].PropTypes.string,
 	        location: _react2["default"].PropTypes.object,
-	        crop: _react2["default"].PropTypes.string
+	        crop: _react2["default"].PropTypes.object
 	    },
 	
 	    getInitialState: function getInitialState() {
+	        //        debug({crop: 'CORN', state: 'IA'})
 	        return {
-	            crop: 'CORN'
+	            crop: { name: 'CORN', imageUrl: 'src/img/icons/crops/corn.png' },
+	            state: 'IA'
 	        };
 	    },
 	
-	    handleSelect: function handleSelect(e, k) {
-	        this.setState({ crop: k });
+	    componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	        this.setState({ crop: this.state.crop, state: nextProps.state });
+	    },
+	
+	    handleSelect: function handleSelect(k) {
+	        debug("main: " + k + ", st:" + this.state.state);
+	        this.setState({ crop: k, state: this.state.state });
 	    },
 	
 	    render: function render() {
@@ -56485,88 +56499,7 @@
 	                    { className: "paneHeaderContent" },
 	                    "What do you grow on your farm?"
 	                ),
-	                _react2["default"].createElement(
-	                    _reactBootstrap.DropdownButton,
-	                    { className: "firstAction", id: "selectCrop", title: "+", noCaret: true, onSelect: this.handleSelect },
-	                    _react2["default"].createElement(
-	                        _reactBootstrap.MenuItem,
-	                        { eventKey: "BARLEY" },
-	                        "Barley"
-	                    ),
-	                    _react2["default"].createElement(
-	                        _reactBootstrap.MenuItem,
-	                        { eventKey: "BEANS" },
-	                        "Beans"
-	                    ),
-	                    _react2["default"].createElement(
-	                        _reactBootstrap.MenuItem,
-	                        { eventKey: "CORN" },
-	                        "Corn"
-	                    ),
-	                    _react2["default"].createElement(
-	                        _reactBootstrap.MenuItem,
-	                        { eventKey: "COTTON" },
-	                        "Cotton"
-	                    ),
-	                    _react2["default"].createElement(
-	                        _reactBootstrap.MenuItem,
-	                        { eventKey: "HAY" },
-	                        "Hay"
-	                    ),
-	                    _react2["default"].createElement(
-	                        _reactBootstrap.MenuItem,
-	                        { eventKey: "HAYLAGE" },
-	                        "Haylage"
-	                    ),
-	                    _react2["default"].createElement(
-	                        _reactBootstrap.MenuItem,
-	                        { eventKey: "OATS" },
-	                        "Oats"
-	                    ),
-	                    _react2["default"].createElement(
-	                        _reactBootstrap.MenuItem,
-	                        { eventKey: "RICE" },
-	                        "Rice"
-	                    ),
-	                    _react2["default"].createElement(
-	                        _reactBootstrap.MenuItem,
-	                        { eventKey: "SORGHUM" },
-	                        "Sorghum"
-	                    ),
-	                    _react2["default"].createElement(
-	                        _reactBootstrap.MenuItem,
-	                        { eventKey: "SUGARBEETS" },
-	                        "Sugarbeets"
-	                    ),
-	                    _react2["default"].createElement(
-	                        _reactBootstrap.MenuItem,
-	                        { eventKey: "SUGARCANE" },
-	                        "Sugarcane"
-	                    ),
-	                    _react2["default"].createElement(
-	                        _reactBootstrap.MenuItem,
-	                        { eventKey: "SOYBEANS" },
-	                        "Soybeans"
-	                    ),
-	                    _react2["default"].createElement(
-	                        _reactBootstrap.MenuItem,
-	                        { eventKey: "WHEAT" },
-	                        "Wheat"
-	                    )
-	                )
-	            ),
-	            _react2["default"].createElement(
-	                "div",
-	                null,
-	                _react2["default"].createElement(
-	                    "h4",
-	                    { className: "paneHeaderContent" },
-	                    _react2["default"].createElement(
-	                        "small",
-	                        null,
-	                        this.state.crop
-	                    )
-	                )
+	                _react2["default"].createElement(_CropSelection2["default"], { state: this.state.state, onSelect: this.handleSelect })
 	            ),
 	            _react2["default"].createElement(
 	                "div",
@@ -56627,7 +56560,7 @@
 	    displayName: "RainfallVsYieldChartComponent",
 	
 	    propTypes: {
-	        crop: _react2["default"].PropTypes.string.isRequired,
+	        crop: _react2["default"].PropTypes.object.isRequired,
 	        state: _react2["default"].PropTypes.string.isRequired,
 	        location: _react2["default"].PropTypes.object.isRequired
 	    },
@@ -56685,7 +56618,7 @@
 	    displayName: "CropYieldsVersusRainfall",
 	
 	    propTypes: {
-	        crop: _react2["default"].PropTypes.string.isRequired,
+	        crop: _react2["default"].PropTypes.object.isRequired,
 	        cropSource: _react2["default"].PropTypes.object.isRequired,
 	        rainSource: _react2["default"].PropTypes.object.isRequired,
 	        state: _react2["default"].PropTypes.string.isRequired,
@@ -56702,7 +56635,7 @@
 	    },
 	
 	    componentDidUpdate: function componentDidUpdate(prevProps) {
-	        if (prevProps.state !== this.props.state || prevProps.radius !== this.props.radius || prevProps.location.lat !== this.props.location.lat || prevProps.location.lng !== this.props.location.lng) {
+	        if (prevProps.state !== this.props.state || prevProps.radius !== this.props.radius || prevProps.location.lat !== this.props.location.lat || prevProps.location.lng !== this.props.location.lng || prevProps.crop.name !== this.props.crop.name) {
 	            this.drawChart();
 	        }
 	    },
@@ -56713,7 +56646,7 @@
 	        var el = _reactDom2["default"].findDOMNode(this);
 	
 	        //TODO: we don't need to re-get the rain data each time, only selected crop
-	        Promise.all([this.props.cropSource.list(this.props.crop), this.props.rainSource.list()]).then(function (results) {
+	        Promise.all([this.props.cropSource.list(this.props.crop.name), this.props.rainSource.list()]).then(function (results) {
 	
 	            var yieldIndex = results[0].index;
 	            var rainIndex = results[1].index;
@@ -56767,24 +56700,25 @@
 	
 	    //'COTTON' -> Cotton (Bales / Acre)
 	    cropLabel: function cropLabel(crop) {
-	        var units = this.cropMap[crop];
-	        var prefix = crop.substring(0, 1) + crop.substring(1, crop.length).toLowerCase();
+	        var units = this.cropMap[crop.name.toUpperCase()];
+	        var prefix = crop.name.substring(0, 1) + crop.name.substring(1, crop.name.length).toLowerCase();
 	        return prefix + ' (' + units + ')';
 	    },
 	
 	    render: function render() {
+	        debug(this.props);
+	        var imageUrl = this.props.crop.imageUrl;
 	        return _react2["default"].createElement(
 	            "div",
-	            { className: "col-xs-12", id: "cropYieldsChartGeneric" },
-	            _react2["default"].createElement(
-	                "h4",
-	                null,
-	                "Crop Yields versus Rainfall"
-	            ),
+	            { className: "cropYieldChart", id: "cropYieldsChartGeneric" },
 	            _react2["default"].createElement(
 	                "span",
 	                { className: "text-muted" },
-	                "Crop yields versus average annual rainfall"
+	                "Historical ",
+	                this.props.crop.name,
+	                _react2["default"].createElement("img", { src: imageUrl }),
+	                " to rainfall in ",
+	                this.props.state
 	            ),
 	            _react2["default"].createElement(
 	                "a",
@@ -57605,13 +57539,259 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _debug = __webpack_require__(443);
+	
+	var _debug2 = _interopRequireDefault(_debug);
+	
+	var _mapStates = __webpack_require__(467);
+	
+	var _mapStates2 = _interopRequireDefault(_mapStates);
+	
+	var _CropStore = __webpack_require__(486);
+	
+	var _CropStore2 = _interopRequireDefault(_CropStore);
+	
+	var _CropTile = __webpack_require__(487);
+	
+	var _CropTile2 = _interopRequireDefault(_CropTile);
+	
+	var debug = (0, _debug2["default"])('app:components:panes:cropmetrics:cropSelection');
+	
+	var cropStore = new _CropStore2["default"]();
+	var CropSelectionComponent = _react2["default"].createClass({
+	    displayName: "CropSelectionComponent",
+	
+	    propTypes: {
+	        state: _react2["default"].PropTypes.string.isRequired,
+	        onSelect: _react2["default"].propTypes.func.isRequired
+	    },
+	
+	    getInitialState: function getInitialState() {
+	        return { crops: [], selectedCrop: {} };
+	    },
+	
+	    componentDidMount: function componentDidMount() {
+	        this.loadCrops(this.props.state);
+	    },
+	
+	    componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	        this.loadCrops(nextProps.state);
+	    },
+	
+	    loadCrops: function loadCrops(state) {
+	        var _this = this;
+	
+	        cropStore.getCrops().then(function (crops) {
+	            _this.setState({ crops: crops, state: state });
+	        });
+	    },
+	
+	    handleSelect: function handleSelect(k) {
+	        this.props.onSelect(k);
+	        this.setState({ selectedCrop: k, crops: this.state.crops });
+	    },
+	
+	    render: function render() {
+	        var _this2 = this;
+	
+	        debug(this.props);
+	        var localStateName = _mapStates2["default"].statesByCode[this.props.state].name;
+	        debug(localStateName);
+	        var localStateCode = this.props.state;
+	        //        const state = "{state}";
+	        var crops = this.state.crops.map(function (crop, index) {
+	            var isSelected = _this2.state.selectedCrop.name === crop.name;
+	            return _react2["default"].createElement(_CropTile2["default"], { key: "crop" + index, crop: crop, isSelected: isSelected, onSelect: _this2.handleSelect });
+	        });
+	        var noData = "{localStateName} has data available for this.state.crop";
+	        return _react2["default"].createElement(
+	            "div",
+	            null,
+	            _react2["default"].createElement(
+	                "div",
+	                { className: "cropHeader" },
+	                "Below are crops that grow in ",
+	                _react2["default"].createElement(
+	                    "span",
+	                    null,
+	                    localStateName
+	                ),
+	                " select one would you like to see."
+	            ),
+	            _react2["default"].createElement(
+	                "div",
+	                { className: "cropTileContainer" },
+	                crops.length === 0 ? noData : crops
+	            )
+	        );
+	    }
+	});
+	
+	exports["default"] = CropSelectionComponent;
+	module.exports = exports["default"];
+
+/***/ },
+/* 486 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	var request = __webpack_require__(461);
+	var debug = __webpack_require__(443)('components:panes:cropmetrics:CropStore');
+	
+	var KNOWN_CROPS = {
+	  barley: 'barley',
+	  beans: 'beans',
+	  corn: 'corn',
+	  cotton: 'cotton',
+	  hay: 'hay',
+	  haylage: 'haylage',
+	  oats: 'oats',
+	  rice: 'rice',
+	  sorghum: 'sorghum',
+	  soybeans: 'soybeans',
+	  sugarbeets: 'sugarbeets',
+	  sugarcane: 'sugarcane',
+	  wheat: 'wheat'
+	};
+	
+	var CropStore = (function () {
+	  function CropStore() {
+	    _classCallCheck(this, CropStore);
+	
+	    var localCrops = [];
+	    for (var key in KNOWN_CROPS) {
+	      if (KNOWN_CROPS.hasOwnProperty(key)) {
+	        var datum = this._createCropDatum(KNOWN_CROPS[key]);
+	        localCrops.push(datum);
+	      }
+	    }
+	    this.crops = localCrops;
+	  }
+	
+	  _createClass(CropStore, [{
+	    key: 'getCrops',
+	    value: function getCrops() {
+	      var _this = this;
+	
+	      return new Promise(function (resolve, reject) {
+	        resolve(_this.crops);
+	      });
+	    }
+	
+	    // getForState(stateCode) {
+	    //     return Object.keys(cache[stateCode]);
+	    // }
+	
+	  }, {
+	    key: '_createCropDatum',
+	    value: function _createCropDatum(name) {
+	      var imageUrl = this._getCropImageUrl(name);
+	      return { name: name, imageUrl: imageUrl };
+	    }
+	  }, {
+	    key: '_getCropImageUrl',
+	    value: function _getCropImageUrl(name) {
+	      var lcName = name.toLowerCase();
+	      var icon = KNOWN_CROPS[lcName] || 'misc';
+	      return 'src/img/icons/crops/' + icon + '.png';
+	    }
+	  }]);
+	
+	  return CropStore;
+	})();
+	
+	exports['default'] = CropStore;
+	module.exports = exports['default'];
+
+/***/ },
+/* 487 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactDom = __webpack_require__(158);
+	
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+	
+	var _debug = __webpack_require__(443);
+	
+	var _debug2 = _interopRequireDefault(_debug);
+	
+	var debug = (0, _debug2["default"])('app:components:CropTile');
+	
+	var CropTile = _react2["default"].createClass({
+	    displayName: "CropTile",
+	
+	    propTypes: {
+	        crop: _react2["default"].PropTypes.object.isRequired,
+	        isSelected: _react2["default"].PropTypes.bool.isRequired,
+	        onSelect: _react2["default"].propTypes.func.isRequired
+	    },
+	
+	    handleSelect: function handleSelect(e, k) {
+	        this.props.onSelect(this.props.crop);
+	    },
+	
+	    render: function render() {
+	        var name = this.props.crop.name;
+	        var imageUrl = this.props.crop.imageUrl;
+	        var tileClass = this.props.isSelected ? "cropTile selectedCropTile" : "cropTile";
+	        return _react2["default"].createElement(
+	            "div",
+	            { className: tileClass, onClick: this.handleSelect },
+	            _react2["default"].createElement("img", { src: imageUrl }),
+	            _react2["default"].createElement(
+	                "div",
+	                { className: "cropName" },
+	                name
+	            )
+	        );
+	    }
+	});
+	exports["default"] = CropTile;
+	module.exports = exports["default"];
+
+/***/ },
+/* 488 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
-	var _historyLibCreateBrowserHistory = __webpack_require__(486);
+	var _historyLibCreateBrowserHistory = __webpack_require__(489);
 	
 	var _historyLibCreateBrowserHistory2 = _interopRequireDefault(_historyLibCreateBrowserHistory);
 	
@@ -57619,7 +57799,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 486 */
+/* 489 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57630,19 +57810,19 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _invariant = __webpack_require__(487);
+	var _invariant = __webpack_require__(490);
 	
 	var _invariant2 = _interopRequireDefault(_invariant);
 	
-	var _Actions = __webpack_require__(488);
+	var _Actions = __webpack_require__(491);
 	
-	var _ExecutionEnvironment = __webpack_require__(489);
+	var _ExecutionEnvironment = __webpack_require__(492);
 	
-	var _DOMUtils = __webpack_require__(490);
+	var _DOMUtils = __webpack_require__(493);
 	
-	var _DOMStateStorage = __webpack_require__(491);
+	var _DOMStateStorage = __webpack_require__(494);
 	
-	var _createDOMHistory = __webpack_require__(493);
+	var _createDOMHistory = __webpack_require__(496);
 	
 	var _createDOMHistory2 = _interopRequireDefault(_createDOMHistory);
 	
@@ -57791,7 +57971,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 487 */
+/* 490 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -57851,7 +58031,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ },
-/* 488 */
+/* 491 */
 /***/ function(module, exports) {
 
 	/**
@@ -57887,7 +58067,7 @@
 	};
 
 /***/ },
-/* 489 */
+/* 492 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -57897,7 +58077,7 @@
 	exports.canUseDOM = canUseDOM;
 
 /***/ },
-/* 490 */
+/* 493 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -57977,7 +58157,7 @@
 	}
 
 /***/ },
-/* 491 */
+/* 494 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*eslint-disable no-empty */
@@ -57989,7 +58169,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _warning = __webpack_require__(492);
+	var _warning = __webpack_require__(495);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -58030,7 +58210,7 @@
 	}
 
 /***/ },
-/* 492 */
+/* 495 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -58097,7 +58277,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ },
-/* 493 */
+/* 496 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58108,15 +58288,15 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _invariant = __webpack_require__(487);
+	var _invariant = __webpack_require__(490);
 	
 	var _invariant2 = _interopRequireDefault(_invariant);
 	
-	var _ExecutionEnvironment = __webpack_require__(489);
+	var _ExecutionEnvironment = __webpack_require__(492);
 	
-	var _DOMUtils = __webpack_require__(490);
+	var _DOMUtils = __webpack_require__(493);
 	
-	var _createHistory = __webpack_require__(494);
+	var _createHistory = __webpack_require__(497);
 	
 	var _createHistory2 = _interopRequireDefault(_createHistory);
 	
@@ -58142,7 +58322,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 494 */
+/* 497 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58153,23 +58333,23 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _deepEqual = __webpack_require__(495);
+	var _deepEqual = __webpack_require__(498);
 	
 	var _deepEqual2 = _interopRequireDefault(_deepEqual);
 	
-	var _AsyncUtils = __webpack_require__(498);
+	var _AsyncUtils = __webpack_require__(501);
 	
-	var _Actions = __webpack_require__(488);
+	var _Actions = __webpack_require__(491);
 	
-	var _createLocation2 = __webpack_require__(499);
+	var _createLocation2 = __webpack_require__(502);
 	
 	var _createLocation3 = _interopRequireDefault(_createLocation2);
 	
-	var _runTransitionHook = __webpack_require__(501);
+	var _runTransitionHook = __webpack_require__(504);
 	
 	var _runTransitionHook2 = _interopRequireDefault(_runTransitionHook);
 	
-	var _deprecate = __webpack_require__(502);
+	var _deprecate = __webpack_require__(505);
 	
 	var _deprecate2 = _interopRequireDefault(_deprecate);
 	
@@ -58395,12 +58575,12 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 495 */
+/* 498 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var pSlice = Array.prototype.slice;
-	var objectKeys = __webpack_require__(496);
-	var isArguments = __webpack_require__(497);
+	var objectKeys = __webpack_require__(499);
+	var isArguments = __webpack_require__(500);
 	
 	var deepEqual = module.exports = function (actual, expected, opts) {
 	  if (!opts) opts = {};
@@ -58495,7 +58675,7 @@
 
 
 /***/ },
-/* 496 */
+/* 499 */
 /***/ function(module, exports) {
 
 	exports = module.exports = typeof Object.keys === 'function'
@@ -58510,7 +58690,7 @@
 
 
 /***/ },
-/* 497 */
+/* 500 */
 /***/ function(module, exports) {
 
 	var supportsArgumentsClass = (function(){
@@ -58536,7 +58716,7 @@
 
 
 /***/ },
-/* 498 */
+/* 501 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -58567,7 +58747,7 @@
 	}
 
 /***/ },
-/* 499 */
+/* 502 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58576,9 +58756,9 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _Actions = __webpack_require__(488);
+	var _Actions = __webpack_require__(491);
 	
-	var _parsePath = __webpack_require__(500);
+	var _parsePath = __webpack_require__(503);
 	
 	var _parsePath2 = _interopRequireDefault(_parsePath);
 	
@@ -58608,7 +58788,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 500 */
+/* 503 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58617,7 +58797,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _warning = __webpack_require__(492);
+	var _warning = __webpack_require__(495);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -58661,7 +58841,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 501 */
+/* 504 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58670,7 +58850,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _warning = __webpack_require__(492);
+	var _warning = __webpack_require__(495);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -58690,7 +58870,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 502 */
+/* 505 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58699,7 +58879,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _warning = __webpack_require__(492);
+	var _warning = __webpack_require__(495);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -58714,7 +58894,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 503 */
+/* 506 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58770,7 +58950,7 @@
 	module.exports = CropYieldsDataSource;
 
 /***/ },
-/* 504 */
+/* 507 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58826,7 +59006,7 @@
 	module.exports = CropYieldsBUADataSource;
 
 /***/ },
-/* 505 */
+/* 508 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58886,7 +59066,7 @@
 	module.exports = CropYieldsBaADataSource;
 
 /***/ },
-/* 506 */
+/* 509 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -58942,7 +59122,7 @@
 	module.exports = CropYieldsCWTADataSource;
 
 /***/ },
-/* 507 */
+/* 510 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -59022,7 +59202,7 @@
 	module.exports = HighLowDataSource;
 
 /***/ },
-/* 508 */
+/* 511 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
