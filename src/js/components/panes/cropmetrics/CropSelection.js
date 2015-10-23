@@ -2,7 +2,7 @@
 
 import React from "react";
 import debugFactory from "debug";
-//import stateData from '../map/states';
+import stateData from '../map/states';
 const debug = debugFactory('app:components:panes:cropmetrics:cropSelection');
 import CropStore from './CropStore';
 import CropTile from './CropTile';
@@ -10,7 +10,7 @@ import CropTile from './CropTile';
 const cropStore = new CropStore();
 const CropSelectionComponent = React.createClass({
     propTypes: {
-        stateObj: React.PropTypes.object.isRequired,
+        state: React.PropTypes.string.isRequired,
     },
 
     getInitialState() {
@@ -18,17 +18,17 @@ const CropSelectionComponent = React.createClass({
     },
 
     componentDidMount() {
-        this.loadCrops(this.props.stateObj);
+        this.loadCrops(this.props.state);
 
     },
 
     componentWillReceiveProps(nextProps) {
-        this.loadCrops(nextProps.stateObj);
+        this.loadCrops(nextProps.state);
     },
 
     loadCrops(state) {
         cropStore.getCrops().then((crops) => {
-        this.setState({crops})
+        this.setState({crops, state})
         debug("loading Crops");
         debug(this.state.crops);
       });
@@ -42,16 +42,19 @@ const CropSelectionComponent = React.createClass({
 
 
     render() {
-//        const stateName = stateData.statesByCode[this.props.stateObj].name;
-        const stateName = "CONST STATE FOR NOW";
+      debug(this.props)
+        const localStateName = stateData.statesByCode[this.props.state].name;
+        debug(localStateName)
+        const localStateCode = this.props.state;
+//        const state = "{state}";
         const crops = this.state.crops.map((crop, index) => {
             const isSelected = this.state.selectedCrop === crop.name;
             return (<CropTile key={`crop${index}`} crop={crop} isSelected={isSelected} onSelect={this.handleSelect}/>);
         });
-        const noData = `ZZZZZ has data available for CORNNN`;
+        const noData = `{localStateName} has data available for this.state.crop`;
         return (
             <div>
-                <div className="cropHeader">Below are crops that grow in <span>{stateName}</span> select one would you like to see.</div >
+                <div className="cropHeader">Below are crops that grow in <span>{localStateName}</span> select one would you like to see.</div >
                 <div className="cropTileContainer">
                     {crops.length === 0 ? noData : crops}
                 </div>
