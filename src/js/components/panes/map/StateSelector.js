@@ -39,10 +39,6 @@ const StateSelector = React.createClass({
         // autocomplete.bindTo('bounds', map);
     },
 
-    getSelectedState() {
-        return stateData.statesByCode[this.props.state];
-    },
-
     selectState(state) {
         this.props.onStateSelected(state);
     },
