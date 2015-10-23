@@ -36,6 +36,10 @@ export default class CropStore {
         resolve(this.crops);
       });
     }
+
+    // getCropByName(cropName) {
+    //   return new Promise
+    // }
     // getForState(stateCode) {
     //     return Object.keys(cache[stateCode]);
     // }
