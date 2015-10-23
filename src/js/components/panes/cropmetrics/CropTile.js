@@ -9,7 +9,6 @@ const debug = debugFactory('app:components:CropTile');
 const CropTile = React.createClass({
     propTypes: {
         crop: React.PropTypes.object.isRequired,
-//        isLast: React.PropTypes.bool.isRequired
         isSelected: React.PropTypes.bool.isRequired
     },
 
@@ -21,7 +20,6 @@ const CropTile = React.createClass({
     render() {
         const name = this.props.crop.name;
         const imageUrl = this.props.crop.imageUrl;
-//        const tileClass = (this.props.isLast ? "cropTile" : "cropTile innerCropTile");
         const tileClass = (this.props.isSelected ? "cropTile selectedCropTile" : "cropTile" );
         return (
             <div className={tileClass} onClick={this.handleSelect}>
