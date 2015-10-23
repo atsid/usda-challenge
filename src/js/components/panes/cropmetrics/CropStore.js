@@ -41,9 +41,7 @@ export default class CropStore {
     // }
 
     _createCropDatum(name) {
-      debug(name)
         const imageUrl = this._getCropImageUrl(name);
-        debug("name: " + name + " image: " + imageUrl);
         return {name, imageUrl};
     }
 
