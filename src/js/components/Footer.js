@@ -10,6 +10,7 @@ const Footer = React.createClass({
             <footer>
                 <div className="container">
                     <div className="row">
+                        <div className="col-md-4"><a href="datasource.html" target="_blank">Data Source Credits</a></div>
                         <div className="col-md-4">
                             <span className="copyright">All content copyright &copy; ATS & EchoUser 2015</span>
                         </div>

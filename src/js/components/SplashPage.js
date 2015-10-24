@@ -88,6 +88,13 @@ let SplashPageComponent = React.createClass({
                 <section id="info">
                     <Info />
                 </section>
+                <div className={"delimeterBar"}>
+                <section id="delimeterBar1" className="container">
+                  <div className={"headingNumber"}>1</div>
+                  <div className={"headingText"}>Get a bird’s eye view of the land in your community. Discover how densely
+crops grow in different soil types and what activities are performed in your state.</div>
+                </section>
+                </div>
                 <section id="map" className="container">
                     <MapPane
                         onCenterChange={this.handleCenterChange}
@@ -98,6 +105,14 @@ let SplashPageComponent = React.createClass({
                         state={this.state.state}
                         location={this.state.location}/>
                 </section>
+                <div className={"delimeterBar"}>
+                <section id="delimeterBar2" className="container">
+                  <div className={"headingNumber"}>2</div>
+                  <div className={"headingText"}>Learn from experience how your crops and your grandparents’
+crops performed in tough weather conditions.</div>
+                </section>
+                </div>
+
                 <section id="metrics" className="container">
                     <CropMetricsPane state={this.state.state} location={this.state.location}/>
                 </section>
