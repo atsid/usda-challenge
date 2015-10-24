@@ -53939,6 +53939,11 @@
 	            return _this.state.layers.plantDensity.setYear(year);
 	        });
 	        this.state.layers.plantDensity.onLoadingChange(this.props.onLoadingChange);
+	        this.state.layers.plantDensity.onDataLoaded(this.onVegitationDataLoaded);
+	    },
+	
+	    onVegitationDataLoaded: function onVegitationDataLoaded(minValue, maxValue) {
+	        this.setState(_lodash2["default"].merge(this.state, { vegitationScale: { min: minValue, max: maxValue } }));
 	    },
 	
 	    render: function render() {
@@ -53950,7 +53955,11 @@
 	        var overlays = this.state.overlays;
 	        var toggleOverlay = function toggleOverlay(name) {
 	            var isEnabled = _this2.state.overlays[name];
-	            _this2.setState(_lodash2["default"].merge(_this2.state, { overlays: _defineProperty({}, name, !isEnabled) }));
+	            var nextState = _lodash2["default"].merge(_this2.state, { overlays: _defineProperty({}, name, !isEnabled) });
+	            if (name === 'plantDensity') {
+	                delete nextState.vegitationScale;
+	            }
+	            _this2.setState(nextState);
 	            _this2.state.layers[name][isEnabled ? 'hide' : 'show']();
 	        };
 	
@@ -53989,6 +53998,38 @@
 	                        "span",
 	                        null,
 	                        "Plant Density"
+	                    )
+	                )
+	            ),
+	            _react2["default"].createElement(
+	                "div",
+	                { className: "densityArea" },
+	                _react2["default"].createElement(
+	                    "div",
+	                    { style: { display: overlays.plantDensity && this.state.vegitationScale ? "block" : "none" } },
+	                    _react2["default"].createElement(
+	                        "span",
+	                        null,
+	                        " Density Scale:"
+	                    ),
+	                    _react2["default"].createElement(
+	                        "div",
+	                        { className: "scale" },
+	                        _react2["default"].createElement(
+	                            "span",
+	                            { className: "min-label" },
+	                            this.state.vegitationScale ? this.state.vegitationScale.min.toFixed(1) : ""
+	                        ),
+	                        _react2["default"].createElement(
+	                            "span",
+	                            { className: "gradient" },
+	                            " "
+	                        ),
+	                        _react2["default"].createElement(
+	                            "span",
+	                            { className: "max-label" },
+	                            this.state.vegitationScale ? this.state.vegitationScale.max.toFixed(1) : ""
+	                        )
 	                    )
 	                )
 	            )
@@ -54054,6 +54095,7 @@
 	        _get(Object.getPrototypeOf(VegetationLayer.prototype), 'constructor', this).call(this, map, isVisible);
 	        this.year = 2014;
 	        this.onLoadingChangeCallbacks = [];
+	        this.onDataLoadedCallbacks = [];
 	    }
 	
 	    _createClass(VegetationLayer, [{
@@ -54100,11 +54142,25 @@
 	            this.onLoadingChangeCallbacks.push(cb);
 	        }
 	    }, {
+	        key: 'onDataLoaded',
+	        value: function onDataLoaded(cb) {
+	            this.onDataLoadedCallbacks.push(cb);
+	        }
+	    }, {
 	        key: 'emitLoadingChange',
 	        value: function emitLoadingChange(value) {
 	            this.onLoadingChangeCallbacks.forEach(function (cb) {
 	                if (cb && cb.handle) {
 	                    cb.handle(value);
+	                }
+	            });
+	        }
+	    }, {
+	        key: 'emitOnDataLoaded',
+	        value: function emitOnDataLoaded(min, max) {
+	            this.onDataLoadedCallbacks.forEach(function (cb) {
+	                if (cb) {
+	                    cb(min, max);
 	                }
 	            });
 	        }
@@ -54187,16 +54243,33 @@
 	                return;
 	            }
 	            var newArtifacts = [];
+	            var min = 255;
+	            var max = 0;
+	
+	            for (var lngIndex = 0; lngIndex < data.values.length; lngIndex++) {
+	                for (var latIndex = 0; latIndex <= data.values[lngIndex].length; latIndex++) {
+	                    var vegValue = data.values[lngIndex][latIndex];
+	                    if (vegValue > max) {
+	                        max = vegValue;
+	                    }
+	                    if (vegValue < min) {
+	                        min = vegValue;
+	                    }
+	                }
+	            }
+	
 	            for (var lngIndex = 0; lngIndex < data.values.length; lngIndex++) {
 	                for (var latIndex = 0; latIndex <= data.values[lngIndex].length; latIndex++) {
 	                    var vegValue = data.values[lngIndex][latIndex];
 	                    var tileBounds = this.getTileBounds(data, latIndex, lngIndex);
-	                    var tile = this.vegetationTile(vegValue, map, tileBounds);
+	                    var tile = this.vegetationTile(vegValue, min, max, map, tileBounds);
 	                    if (tile) {
 	                        newArtifacts.push(tile);
 	                    }
 	                }
 	            }
+	
+	            this.emitOnDataLoaded(min, max);
 	            this.clear();
 	            this.artifacts = newArtifacts;
 	            this.emitLoadingChange(false);
@@ -54208,32 +54281,21 @@
 	        }
 	    }, {
 	        key: 'vegetationTile',
-	        value: function vegetationTile(value, map, tileBounds) {
+	        value: function vegetationTile(value, min, max, map, tileBounds) {
 	            if (value) {
-	                var color = this.getVegetationColor(value);
-	                return new _ColorTile2['default'](tileBounds, map, color, 0.6);
+	                var color = this.getVegitationOpacity(value, min, max);
+	                return new _ColorTile2['default'](tileBounds, map, 'rgb(77,127,23)', color * .8);
 	            }
 	        }
 	    }, {
-	        key: 'getVegetationColor',
-	        value: function getVegetationColor(value) {
-	            var interpolate = function interpolate(start, end, steps, count) {
-	                return Math.floor(start + (end - start) / steps * count);
-	            };
-	            function rgb(r, g, b) {
-	                return { r: r, g: g, b: b };
-	            }
+	        key: 'getVegitationOpacity',
+	        value: function getVegitationOpacity(value, min, max) {
+	            var diff = max - min;
 	            var normalize = function normalize(v) {
-	                var p = Math.min(255, v / 255.0);
-	                return v * Math.pow(p, 3);
+	                var p = (v - min) / diff;
+	                return p;
 	            };
-	            var nVal = normalize(value);
-	            var start = rgb(255, 0, 0);
-	            var end = rgb(0, 255, 0);
-	            var r = interpolate(start.r, end.r, 255, nVal);
-	            var g = interpolate(start.g, end.g, 255, nVal);
-	            var b = interpolate(start.b, end.b, 255, nVal);
-	            return 'rgb(' + r + ',' + g + ',' + b + ')';
+	            return normalize(value);
 	        }
 	    }, {
 	        key: 'dimensionRange',
