@@ -56579,9 +56579,8 @@
 	    },
 	
 	    getInitialState: function getInitialState() {
-	        //        debug({crop: 'CORN', state: 'IA'})
 	        return {
-	            crop: { name: 'CORN', imageUrl: 'src/img/icons/crops/corn.png' },
+	            crop: { name: 'corn', imageUrl: 'src/img/icons/crops/corn.png' },
 	            state: 'IA'
 	        };
 	    },
@@ -56816,17 +56815,24 @@
 	    render: function render() {
 	        debug(this.props);
 	        var imageUrl = this.props.crop.imageUrl;
+	        var rainImgUrl = 'src/img/icons/blue-square.png';
 	        return _react2["default"].createElement(
 	            "div",
 	            { className: "cropYieldChart", id: "cropYieldsChartGeneric" },
 	            _react2["default"].createElement(
-	                "span",
-	                { className: "text-muted" },
-	                "Historical ",
-	                this.props.crop.name,
-	                _react2["default"].createElement("img", { src: imageUrl }),
-	                " to rainfall in ",
-	                this.props.state
+	                "div",
+	                { className: "graphDescription" },
+	                _react2["default"].createElement(
+	                    "span",
+	                    { className: "first" },
+	                    "Historical ",
+	                    this.props.crop.name,
+	                    _react2["default"].createElement("img", { src: imageUrl }),
+	                    " to ",
+	                    _react2["default"].createElement("img", { src: rainImgUrl }),
+	                    " rainfall in ",
+	                    this.props.state
+	                )
 	            ),
 	            _react2["default"].createElement(
 	                "a",
@@ -57037,8 +57043,8 @@
 	    highTemp: ['orange'],
 	    lowTemp: ['lightblue'],
 	    'yield': ['#92C73F'],
-	    monthlyRainfall: ['blue'],
-	    monthlyAverageRainfall: ['lightblue'],
+	    monthlyRainfall: ['#4A90E2'],
+	    monthlyAverageRainfall: ['#D5DCE3'],
 	    yearlyAverageRainfall: ['#4A90E2']
 	};
 
@@ -57079,7 +57085,7 @@
 	        key: 'retrieveData',
 	        value: function retrieveData(crop) {
 	            return new Promise(function (resolve, reject) {
-	                d3.csv('data/crops/' + crop + '-yield.csv', function (d) {
+	                d3.csv('data/crops/' + crop.toUpperCase() + '-yield.csv', function (d) {
 	                    d.date = new Date(d.year, 1, 1); // coerce to date object
 	                    return d;
 	                }, function (err, data) {
@@ -57120,6 +57126,8 @@
 	var CachingDataSource = (function () {
 	    function CachingDataSource() {
 	        _classCallCheck(this, CachingDataSource);
+	
+	        this.__mapListPromise = {};
 	    }
 	
 	    _createClass(CachingDataSource, [{
@@ -57128,23 +57136,19 @@
 	            var _this = this;
 	
 	            var args = arguments;
-	            if (!this.__listPromise) {
-	                this.__listPromise = new Promise(function (resolve, reject) {
-	                    if (_this.__data) {
-	                        return resolve(_this.__data);
-	                    }
+	            if (!this.__mapListPromise.hasOwnProperty(args[0])) {
+	                var listPromise = new Promise(function (resolve, reject) {
 	
 	                    _this.retrieveData.apply(_this, _toConsumableArray(args)).then(function (data) {
-	                        _this.__data = data;
-	                        resolve(_this.__data);
+	                        resolve(data);
 	                    })["catch"](function (err) {
-	                        _this.__data = undefined;
 	                        reject(err);
 	                    });
 	                });
+	                this.__mapListPromise[args[0]] = listPromise;
 	            }
 	
-	            return this.__listPromise;
+	            return this.__mapListPromise[args[0]];
 	        }
 	    }]);
 	
@@ -57413,9 +57417,9 @@
 	            var timeScale = d3.time.scale().domain([new Date(2000, 1, 1), new Date(2015, 12, 31)]);
 	
 	            var compChart = dc.compositeChart(el);
-	            compChart.width($(el).innerWidth() - 30).height(250).margins({ top: 10, left: 50, right: 80, bottom: 40 }).x(timeScale).xUnits(d3.time.months).xAxisLabel("Date").yAxisLabel('Rainfall (inches)').dimension(monthlyRainDim).brushOn(false).compose([dc.lineChart(compChart).colors(_colors2["default"].monthlyRainfall).group(monthlyRainGroup).valueAccessor(function (d) {
+	            compChart.width($(el).innerWidth() - 30).height(250).margins({ top: 10, left: 50, right: 80, bottom: 40 }).x(timeScale).xUnits(d3.time.months).yAxisLabel('Rainfall (inches)').dimension(monthlyRainDim).brushOn(false).compose([dc.lineChart(compChart).colors(_colors2["default"].monthlyAverageRainfall).group(average30RainGroup).renderArea(true).valueAccessor(function (d) {
 	                return d.value.avg;
-	            }), dc.lineChart(compChart).colors(_colors2["default"].monthlyAverageRainfall).group(average30RainGroup).valueAccessor(function (d) {
+	            }), dc.lineChart(compChart).colors(_colors2["default"].monthlyRainfall).group(monthlyRainGroup).valueAccessor(function (d) {
 	                return d.value.avg;
 	            })]);
 	
@@ -57440,8 +57444,21 @@
 	            ),
 	            _react2["default"].createElement(
 	                "span",
-	                { className: "text-muted" },
-	                "Total rainfall per month versus 30-year average monthly rainfall"
+	                { className: "graphDescription" },
+	                "Historical rainfall trend ",
+	                _react2["default"].createElement(
+	                    "div",
+	                    { className: "graphLabel" },
+	                    " Average ",
+	                    _react2["default"].createElement("img", { src: "src/img/icons/grey-square.png" })
+	                ),
+	                " ",
+	                _react2["default"].createElement(
+	                    "div",
+	                    { className: "graphLabel" },
+	                    "Actual ",
+	                    _react2["default"].createElement("img", { src: "src/img/icons/blue-line.png" })
+	                )
 	            ),
 	            _react2["default"].createElement(
 	                "a",
@@ -57805,6 +57822,9 @@
 	      });
 	    }
 	
+	    // getCropByName(cropName) {
+	    //   return new Promise
+	    // }
 	    // getForState(stateCode) {
 	    //     return Object.keys(cache[stateCode]);
 	    // }

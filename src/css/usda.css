@@ -1066,3 +1066,17 @@ body {
   display: inline-block;
   margin-top: -.5em;
 }
+
+.graphDescription {
+  display: inline-flex;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+}
+.graphDescription img {
+  width: 25px;
+  height: 25px;
+}
+.graphLabel {
+  margin-left: 15px;
+}
