@@ -53,7 +53,6 @@ const CropSelectionComponent = React.createClass({
         const noData = `{localStateName} has data available for this.state.crop`;
         return (
             <div>
-                <div className="cropHeader">Below are crops that grow in <span>{localStateName}</span> select one would you like to see.</div >
                 <div className="cropTileContainer">
                     {crops.length === 0 ? noData : crops}
                 </div>
