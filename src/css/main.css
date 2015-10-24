@@ -325,3 +325,34 @@ h4 {
     width: 25px;
     height: 25px;
 }
+
+.densityArea {
+    margin-top: 10px;
+    border-radius: 1px;
+    height: 20px;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+.densityArea .gradient {
+  background: -webkit-linear-gradient(left, rgba(77,127,23,0), rgba(77,127,23, 1)); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(right,rgba(77,127,23,0), rgba(77,127,23, 1)); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(right,rgba(77,127,23,0), rgba(77,127,23, 1)); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to right,rgba(77,127,23,0), rgba(77,127,23, 1)); /* Standard syntax */
+  width: 200px;
+  display: inline-block;
+  background-color: rgba(255, 255, 255, .5)
+}
+
+.scale {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.min-label {
+    margin-right: 5px;
+}
+
+.max-label {
+    margin-left: 5px;
+}

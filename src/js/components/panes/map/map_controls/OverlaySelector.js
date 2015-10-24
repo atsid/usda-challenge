@@ -32,6 +32,11 @@ const OverlaySelector = React.createClass({
     componentDidMount() {
         this.props.onYearUpdate((year) => this.state.layers.plantDensity.setYear(year));
         this.state.layers.plantDensity.onLoadingChange(this.props.onLoadingChange);
+        this.state.layers.plantDensity.onDataLoaded(this.onVegitationDataLoaded);
+    },
+
+    onVegitationDataLoaded(minValue, maxValue) {
+        this.setState(_.merge(this.state, { vegitationScale: { min: minValue, max: maxValue }}));
     },
 
     render() {
@@ -39,7 +44,11 @@ const OverlaySelector = React.createClass({
         const overlays = this.state.overlays;
         const toggleOverlay = (name) => {
             const isEnabled = this.state.overlays[name];
-            this.setState(_.merge(this.state, {overlays: {[name]: !isEnabled}}));
+            let nextState = _.merge(this.state, {overlays: {[name]: !isEnabled}});
+            if (name === 'plantDensity') {
+                delete nextState.vegitationScale;
+            }
+            this.setState(nextState);
             this.state.layers[name][(isEnabled ? 'hide' : 'show')]();
         };
 
@@ -59,6 +68,16 @@ const OverlaySelector = React.createClass({
                         &nbsp;
                         <span>Plant Density</span>
                     </Button>
+                </div>
+                <div className="densityArea">
+                    <div style={{ display: overlays.plantDensity && this.state.vegitationScale ? "block" : "none" }}>
+                        <span> Density Scale:</span>
+                        <div className="scale">
+                            <span className="min-label">{ this.state.vegitationScale ? this.state.vegitationScale.min.toFixed(1) : ""}</span>
+                            <span className="gradient">&nbsp;</span>
+                            <span className="max-label">{ this.state.vegitationScale ? this.state.vegitationScale.max.toFixed(1) : "" }</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
