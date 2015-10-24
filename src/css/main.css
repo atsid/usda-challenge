@@ -209,7 +209,7 @@ h4 {
     margin-top: 15px;
     margin-left: 15px;
     margin-right: 15px;
-    height: 40px;
+    height: 60px;
     overflow: auto;
     overflow-y: hidden;
     white-space: nowrap;
@@ -324,4 +324,52 @@ h4 {
 .cropYieldChart img {
     width: 25px;
     height: 25px;
+}
+
+.mainDescriptionContainer {
+  display: inline-flex;
+  margin: 20px;
+  height: 80px;
+}
+.mainDescription {
+  max-width: 400px;
+  font-family: Roboto, Light;
+  font-size: 14pt;
+  color: #417506;
+  display: inline-flex;
+  text-align: left;
+}
+.mainDescriptionContainer img {
+  height: 80px;
+  width: 80px;
+  margin-right: 20px;
+  margin-left: 20px;
+}
+.mainDescription:first-child {
+  border-right: 1px solid #EFEFEF;
+
+}
+
+#info {
+  text-align: center;
+}
+.delimeterBar {
+  background-color: #417505;
+  color: white;
+  vertical-align: middle;
+}
+.delimeterBar section{
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.headingNumber {
+  color: #92C73F;
+  font-size: 48pt;
+  display: inline;
+  margin-right: 10px;
+}
+.headingText {
+  display: inline-block;
+  margin-top: -.5em;
 }

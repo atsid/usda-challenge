@@ -18,6 +18,7 @@ var config = {
     all: './',
     siteFiles: [
         'index.html',
+        'datasource.html',
         'build/*',
         'bower_components/**/*',
         'data/**/*',

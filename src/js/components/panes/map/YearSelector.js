@@ -6,7 +6,7 @@ import debugFactory from "debug";
 const debug = debugFactory('app:components:YearSelector');
 
 const MIN_YEAR = 2000;
-const MAX_YEAR = 2012;
+const MAX_YEAR = 2014;
 const YEARS = [];
 for (let y = MAX_YEAR; y >= MIN_YEAR; y--) {
     YEARS.push(y);
