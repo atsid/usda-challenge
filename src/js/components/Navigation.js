@@ -46,7 +46,7 @@ const NavBar = React.createClass({
                     <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul className="nav navbar-nav navbar-right">
                             <li><a className="page-scroll" href="#">Home</a></li>
-                            <li><a className="page-scroll" href="#map">Where</a></li>
+                            <li><a className="page-scroll" href="#map">Map</a></li>
                             <li><a className="page-scroll" href="#metrics">Rainfall</a></li>
                         </ul>
                     </div>
