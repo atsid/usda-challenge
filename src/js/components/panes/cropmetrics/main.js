@@ -38,7 +38,7 @@ let CropMetricsPaneComponent = React.createClass({
         return (
             <div className="pane">
                 <div className="paneHeader">
-                    <h4 className="paneHeaderContent">What do you grow on your farm?</h4>
+                    <h4 className="paneHeaderContent">What do you grow?</h4>
                     <CropSelection state={this.state.state} onSelect={this.handleSelect}/>
                 </div>
                 <div>
