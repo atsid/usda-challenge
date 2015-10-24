@@ -54204,7 +54204,7 @@
 	                        "Lons": lngs,
 	                        "TimeRegion": {
 	                            "Years": [_this2.year],
-	                            "Days": [1, 366],
+	                            "Days": [210, 213],
 	                            "Hours": [0, 24],
 	                            "IsIntervalsGridYears": false,
 	                            "IsIntervalsGridDays": true,
