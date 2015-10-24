@@ -18,9 +18,8 @@ let CropMetricsPaneComponent = React.createClass({
     },
 
     getInitialState() {
-//        debug({crop: 'CORN', state: 'IA'})
         return {
-            crop: {name:'CORN', imageUrl: 'src/img/icons/crops/corn.png'},
+            crop: {name:'corn', imageUrl: 'src/img/icons/crops/corn.png'},
             state: 'IA'
         };
     },

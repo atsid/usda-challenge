@@ -101,18 +101,18 @@ var Rainfall = React.createClass({
                 .margins({top: 10, left:50, right: 80, bottom:40})
                 .x(timeScale)
                 .xUnits(d3.time.months)
-                .xAxisLabel("Date")
                 .yAxisLabel('Rainfall (inches)')
                 .dimension(monthlyRainDim)
                 .brushOn(false)
                 .compose([
+                  dc.lineChart(compChart)
+                      .colors(colors.monthlyAverageRainfall)
+                      .group(average30RainGroup)
+                      .renderArea(true)
+                      .valueAccessor((d) => d.value.avg),
                     dc.lineChart(compChart)
                         .colors(colors.monthlyRainfall)
                         .group(monthlyRainGroup)
-                        .valueAccessor((d) => d.value.avg),
-                    dc.lineChart(compChart)
-                        .colors(colors.monthlyAverageRainfall)
-                        .group(average30RainGroup)
                         .valueAccessor((d) => d.value.avg)
                 ]);
 
@@ -131,7 +131,7 @@ var Rainfall = React.createClass({
         return (
             <div className={"col-xs-12"} id="monthlyRainfallChart">
                 <h4>Monthly Rainfall</h4>
-                <span className={"text-muted"}>Total rainfall per month versus 30-year average monthly rainfall</span>
+                <span className={"graphDescription"}>Historical rainfall trend <div className={"graphLabel"}> Average <img src="src/img/icons/grey-square.png"/></div> <div className={"graphLabel"}>Actual <img src="src/img/icons/blue-line.png"/></div></span>
                 <a className={"reset"} onClick={this.reset} style={{display: "none"}}>reset</a>
             </div>
         );

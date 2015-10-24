@@ -5,7 +5,7 @@ module.exports = {
     highTemp: ['orange'],
     lowTemp: ['lightblue'],
     yield: ['#92C73F'],
-    monthlyRainfall: ['blue'],
-    monthlyAverageRainfall: ['lightblue'],
+    monthlyRainfall: ['#4A90E2'],
+    monthlyAverageRainfall: ['#D5DCE3'],
     yearlyAverageRainfall: ['#4A90E2'],
 };

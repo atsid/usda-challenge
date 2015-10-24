@@ -1,26 +1,25 @@
 "use strict";
 
 export default class CachingDataSource {
+  constructor () {
+    this.__mapListPromise = {};
+  }
     list() {
         const args = arguments;
-        if (!this.__listPromise) {
-            this.__listPromise = new Promise((resolve, reject) => {
-                if (this.__data) {
-                    return resolve(this.__data);
-                }
+        if (!this.__mapListPromise.hasOwnProperty(args[0])) {
+               const listPromise = new Promise((resolve, reject) => {
 
-                this.retrieveData(...args)
-                    .then((data) => {
-                        this.__data = data;
-                        resolve(this.__data);
-                    })
-                    .catch((err) => {
-                        this.__data = undefined;
-                        reject(err);
-                    });
-            });
-        }
+                  this.retrieveData(...args)
+                      .then((data) => {
+                          resolve(data);
+                      })
+                      .catch((err) => {
+                          reject(err);
+                      });
+              });
+              this.__mapListPromise[args[0]] = listPromise;
+      }
 
-        return this.__listPromise;
+        return this.__mapListPromise[args[0]];
     }
 }
