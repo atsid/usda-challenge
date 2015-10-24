@@ -56604,7 +56604,7 @@
 	                _react2["default"].createElement(
 	                    "h4",
 	                    { className: "paneHeaderContent" },
-	                    "What do you grow on your farm?"
+	                    "What do you grow?"
 	                ),
 	                _react2["default"].createElement(_CropSelection2["default"], { state: this.state.state, onSelect: this.handleSelect })
 	            ),
