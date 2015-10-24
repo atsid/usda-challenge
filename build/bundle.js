@@ -24158,6 +24158,24 @@
 	                _react2["default"].createElement(_Info2["default"], null)
 	            ),
 	            _react2["default"].createElement(
+	                "div",
+	                { className: "delimeterBar" },
+	                _react2["default"].createElement(
+	                    "section",
+	                    { id: "delimeterBar1", className: "container" },
+	                    _react2["default"].createElement(
+	                        "div",
+	                        { className: "headingNumber" },
+	                        "1"
+	                    ),
+	                    _react2["default"].createElement(
+	                        "div",
+	                        { className: "headingText" },
+	                        "Get a bird’s eye view of the land in your community. Discover how densely crops grow in different soil types and what activities are performed in your state."
+	                    )
+	                )
+	            ),
+	            _react2["default"].createElement(
 	                "section",
 	                { id: "map", className: "container" },
 	                _react2["default"].createElement(_panesMapMain2["default"], {
@@ -24168,6 +24186,24 @@
 	                    year: this.state.year,
 	                    state: this.state.state,
 	                    location: this.state.location })
+	            ),
+	            _react2["default"].createElement(
+	                "div",
+	                { className: "delimeterBar" },
+	                _react2["default"].createElement(
+	                    "section",
+	                    { id: "delimeterBar2", className: "container" },
+	                    _react2["default"].createElement(
+	                        "div",
+	                        { className: "headingNumber" },
+	                        "2"
+	                    ),
+	                    _react2["default"].createElement(
+	                        "div",
+	                        { className: "headingText" },
+	                        "Learn from experience how your crops and your grandparents’ crops performed in tough weather conditions."
+	                    )
+	                )
 	            ),
 	            _react2["default"].createElement(
 	                "section",
@@ -41001,7 +41037,7 @@
 	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	      value: true
 	});
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -41021,54 +41057,26 @@
 	var debug = (0, _debug2["default"])('app:Info');
 	
 	var InfoComponent = _react2["default"].createClass({
-	    displayName: "InfoComponent",
+	      displayName: "InfoComponent",
 	
-	    render: function render() {
-	        return _react2["default"].createElement(
-	            "div",
-	            { className: "container" },
-	            _react2["default"].createElement(
-	                "div",
-	                { className: "col-md-3 col-md-offset-3" },
-	                _react2["default"].createElement(
-	                    "span",
-	                    { className: "fa-stack fa-2x" },
-	                    _react2["default"].createElement("i", { className: "fa fa-circle fa-stack-2x text-primary" }),
-	                    _react2["default"].createElement("i", { className: "fa fa-search fa-stack-1x fa-inverse" })
-	                ),
-	                _react2["default"].createElement(
-	                    "h4",
-	                    { className: "service-heading" },
-	                    "Do you know your soil?"
-	                ),
-	                _react2["default"].createElement(
-	                    "p",
-	                    { className: "text-muted" },
-	                    "See how soil type and crop growth are related on a map of your farm land."
-	                )
-	            ),
-	            _react2["default"].createElement(
-	                "div",
-	                { className: "col-md-3" },
-	                _react2["default"].createElement(
-	                    "span",
-	                    { className: "fa-stack fa-2x" },
-	                    _react2["default"].createElement("i", { className: "fa fa-circle fa-stack-2x text-primary" }),
-	                    _react2["default"].createElement("i", { className: "fa fa-tint fa-stack-1x fa-inverse" })
-	                ),
-	                _react2["default"].createElement(
-	                    "h4",
-	                    { className: "service-heading" },
-	                    "Rainfall"
-	                ),
-	                _react2["default"].createElement(
-	                    "p",
-	                    { className: "text-muted" },
-	                    "Get a sense for how much your farm can produce per year compared to detailed historical precipitation data."
-	                )
-	            )
-	        );
-	    }
+	      render: function render() {
+	            return _react2["default"].createElement(
+	                  "div",
+	                  { className: "mainDescriptionContainer" },
+	                  _react2["default"].createElement(
+	                        "div",
+	                        { className: "mainDescription" },
+	                        "See how soil type and crop growth are related on a map of your farm land.",
+	                        _react2["default"].createElement("img", { src: "src/img/icons/soil.png" })
+	                  ),
+	                  _react2["default"].createElement(
+	                        "div",
+	                        { className: "mainDescription" },
+	                        _react2["default"].createElement("img", { src: "src/img/icons/drop2.png" }),
+	                        "Get a sense for how much your farm produces in different rainfall conditions."
+	                  )
+	            );
+	      }
 	});
 	exports["default"] = InfoComponent;
 	module.exports = exports["default"];
@@ -41108,6 +41116,15 @@
 	                _react2["default"].createElement(
 	                    "div",
 	                    { className: "row" },
+	                    _react2["default"].createElement(
+	                        "div",
+	                        { className: "col-md-4" },
+	                        _react2["default"].createElement(
+	                            "a",
+	                            { href: "datasource.html", target: "_blank" },
+	                            "Data Source Credits"
+	                        )
+	                    ),
 	                    _react2["default"].createElement(
 	                        "div",
 	                        { className: "col-md-4" },
@@ -56053,7 +56070,7 @@
 	var debug = (0, _debug2["default"])('app:components:YearSelector');
 	
 	var MIN_YEAR = 2000;
-	var MAX_YEAR = 2012;
+	var MAX_YEAR = 2014;
 	var YEARS = [];
 	for (var y = MAX_YEAR; y >= MIN_YEAR; y--) {
 	    YEARS.push(y);
