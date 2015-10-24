@@ -1057,16 +1057,47 @@ body {
 }
 
 .headingNumber {
-  color: #92C73F;
-  font-size: 48pt;
-  display: inline;
-  margin-right: 10px;
-}
-.headingText {
-  display: inline-block;
-  margin-top: -.5em;
+    color: #92C73F;
+    font-size: 48pt;
+    display: inline;
+    margin-right: 10px;
+    float: left;
 }
 
+.headingText {
+    margin-top: 2.8em;
+    font-size: 18px;
+    width: 90%;
+    margin-bottom: 1.2em;
+	}
+
+.paneHeaderContent {
+    display: inline;
+    vertical-align: bottom;
+}
+
+.cropHeader {
+	margin-top: 1em;
+}
+.first {
+	margin: 1em 0;
+}
+rect.bar {
+	width: 20px;
+}
+.col-xs-12 {
+	padding-left:0; // hopefully can overrite css in bootstrap.min.css
+}
+.mapContainer {
+    margin: 20px 0;
+}
+
+footer span.copyright {
+    text-transform: uppercase;
+    text-transform: none;
+    font-family: "Roboto" "Helvetica Neue",Helvetica,Arial,sans-serif;
+    /* line-height: 40px; */
+}
 .graphDescription {
   display: inline-flex;
   margin-top: 10px;
