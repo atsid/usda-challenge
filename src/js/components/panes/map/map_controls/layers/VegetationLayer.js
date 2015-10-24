@@ -89,7 +89,7 @@ class VegetationLayer extends Layer {
                     "Lons": lngs,
                     "TimeRegion": {
                         "Years": [this.year],
-                        "Days": [1, 366],
+                        "Days": [210, 213],
                         "Hours": [0, 24],
                         "IsIntervalsGridYears": false,
                         "IsIntervalsGridDays": true,
