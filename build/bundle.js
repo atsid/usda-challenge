@@ -40951,7 +40951,7 @@
 	                            _react2["default"].createElement(
 	                                "a",
 	                                { className: "page-scroll", href: "#map" },
-	                                "Where"
+	                                "Map"
 	                            )
 	                        ),
 	                        _react2["default"].createElement(
