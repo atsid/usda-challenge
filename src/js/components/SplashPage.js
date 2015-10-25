@@ -25,8 +25,8 @@ let SplashPageComponent = React.createClass({
         const state = query.state || 'IA';
         const lat = parseFloat(query.lat) || 42.0046;
         const lng = parseFloat(query.lng) || -93.214;
-        const zoom = parseFloat(query.zoom) || 7;
-        const year = parseInt(query.year) || 2012;
+        const zoom = parseFloat(query.zoom) || 4;
+        const year = parseInt(query.year) || 2014;
         return {state, year, location: {lat, lng, zoom}};
     },
 
