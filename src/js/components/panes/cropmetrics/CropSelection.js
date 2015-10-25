@@ -15,7 +15,7 @@ const CropSelectionComponent = React.createClass({
     },
 
     getInitialState() {
-        return { crops: [], selectedCrop:{}};
+        return { crops: [], selectedCrop:{name:'corn'}};
     },
 
     componentDidMount() {
@@ -28,7 +28,7 @@ const CropSelectionComponent = React.createClass({
     },
 
     loadCrops(state) {
-        cropStore.getCrops().then((crops) => {
+        cropStore.getCropsByState(state).then((crops) => {
           this.setState({crops, state})
       });
     },
