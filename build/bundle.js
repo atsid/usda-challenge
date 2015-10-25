@@ -56317,7 +56317,9 @@
 	        var _this = this;
 	
 	        activityStore.getActivities(state, year).then(function (activities) {
-	            var yearsForState = activityStore.getYearsForState(state);
+	            var yearsForState = activityStore.getYearsForState(state).sort(function (a, b) {
+	                return b - a;
+	            });
 	            _this.setState({ activities: activities, yearsForState: yearsForState });
 	        });
 	    },
