@@ -24091,8 +24091,8 @@
 	        var state = query.state || 'IA';
 	        var lat = parseFloat(query.lat) || 42.0046;
 	        var lng = parseFloat(query.lng) || -93.214;
-	        var zoom = parseFloat(query.zoom) || 7;
-	        var year = parseInt(query.year) || 2012;
+	        var zoom = parseFloat(query.zoom) || 4;
+	        var year = parseInt(query.year) || 2014;
 	        return { state: state, year: year, location: { lat: lat, lng: lng, zoom: zoom } };
 	    },
 	
