@@ -30,7 +30,7 @@ const ActivitiesPerformedComponent = React.createClass({
     loadActivities(state, year) {
         activityStore.getActivities(state, year)
             .then((activities) => {
-                const yearsForState = activityStore.getYearsForState(state);
+                const yearsForState = activityStore.getYearsForState(state).sort(function(a, b){return b-a});
                 this.setState({activities, yearsForState});
             });
     },
