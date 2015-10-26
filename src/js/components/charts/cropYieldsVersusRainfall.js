@@ -74,7 +74,7 @@ var CropYieldsVersusRainfall = React.createClass({
                 .compose([
                     dc.barChart(compChart)
                         .colors(colors.yearlyAverageRainfall)
-                        .barPadding(0.3)
+                        .barPadding(0.1)
                         .group(yearlyAverageRainGroup),
                     dc.barChart(compChart)
                         .colors(colors.yield)
@@ -96,7 +96,7 @@ var CropYieldsVersusRainfall = React.createClass({
         }
     },
 
-    cropMap: {
+    cropUnits: {
         BARLEY: 'Bushels / Acre',
         BEANS: 'CWT / Acre',
         CORN: 'Bushels / Acre',
@@ -114,8 +114,8 @@ var CropYieldsVersusRainfall = React.createClass({
 
     //'COTTON' -> Cotton (Bales / Acre)
     cropLabel(crop) {
-        let units = this.cropMap[crop.name.toUpperCase()];
-        let prefix = crop.name.substring(0, 1) + crop.name.substring(1, crop.name.length).toLowerCase();
+        const units = this.cropUnits[crop.name.toUpperCase()];
+        const prefix = _.capitalize(crop.name);
         return prefix + ' (' + units + ')';
     },
 
