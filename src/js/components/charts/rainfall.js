@@ -29,32 +29,20 @@ var Rainfall = React.createClass({
         this.drawChart();
     },
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.state !== this.props.state ||
-            prevProps.radius !== this.props.radius ||
-            prevProps.location.lat !== this.props.location.lat ||
-            prevProps.location.lng !== this.props.location.lng
-        ) {
+    componentDidUpdate(nextProps) {
+        const isRedrawn =
+            nextProps.state !== this.props.state ||
+            nextProps.radius !== this.props.radius ||
+            nextProps.lat !== this.props.lat ||
+            nextProps.lng !== this.props.lng;
+        if (isRedrawn) {
             this.drawChart();
         }
     },
 
-    //subsets stations by a fixed radius, so we can constrain the plotted data to a reasonable spatial range
-    subsetStations(stations, coords, radius) {
-        return util.geospatial.hitTestPoints(stations, coords, radius);
-    },
-
-    //subsets the weather data to only include stations in the subset map
-    subsetWeatherData(data, stations) {
-        var output = data.filter(function (d) {
-            return stations[d.id];
-        });
-        return output;
-    },
-
     drawChart() {
         debug('redrawing rainfall chart');
-        let el = ReactDOM.findDOMNode(this);
+        const el = ReactDOM.findDOMNode(this);
 
         Promise.all([
             //TODO: push the state/location into all of these functions, so results are already filtered
@@ -63,56 +51,53 @@ var Rainfall = React.createClass({
             this.props.average30Source.list(),
             this.props.stationSource.list()
         ]).then((results) => {
+            //subsets stations by a fixed radius, so we can constrain the plotted data to a reasonable spatial range
+            const subsetStations = (stations, coords, radius) => util.geospatial.hitTestPoints(stations, coords, radius);
+            //subsets the weather data to only include stations in the subset map
+            const subsetWeatherData = (data, stations) => data.filter((d) => stations[d.id]);
 
-            var monthlyData = results[0].data;
-            var average30Data = results[1].data;
+            function groupify(data) {
+                const index = crossfilter(data);
+                const dim = index.dimension((d) => d3.time.month(d.date));
+                const group = dim.group().reduce(
+                    util.reducers.average.add('value'),
+                    util.reducers.average.remove('value'),
+                    util.reducers.average.init()
+                );
+                return {data, index, dim, group};
+            }
 
+            debug('rainfall chart data', results);
+            const monthlyData = results[0].data;
+            const average30Data = results[1].data;
+            const stationData = results[2].data;
+            const stationSubset = subsetStations(stationData, {lat: this.props.lat, lng: this.props.lng}, this.props.radius);
+            const monthlySubset = subsetWeatherData(monthlyData, stationSubset);
+            const average30Subset = subsetWeatherData(average30Data, stationSubset);
+            const monthlyRain = groupify(monthlySubset);
+            const average30Rain = groupify(average30Subset);
+            const timeScale = d3.time.scale().domain([new Date(2000, 1, 1), new Date(2015, 12, 31)]);
 
-            var stationSubset = this.subsetStations(results[2].data, this.props.location, this.props.radius);
-
-            var monthlySubset = this.subsetWeatherData(monthlyData, stationSubset);
-            var average30Subset = this.subsetWeatherData(average30Data, stationSubset);
-
-            var monthlyIndex = crossfilter(monthlySubset);
-            var average30Index = crossfilter(average30Subset);
-
-            var monthlyRainDim = monthlyIndex.dimension((d) => d3.time.month(d.date));
-            var average30RainDim = average30Index.dimension((d) => d3.time.month(d.date));
-
-            //this group averages all the selected stations for a monthly reading
-            var monthlyRainGroup = monthlyRainDim.group().reduce(
-                util.reducers.average.add('value'),
-                util.reducers.average.remove('value'),
-                util.reducers.average.init()
-            );
-
-            var average30RainGroup = average30RainDim.group().reduce(
-                util.reducers.average.add('value'),
-                util.reducers.average.remove('value'),
-                util.reducers.average.init()
-            );
-
-            var timeScale = d3.time.scale().domain([new Date(2000,1,1), new Date(2015, 12,31)]);
-
-            var compChart = dc.compositeChart(el);
+            const compChart = dc.compositeChart(el);
             compChart
-                .width($(el).innerWidth()-30)
+                .width($(el).innerWidth() - 30)
                 .height(250)
-                .margins({top: 10, left:50, right: 80, bottom:40})
+                .margins({top: 10, left: 50, right: 80, bottom: 40})
                 .x(timeScale)
                 .xUnits(d3.time.months)
                 .yAxisLabel('Rainfall (inches)')
-                .dimension(monthlyRainDim)
+                .dimension(monthlyRain.dim)
                 .brushOn(false)
                 .compose([
-                  dc.lineChart(compChart)
-                      .colors(colors.monthlyAverageRainfall)
-                      .group(average30RainGroup)
-                      .renderArea(true)
-                      .valueAccessor((d) => d.value.avg),
+                    dc.lineChart(compChart)
+                        .colors(colors.monthlyAverageRainfall)
+                        .group(average30Rain.group)
+                        .renderArea(true)
+                        .valueAccessor((d) => d.value.avg),
+
                     dc.lineChart(compChart)
                         .colors(colors.monthlyRainfall)
-                        .group(monthlyRainGroup)
+                        .group(monthlyRain.group)
                         .valueAccessor((d) => d.value.avg)
                 ]);
 
@@ -131,7 +116,10 @@ var Rainfall = React.createClass({
         return (
             <div className={"col-xs-12"} id="monthlyRainfallChart">
                 <h4>Monthly Rainfall</h4>
-                <span className={"graphDescription"}>Historical rainfall trend <div className={"graphLabel"}> Average <img src="src/img/icons/grey-square.png"/></div> <div className={"graphLabel"}>Actual <img src="src/img/icons/blue-line.png"/></div></span>
+                <span className={"graphDescription"}>
+                    Historical Rainfall<div className={"graphLabel"}> Average
+                    <img src="src/img/icons/grey-square.png"/></div> <div className={"graphLabel"}>Actual <img
+                    src="src/img/icons/blue-line.png"/></div></span>
                 <a className={"reset"} onClick={this.reset} style={{display: "none"}}>reset</a>
             </div>
         );

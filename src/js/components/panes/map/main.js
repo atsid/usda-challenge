@@ -19,7 +19,9 @@ let MapPaneComponent = React.createClass({
         onZoomChange: React.PropTypes.func.isRequired,
         onYearChange: React.PropTypes.func.isRequired,
         state: React.PropTypes.string.isRequired,
-        location: React.PropTypes.object.isRequired,
+        lat: React.PropTypes.number.isRequired,
+        lng: React.PropTypes.number.isRequired,
+        zoom: React.PropTypes.number.isRequired,
         year: React.PropTypes.number.isRequired,
     },
 
@@ -111,6 +113,7 @@ let MapPaneComponent = React.createClass({
         if (state) {
             debug('Selected State', state);
             this.loadState(state, bounds);
+            this.onStateChange(state);
         }
     },
 
@@ -130,7 +133,9 @@ let MapPaneComponent = React.createClass({
                 <div className="mapContainer">
                     <Map ref="map"
                          year={this.props.year}
-                         location={this.props.location}
+                         lat={this.props.lat}
+                         lng={this.props.lng}
+                         zoom={this.props.zoom}
                          onCenterChange={this.props.onCenterChange}
                          onZoomChange={this.props.onZoomChange}/>
                 </div>

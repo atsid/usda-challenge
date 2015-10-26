@@ -17,7 +17,9 @@ var CropYieldsVersusRainfall = React.createClass({
         cropSource: React.PropTypes.object.isRequired,
         rainSource: React.PropTypes.object.isRequired,
         state: React.PropTypes.string.isRequired,
-        location: React.PropTypes.object.isRequired,
+        lat: React.PropTypes.number.isRequired,
+        lng: React.PropTypes.number.isRequired,
+        zoom: React.PropTypes.number.isRequired,
         radius: React.PropTypes.number.isRequired,
     },
 
@@ -32,8 +34,8 @@ var CropYieldsVersusRainfall = React.createClass({
     componentDidUpdate(prevProps) {
         if (prevProps.state !== this.props.state ||
             prevProps.radius !== this.props.radius ||
-            prevProps.location.lat !== this.props.location.lat ||
-            prevProps.location.lng !== this.props.location.lng ||
+            prevProps.lat !== this.props.lat ||
+            prevProps.lng !== this.props.lng ||
             prevProps.crop.name !== this.props.crop.name
         ) {
             this.drawChart();
@@ -74,7 +76,7 @@ var CropYieldsVersusRainfall = React.createClass({
                 .compose([
                     dc.barChart(compChart)
                         .colors(colors.yearlyAverageRainfall)
-                        .barPadding(0.1)
+                        .barPadding(0.3)
                         .group(yearlyAverageRainGroup),
                     dc.barChart(compChart)
                         .colors(colors.yield)

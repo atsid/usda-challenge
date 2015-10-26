@@ -15,13 +15,15 @@ let MapComponent = React.createClass({
         year: React.PropTypes.number.isRequired,
         onCenterChange: React.PropTypes.func.isRequired,
         onZoomChange: React.PropTypes.func.isRequired,
-        location: React.PropTypes.object.isRequired,
+        lat: React.PropTypes.number.isRequired,
+        lng: React.PropTypes.number.isRequired,
+        zoom: React.PropTypes.number.isRequired,
     },
 
     getInitialState() {
         return {
-            initialCenter: {lat: this.props.location.lat, lng: this.props.location.lng},
-            initialZoom: this.props.location.zoom
+            initialCenter: {lat: this.props.lat, lng: this.props.lng},
+            initialZoom: this.props.zoom
         };
     },
 

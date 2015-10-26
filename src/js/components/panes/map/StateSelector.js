@@ -11,10 +11,6 @@ const StateSelector = React.createClass({
         onStateSelected: React.PropTypes.func.isRequired
     },
 
-    contextTypes: {
-        location: React.PropTypes.object.isRequired,
-    },
-
     componentDidMount() {
         this.loadStateAutoComplete();
     },
@@ -33,7 +29,6 @@ const StateSelector = React.createClass({
                 if (state) {
                     let bounds;
                     if (viewport) {
-                        let vpCenter = viewport.getCenter();
                         let vpNE = viewport.getNorthEast();
                         let vpSW = viewport.getSouthWest();
                         bounds = {

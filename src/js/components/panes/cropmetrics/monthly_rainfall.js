@@ -5,9 +5,9 @@ import debugFactory from "debug";
 const debug = debugFactory('app:components:RainfallChartComponent');
 
 import RainfallChart from "../../charts/rainfall";
-import MonthlyRainfallDataSource from "../../../datasources/monthlyRainfall.js";
-import Average30RainfallDataSource from "../../../datasources/average30Rainfall.js";
-import StationDataSource from "../../../datasources/stations.js";
+import MonthlyRainfallDataSource from "../../../datasources/monthlyRainfall";
+import Average30RainfallDataSource from "../../../datasources/average30Rainfall";
+import StationDataSource from "../../../datasources/stations";
 
 import {Glyphicon, Button, DropdownButton, MenuItem} from "react-bootstrap";
 
@@ -20,7 +20,9 @@ let RainfallChartComponent = React.createClass({
 
     propTypes: {
         state: React.PropTypes.string.isRequired,
-        location: React.PropTypes.object.isRequired,
+        lat: React.PropTypes.number.isRequired,
+        lng: React.PropTypes.number.isRequired,
+        zoom: React.PropTypes.number.isRequired,
     },
 
     render() {
@@ -32,7 +34,9 @@ let RainfallChartComponent = React.createClass({
                     stationSource={stationData}
                     radius={100}
                     state={this.props.state}
-                    location={this.props.location} />
+                    lat={this.props.lat}
+                    lng={this.props.lng}
+                    zoom={this.props.zoom} />
             </div>
         );
     }

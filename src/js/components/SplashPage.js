@@ -27,10 +27,9 @@ let SplashPageComponent = React.createClass({
         const lat = parseFloat(query.lat) || 42.0046;
         const lng = parseFloat(query.lng) || -93.214;
         const zoom = parseFloat(query.zoom) || 4;
-        const location = {lat, lng, zoom};
         const year = parseInt(query.year) || 2014;
         const crop = query.crop || 'corn';
-        return {state, year, location, crop};
+        return {state, year, lat, lng, zoom, crop};
     },
 
     componentDidMount() {
@@ -51,9 +50,9 @@ let SplashPageComponent = React.createClass({
         const query = {
             year: state.year,
             state: state.state,
-            lat: state.location.lat,
-            lng: state.location.lng,
-            zoom: state.location.zoom,
+            lat: state.lat,
+            lng: state.lng,
+            zoom: state.zoom,
         };
         const newQuery = _.merge(this.context.location.query, query);
         this.context.history.pushState(null, "/", newQuery);
@@ -61,13 +60,13 @@ let SplashPageComponent = React.createClass({
 
     handleCenterChange(center) {
         debug('handling center change');
-        this.setState(_.merge(this.state, {location: center}));
+        this.setState(_.merge(this.state, {lat: center.lat, lng: center.lng}));
         this.pushLocation();
     },
 
     handleZoomChange(zoom) {
         debug('handling zoom change');
-        this.setState(_.merge(this.state, {location: {zoom}}));
+        this.setState(_.merge(this.state, {zoom}));
         this.pushLocation();
     },
 
@@ -114,7 +113,9 @@ let SplashPageComponent = React.createClass({
                         onYearChange={this.handleYearChange}
                         year={this.state.year}
                         state={this.state.state}
-                        location={this.state.location}/>
+                        lat={this.state.lat}
+                        lng={this.state.lng}
+                        zoom={this.state.zoom} />
                 </section>
                 <div className={"delimeterBar"}>
                     <section id="delimeterBar2" className="container">
@@ -128,7 +129,9 @@ let SplashPageComponent = React.createClass({
                 <section id="metrics" className="container">
                     <CropMetricsPane
                         state={this.state.state}
-                        location={this.state.location}
+                        lat={this.state.lat}
+                        lng={this.state.lng}
+                        zoom={this.state.zoom}
                         crop={this.state.crop}
                         onCropChange={this.handleCropChange} />
                 </section>

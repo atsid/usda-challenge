@@ -13,7 +13,9 @@ import CropSelection from "./CropSelection";
 let CropMetricsPaneComponent = React.createClass({
     propTypes: {
         state: React.PropTypes.string.isRequired,
-        location: React.PropTypes.object.isRequired,
+        lat: React.PropTypes.number.isRequired,
+        lng: React.PropTypes.number.isRequired,
+        zoom: React.PropTypes.number.isRequired,
         crop: React.PropTypes.string.isRequired,
         onCropChange: React.PropTypes.func.isRequired
     },
@@ -26,10 +28,17 @@ let CropMetricsPaneComponent = React.createClass({
                     <CropSelection state={this.props.state} onSelect={this.props.onCropChange} crop={this.props.crop} />
                 </div>
                 <div>
-                    <RainfallVsYieldChart crop={this.props.crop} state={this.props.state} location={this.props.location} />
+                    <RainfallVsYieldChart crop={this.props.crop}
+                                          state={this.props.state}
+                                          lat={this.props.lat}
+                                          lng={this.props.lng}
+                                          zoom={this.props.zoom} />
                 </div>
                 <div>
-                    <MonthlyRainfallChart state={this.props.state} location={this.props.location} />
+                    <MonthlyRainfallChart state={this.props.state}
+                                          lat={this.props.lat}
+                                          lng={this.props.lng}
+                                          zoom={this.props.zoom}/>
                 </div>
             </div>
         );
