@@ -1,10 +1,14 @@
 "use strict";
 
+import _ from "lodash";
 import React from "react";
 import ReactDOM from "react-dom";
 
 import debugFactory from "debug";
 const debug = debugFactory('app:components:CropTile');
+import CropStore from './CropStore';
+
+const cropStore = new CropStore();
 
 const CropTile = React.createClass({
     propTypes: {
@@ -13,19 +17,17 @@ const CropTile = React.createClass({
         onSelect: React.PropTypes.func.isRequired
     },
 
-    handleSelect(e, k) {
-        this.props.onSelect(this.props.crop);
+    handleSelect() {
+        this.props.onSelect(this.props.crop.name);
     },
 
 
     render() {
-        const name = this.props.crop.name;
-        const imageUrl = this.props.crop.imageUrl;
-        const tileClass = (this.props.isSelected ? "cropTile selectedCropTile" : "cropTile" );
+        const tileClass = (this.props.isSelected ? "cropTile selectedCropTile" : "cropTile nonselectedCropTile" );
         return (
             <div className={tileClass} onClick={this.handleSelect}>
-                <img src={imageUrl} />
-                <div className="cropName">{name}</div>
+                <img src={this.props.crop.imageUrl} />
+                <div className="cropName">{_.capitalize(this.props.crop.name)}</div>
             </div>
         );
     },

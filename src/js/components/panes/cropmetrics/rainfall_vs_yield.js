@@ -13,10 +13,13 @@ import {Glyphicon, Button, DropdownButton, MenuItem} from "react-bootstrap";
 const cropYieldsDataSource = new CropYieldsDataSource();
 const rainfallDataSource = new RainfallDataSource();
 
+const CropStore = require('./CropStore');
+const cropStore = new CropStore();
+
 let RainfallVsYieldChartComponent = React.createClass({
 
     propTypes: {
-        crop: React.PropTypes.object.isRequired,
+        crop: React.PropTypes.string.isRequired,
         state: React.PropTypes.string.isRequired,
         location: React.PropTypes.object.isRequired,
     },
@@ -28,7 +31,7 @@ let RainfallVsYieldChartComponent = React.createClass({
                     cropSource={cropYieldsDataSource}
                     rainSource={rainfallDataSource}
                     radius={100}
-                    crop={this.props.crop}
+                    crop={cropStore.getCropDatum(this.props.crop)}
                     state={this.props.state}
                     location={this.props.location} />
             </div>

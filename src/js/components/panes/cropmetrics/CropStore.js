@@ -78,7 +78,7 @@ export default class CropStore {
     const localCrops = [];
     for (let key in KNOWN_CROPS) {
       if (KNOWN_CROPS.hasOwnProperty(key)) {
-        const datum = this._createCropDatum(KNOWN_CROPS[key]);
+        const datum = this.getCropDatum(KNOWN_CROPS[key]);
         localCrops.push(datum)
       }
     }
@@ -86,9 +86,7 @@ export default class CropStore {
   }
 
     getCrops() {
-      return new Promise((resolve, reject) => {
-        resolve(this.crops);
-      });
+      return Promise.resolve(this.crops);
     }
 
     getCropsByState(state) {
@@ -106,19 +104,12 @@ export default class CropStore {
       });
     }
 
-    // getCropByName(cropName) {
-    //   return new Promise
-    // }
-    // getForState(stateCode) {
-    //     return Object.keys(cache[stateCode]);
-    // }
-
-    _createCropDatum(name) {
-        const imageUrl = this._getCropImageUrl(name);
+    getCropDatum(name) {
+        const imageUrl = this.getCropImageUrl(name);
         return {name, imageUrl};
     }
 
-    _getCropImageUrl(name) {
+    getCropImageUrl(name) {
         const lcName = name.toLowerCase();
         const icon = KNOWN_CROPS[lcName] || 'misc';
         return `src/img/icons/crops/${icon}.png`;

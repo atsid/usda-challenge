@@ -8,14 +8,16 @@ import CropStore from './CropStore';
 import CropTile from './CropTile';
 
 const cropStore = new CropStore();
+
 const CropSelectionComponent = React.createClass({
     propTypes: {
         state: React.PropTypes.string.isRequired,
-        onSelect: React.PropTypes.func.isRequired
+        onSelect: React.PropTypes.func.isRequired,
+        crop: React.PropTypes.string.isRequired,
     },
 
     getInitialState() {
-        return { crops: [], selectedCrop:{name:'corn'}};
+        return {crops: []};
     },
 
     componentDidMount() {
@@ -29,35 +31,23 @@ const CropSelectionComponent = React.createClass({
 
     loadCrops(state) {
         cropStore.getCropsByState(state).then((crops) => {
-          this.setState({crops, state})
-      });
+            this.setState({crops, state});
+        });
     },
 
-    handleSelect(k) {
-        this.props.onSelect(k);
-        this.setState({selectedCrop: k, crops: this.state.crops})
+    getStateName() {
+        return stateData.statesByCode[this.props.state].name;
     },
-
-
 
     render() {
-      debug(this.props)
-        const localStateName = stateData.statesByCode[this.props.state].name;
-        debug(localStateName)
-        const localStateCode = this.props.state;
-//        const state = "{state}";
         const crops = this.state.crops.map((crop, index) => {
-            const isSelected = this.state.selectedCrop.name === crop.name;
-            return (<CropTile key={`crop${index}`} crop={crop} isSelected={isSelected} onSelect={this.handleSelect}/>);
+            const isSelected = this.props.crop === crop.name;
+            return (<CropTile key={`crop${index}`} crop={crop} isSelected={isSelected} onSelect={this.props.onSelect}/>);
         });
-        const noData = `{localStateName} has data available for this.state.crop`;
-        return (
-            <div>
-                <div className="cropTileContainer">
-                    {crops.length === 0 ? noData : crops}
-                </div>
-            </div>
-        );
+
+        const noData = `${this.getStateName()} has no data available for ${this.props.crop}`;
+        const cropTiles = (<div className="cropTileContainer">{crops}</div>);
+        return (<div>{crops.length === 0 ? noData : cropTiles}</div>);
     },
 });
 

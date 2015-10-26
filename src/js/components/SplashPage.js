@@ -14,6 +14,7 @@ import Footer from './Footer';
 import MapPane from './panes/map/main';
 import CropMetricsPane from './panes/cropmetrics/main';
 
+
 let SplashPageComponent = React.createClass({
     contextTypes: {
         location: React.PropTypes.object.isRequired,
@@ -26,8 +27,10 @@ let SplashPageComponent = React.createClass({
         const lat = parseFloat(query.lat) || 42.0046;
         const lng = parseFloat(query.lng) || -93.214;
         const zoom = parseFloat(query.zoom) || 4;
+        const location = {lat, lng, zoom};
         const year = parseInt(query.year) || 2014;
-        return {state, year, location: {lat, lng, zoom}};
+        const crop = query.crop || 'corn';
+        return {state, year, location, crop};
     },
 
     componentDidMount() {
@@ -80,6 +83,12 @@ let SplashPageComponent = React.createClass({
         this.pushLocation();
     },
 
+    handleCropChange(crop) {
+        debug('handling crop change');
+        this.setState(_.merge(this.state, {crop}));
+        this.pushLocation();
+    },
+
     render() {
         return (
             <div>
@@ -89,11 +98,13 @@ let SplashPageComponent = React.createClass({
                     <Info />
                 </section>
                 <div className={"delimeterBar"}>
-                <section id="delimeterBar1" className="container">
-                  <div className={"headingNumber"}>1</div>
-                  <div className={"headingText"}>Get a bird’s eye view of the land in your community. Discover how densely
-crops grow in different soil types and what activities are performed in your state.</div>
-                </section>
+                    <section id="delimeterBar1" className="container">
+                        <div className={"headingNumber"}>1</div>
+                        <div className={"headingText"}>Get a bird’s eye view of the land in your community. Discover how
+                            densely
+                            crops grow in different soil types and what activities are performed in your state.
+                        </div>
+                    </section>
                 </div>
                 <section id="map" className="container">
                     <MapPane
@@ -106,15 +117,20 @@ crops grow in different soil types and what activities are performed in your sta
                         location={this.state.location}/>
                 </section>
                 <div className={"delimeterBar"}>
-                <section id="delimeterBar2" className="container">
-                  <div className={"headingNumber"}>2</div>
-                  <div className={"headingText"}>Learn from experience how your crops and your grandparents’
-crops performed in tough weather conditions.</div>
-                </section>
+                    <section id="delimeterBar2" className="container">
+                        <div className={"headingNumber"}>2</div>
+                        <div className={"headingText"}>Learn from experience how your crops and your grandparents’
+                            crops performed in tough weather conditions.
+                        </div>
+                    </section>
                 </div>
 
                 <section id="metrics" className="container">
-                    <CropMetricsPane state={this.state.state} location={this.state.location}/>
+                    <CropMetricsPane
+                        state={this.state.state}
+                        location={this.state.location}
+                        crop={this.state.crop}
+                        onCropChange={this.handleCropChange} />
                 </section>
                 <Footer />
             </div>);

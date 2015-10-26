@@ -12,26 +12,10 @@ import CropSelection from "./CropSelection";
 
 let CropMetricsPaneComponent = React.createClass({
     propTypes: {
-        state: React.PropTypes.string,
-        location: React.PropTypes.object,
-        crop: React.PropTypes.object
-    },
-
-    getInitialState() {
-        return {
-            crop: {name:'corn', imageUrl: 'src/img/icons/crops/corn.png'},
-            state: 'IA'
-        };
-    },
-
-    componentWillReceiveProps(nextProps) {
-      this.setState( {crop: this.state.crop, state: nextProps.state })
-
-    },
-
-    handleSelect(k) {
-      debug("main: " + k + ", st:" + this.state.state)
-        this.setState({crop: k, state: this.state.state});
+        state: React.PropTypes.string.isRequired,
+        location: React.PropTypes.object.isRequired,
+        crop: React.PropTypes.string.isRequired,
+        onCropChange: React.PropTypes.func.isRequired
     },
 
     render() {
@@ -39,10 +23,10 @@ let CropMetricsPaneComponent = React.createClass({
             <div className="pane">
                 <div className="paneHeader">
                     <h4 className="paneHeaderContent">What do you grow?</h4>
-                    <CropSelection state={this.state.state} onSelect={this.handleSelect}/>
+                    <CropSelection state={this.props.state} onSelect={this.props.onCropChange} crop={this.props.crop} />
                 </div>
                 <div>
-                    <RainfallVsYieldChart crop={this.state.crop} state={this.props.state} location={this.props.location} />
+                    <RainfallVsYieldChart crop={this.props.crop} state={this.props.state} location={this.props.location} />
                 </div>
                 <div>
                     <MonthlyRainfallChart state={this.props.state} location={this.props.location} />

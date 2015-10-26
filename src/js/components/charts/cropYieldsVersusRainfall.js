@@ -2,6 +2,7 @@
 
 // import dc from 'dc';
 // import d3 from 'd3';
+import _ from "lodash";
 import React from "react";
 import ReactDOM from "react-dom";
 import util from "../../common/util";
@@ -10,7 +11,6 @@ import debugFactory from "debug";
 const debug = debugFactory('app:components:CropYieldsVersusRainfall');
 
 var CropYieldsVersusRainfall = React.createClass({
-
     propTypes: {
         crop: React.PropTypes.object.isRequired,
         cropSource: React.PropTypes.object.isRequired,
@@ -57,13 +57,13 @@ var CropYieldsVersusRainfall = React.createClass({
             var yearlyRainDim = rainIndex.dimension((d) => d3.time.year(d.date));
             var yearlyAverageRainGroup = yearlyRainDim.group().reduceSum((d) => d.high);
 
-            var timeScale = d3.time.scale().domain([new Date(2000,1,1), new Date(2015, 12,31)]);
+            var timeScale = d3.time.scale().domain([new Date(2000, 1, 1), new Date(2015, 12, 31)]);
 
             var compChart = dc.compositeChart(el);
             compChart
-                .width($(el).innerWidth()-30)
+                .width($(el).innerWidth() - 30)
                 .height(250)
-                .margins({top: 10, left:50, right: 80, bottom:40})
+                .margins({top: 10, left: 50, right: 80, bottom: 40})
                 .x(timeScale)
                 .xUnits(d3.time.years)
                 .yAxisLabel('Actual Rainfall (inch)')
@@ -119,13 +119,13 @@ var CropYieldsVersusRainfall = React.createClass({
     },
 
     render() {
-      debug(this.props)
-      const imageUrl = this.props.crop.imageUrl;
-      const rainImgUrl = 'src/img/icons/blue-square.png'
+        const imageUrl = this.props.crop.imageUrl;
+        const rainImgUrl = 'src/img/icons/blue-square.png';
         return (
             <div className={"cropYieldChart"} id="cropYieldsChartGeneric">
                 <div className={"graphDescription"}>
-                  <span className={"first"}>Historical {this.props.crop.name}<img src={imageUrl} /> to <img src={rainImgUrl} /> rainfall in {this.props.state}</span>
+                    <span className={"first"}>Historical {this.props.crop.name}<img src={imageUrl}/> to <img
+                        src={rainImgUrl}/> rainfall in {this.props.state}</span>
                 </div>
                 <a className={"reset"} onClick={this.reset} style={{display: "none"}}>reset</a>
             </div>
