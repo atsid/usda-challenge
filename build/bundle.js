@@ -24092,10 +24092,9 @@
 	        var lat = parseFloat(query.lat) || 42.0046;
 	        var lng = parseFloat(query.lng) || -93.214;
 	        var zoom = parseFloat(query.zoom) || 4;
-	        var location = { lat: lat, lng: lng, zoom: zoom };
 	        var year = parseInt(query.year) || 2014;
 	        var crop = query.crop || 'corn';
-	        return { state: state, year: year, location: location, crop: crop };
+	        return { state: state, year: year, lat: lat, lng: lng, zoom: zoom, crop: crop };
 	    },
 	
 	    componentDidMount: function componentDidMount() {
@@ -24116,9 +24115,9 @@
 	        var query = {
 	            year: state.year,
 	            state: state.state,
-	            lat: state.location.lat,
-	            lng: state.location.lng,
-	            zoom: state.location.zoom
+	            lat: state.lat,
+	            lng: state.lng,
+	            zoom: state.zoom
 	        };
 	        var newQuery = _.merge(this.context.location.query, query);
 	        this.context.history.pushState(null, "/", newQuery);
@@ -24126,13 +24125,13 @@
 	
 	    handleCenterChange: function handleCenterChange(center) {
 	        debug('handling center change');
-	        this.setState(_.merge(this.state, { location: center }));
+	        this.setState(_.merge(this.state, { lat: center.lat, lng: center.lng }));
 	        this.pushLocation();
 	    },
 	
 	    handleZoomChange: function handleZoomChange(zoom) {
 	        debug('handling zoom change');
-	        this.setState(_.merge(this.state, { location: { zoom: zoom } }));
+	        this.setState(_.merge(this.state, { zoom: zoom }));
 	        this.pushLocation();
 	    },
 	
@@ -24193,7 +24192,9 @@
 	                    onYearChange: this.handleYearChange,
 	                    year: this.state.year,
 	                    state: this.state.state,
-	                    location: this.state.location })
+	                    lat: this.state.lat,
+	                    lng: this.state.lng,
+	                    zoom: this.state.zoom })
 	            ),
 	            _react2["default"].createElement(
 	                "div",
@@ -24218,7 +24219,9 @@
 	                { id: "metrics", className: "container" },
 	                _react2["default"].createElement(_panesCropmetricsMain2["default"], {
 	                    state: this.state.state,
-	                    location: this.state.location,
+	                    lat: this.state.lat,
+	                    lng: this.state.lng,
+	                    zoom: this.state.zoom,
 	                    crop: this.state.crop,
 	                    onCropChange: this.handleCropChange })
 	            ),
@@ -41253,7 +41256,9 @@
 	        onZoomChange: _react2["default"].PropTypes.func.isRequired,
 	        onYearChange: _react2["default"].PropTypes.func.isRequired,
 	        state: _react2["default"].PropTypes.string.isRequired,
-	        location: _react2["default"].PropTypes.object.isRequired,
+	        lat: _react2["default"].PropTypes.number.isRequired,
+	        lng: _react2["default"].PropTypes.number.isRequired,
+	        zoom: _react2["default"].PropTypes.number.isRequired,
 	        year: _react2["default"].PropTypes.number.isRequired
 	    },
 	
@@ -41347,6 +41352,7 @@
 	        if (state) {
 	            debug('Selected State', state);
 	            this.loadState(state, bounds);
+	            this.onStateChange(state);
 	        }
 	    },
 	
@@ -41377,7 +41383,9 @@
 	                { className: "mapContainer" },
 	                _react2["default"].createElement(_map2["default"], { ref: "map",
 	                    year: this.props.year,
-	                    location: this.props.location,
+	                    lat: this.props.lat,
+	                    lng: this.props.lng,
+	                    zoom: this.props.zoom,
 	                    onCenterChange: this.props.onCenterChange,
 	                    onZoomChange: this.props.onZoomChange })
 	            ),
@@ -41432,13 +41440,15 @@
 	        year: _react2["default"].PropTypes.number.isRequired,
 	        onCenterChange: _react2["default"].PropTypes.func.isRequired,
 	        onZoomChange: _react2["default"].PropTypes.func.isRequired,
-	        location: _react2["default"].PropTypes.object.isRequired
+	        lat: _react2["default"].PropTypes.number.isRequired,
+	        lng: _react2["default"].PropTypes.number.isRequired,
+	        zoom: _react2["default"].PropTypes.number.isRequired
 	    },
 	
 	    getInitialState: function getInitialState() {
 	        return {
-	            initialCenter: { lat: this.props.location.lat, lng: this.props.location.lng },
-	            initialZoom: this.props.location.zoom
+	            initialCenter: { lat: this.props.lat, lng: this.props.lng },
+	            initialZoom: this.props.zoom
 	        };
 	    },
 	
@@ -56191,10 +56201,6 @@
 	        onStateSelected: _react2["default"].PropTypes.func.isRequired
 	    },
 	
-	    contextTypes: {
-	        location: _react2["default"].PropTypes.object.isRequired
-	    },
-	
 	    componentDidMount: function componentDidMount() {
 	        this.loadStateAutoComplete();
 	    },
@@ -56217,7 +56223,6 @@
 	                if (state) {
 	                    var bounds = undefined;
 	                    if (viewport) {
-	                        var vpCenter = viewport.getCenter();
 	                        var vpNE = viewport.getNorthEast();
 	                        var vpSW = viewport.getSouthWest();
 	                        bounds = {
@@ -56610,7 +56615,9 @@
 	
 	    propTypes: {
 	        state: _react2["default"].PropTypes.string.isRequired,
-	        location: _react2["default"].PropTypes.object.isRequired,
+	        lat: _react2["default"].PropTypes.number.isRequired,
+	        lng: _react2["default"].PropTypes.number.isRequired,
+	        zoom: _react2["default"].PropTypes.number.isRequired,
 	        crop: _react2["default"].PropTypes.string.isRequired,
 	        onCropChange: _react2["default"].PropTypes.func.isRequired
 	    },
@@ -56632,12 +56639,19 @@
 	            _react2["default"].createElement(
 	                "div",
 	                null,
-	                _react2["default"].createElement(_rainfall_vs_yield2["default"], { crop: this.props.crop, state: this.props.state, location: this.props.location })
+	                _react2["default"].createElement(_rainfall_vs_yield2["default"], { crop: this.props.crop,
+	                    state: this.props.state,
+	                    lat: this.props.lat,
+	                    lng: this.props.lng,
+	                    zoom: this.props.zoom })
 	            ),
 	            _react2["default"].createElement(
 	                "div",
 	                null,
-	                _react2["default"].createElement(_monthly_rainfall2["default"], { state: this.props.state, location: this.props.location })
+	                _react2["default"].createElement(_monthly_rainfall2["default"], { state: this.props.state,
+	                    lat: this.props.lat,
+	                    lng: this.props.lng,
+	                    zoom: this.props.zoom })
 	            )
 	        );
 	    }
@@ -56693,7 +56707,9 @@
 	    propTypes: {
 	        crop: _react2["default"].PropTypes.string.isRequired,
 	        state: _react2["default"].PropTypes.string.isRequired,
-	        location: _react2["default"].PropTypes.object.isRequired
+	        lat: _react2["default"].PropTypes.number.isRequired,
+	        lng: _react2["default"].PropTypes.number.isRequired,
+	        zoom: _react2["default"].PropTypes.number.isRequired
 	    },
 	
 	    render: function render() {
@@ -56706,7 +56722,9 @@
 	                radius: 100,
 	                crop: cropStore.getCropDatum(this.props.crop),
 	                state: this.props.state,
-	                location: this.props.location })
+	                lat: this.props.lat,
+	                lng: this.props.lng,
+	                zoom: this.props.zoom })
 	        );
 	    }
 	});
@@ -56758,7 +56776,9 @@
 	        cropSource: _react2["default"].PropTypes.object.isRequired,
 	        rainSource: _react2["default"].PropTypes.object.isRequired,
 	        state: _react2["default"].PropTypes.string.isRequired,
-	        location: _react2["default"].PropTypes.object.isRequired,
+	        lat: _react2["default"].PropTypes.number.isRequired,
+	        lng: _react2["default"].PropTypes.number.isRequired,
+	        zoom: _react2["default"].PropTypes.number.isRequired,
 	        radius: _react2["default"].PropTypes.number.isRequired
 	    },
 	
@@ -56771,7 +56791,7 @@
 	    },
 	
 	    componentDidUpdate: function componentDidUpdate(prevProps) {
-	        if (prevProps.state !== this.props.state || prevProps.radius !== this.props.radius || prevProps.location.lat !== this.props.location.lat || prevProps.location.lng !== this.props.location.lng || prevProps.crop.name !== this.props.crop.name) {
+	        if (prevProps.state !== this.props.state || prevProps.radius !== this.props.radius || prevProps.lat !== this.props.lat || prevProps.lng !== this.props.lng || prevProps.crop.name !== this.props.crop.name) {
 	            this.drawChart();
 	        }
 	    },
@@ -56804,7 +56824,7 @@
 	            var timeScale = d3.time.scale().domain([new Date(2000, 1, 1), new Date(2015, 12, 31)]);
 	
 	            var compChart = dc.compositeChart(el);
-	            compChart.width($(el).innerWidth() - 30).height(250).margins({ top: 10, left: 50, right: 80, bottom: 40 }).x(timeScale).xUnits(d3.time.years).yAxisLabel('Actual Rainfall (inches)').rightYAxisLabel(_this.cropLabel(_this.props.crop)).dimension(yearlyYieldDim).brushOn(false).compose([dc.barChart(compChart).colors(_colors2["default"].yearlyAverageRainfall).barPadding(0.1).group(yearlyAverageRainGroup), dc.barChart(compChart).colors(_colors2["default"]["yield"]).barPadding(0.3).useRightYAxis(true).group(yearlyYieldGroup)]);
+	            compChart.width($(el).innerWidth() - 30).height(250).margins({ top: 10, left: 50, right: 80, bottom: 40 }).x(timeScale).xUnits(d3.time.years).yAxisLabel('Actual Rainfall (inches)').rightYAxisLabel(_this.cropLabel(_this.props.crop)).dimension(yearlyYieldDim).brushOn(false).compose([dc.barChart(compChart).colors(_colors2["default"].yearlyAverageRainfall).barPadding(0.3).group(yearlyAverageRainGroup), dc.barChart(compChart).colors(_colors2["default"]["yield"]).barPadding(0.3).useRightYAxis(true).group(yearlyYieldGroup)]);
 	
 	            dc.renderAll();
 	            _this.state.myChart = compChart;
@@ -56890,11 +56910,30 @@
 	
 	var debug = (0, _debug2['default'])('app:common:util');
 	
-	(function (global) {
+	//obviously, these should eventually be read from the data so it isn't hard-limited
+	var minYear = 2000;
+	var maxYear = 2015;
+	var months = {
+	    'JanPrec': 1,
+	    'FebPrec': 2,
+	    'MarPrec': 3,
+	    'AprPrec': 4,
+	    'MayPrec': 5,
+	    'JunPrec': 6,
+	    'JulPrec': 7,
+	    'AugPrec': 8,
+	    'SepPrec': 9,
+	    'OctPrec': 10,
+	    'NovPrec': 11,
+	    'DecPrec': 12
+	};
 	
-	    var util = {};
+	var deg2rad = function deg2rad(deg) {
+	    return deg * Math.PI / 180;
+	}; // radians = degrees * pi/180
 	
-	    util.reducers = {
+	module.exports = {
+	    reducers: {
 	        average: {
 	            add: function add(key) {
 	                return function (p, v) {
@@ -56940,49 +56979,10 @@
 	                };
 	            }
 	        }
-	    };
-	
-	    //obviously, these should eventually be read from the data so it isn't hard-limited
-	    var minYear = 2000;
-	    var maxYear = 2015;
-	
-	    var months = {
-	        'JanPrec': 1,
-	        'FebPrec': 2,
-	        'MarPrec': 3,
-	        'AprPrec': 4,
-	        'MayPrec': 5,
-	        'JunPrec': 6,
-	        'JulPrec': 7,
-	        'AugPrec': 8,
-	        'SepPrec': 9,
-	        'OctPrec': 10,
-	        'NovPrec': 11,
-	        'DecPrec': 12
-	    };
-	
-	    util.rainfall = {
-	
-	        /*
-	         AprPrec: "3.77"
-	         AugPrec: "4.63"
-	         DecPrec: "4.73"
-	         FebPrec: "5.07"
-	         JanPrec: "5.3"
-	         JulPrec: "5.94"
-	         JunPrec: "5.2"
-	         MarPrec: "5.8"
-	         MayPrec: "3.82"
-	         NovPrec: "4.61"
-	         OctPrec: "3.11"
-	         SepPrec: "3.53"
-	         Year: "0000"
-	         id1: "USC00010008"
-	         */
+	    },
+	    rainfall: {
 	        monthly: function monthly(data) {
-	
 	            var output = [];
-	
 	            data.forEach(function (d) {
 	                //push a set of items in for every month in the row
 	                Object.keys(months).forEach(function (month) {
@@ -56993,15 +56993,12 @@
 	                    });
 	                });
 	            });
-	
 	            return output;
 	        },
 	
 	        //this function does the same as monthly, but duplicates the 30-year average '0000' readings for each year in the dataset
 	        monthlyAverage30: function monthlyAverage30(data) {
-	
 	            var output = [];
-	
 	            data.forEach(function (d) {
 	                //push a set of items in for every month in the row
 	                Object.keys(months).forEach(function (month) {
@@ -57017,18 +57014,11 @@
 	                    }
 	                });
 	            });
-	
 	            return output;
 	        }
-	    };
-	
-	    util.geospatial = {
-	
-	        deg2rad: function deg2rad(deg) {
-	            var rad = deg * Math.PI / 180; // radians = degrees * pi/180
-	            return rad;
-	        },
-	
+	    },
+	    geospatial: {
+	        deg2rad: deg2rad,
 	        hitTestPoints: function hitTestPoints(points, center, radius) {
 	            var output = {};
 	            //uses Great Circle distance to check if point diff is within radius
@@ -57040,10 +57030,10 @@
 	                //c = 2 * atan2( sqrt(a), sqrt(1-a) )
 	                //d = R * c (where R is the radius of the Earth)
 	
-	                var lat1 = util.geospatial.deg2rad(center.lat);
-	                var lat2 = util.geospatial.deg2rad(point.lat);
-	                var lon1 = util.geospatial.deg2rad(center.lng);
-	                var lon2 = util.geospatial.deg2rad(point.lon);
+	                var lat1 = deg2rad(center.lat);
+	                var lat2 = deg2rad(point.lat);
+	                var lon1 = deg2rad(center.lng);
+	                var lon2 = deg2rad(point.lon);
 	                var dlon = lon2 - lon1;
 	                var dlat = lat2 - lat1;
 	                var a = Math.pow(Math.sin(dlat / 2), 2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(dlon / 2), 2);
@@ -57053,14 +57043,11 @@
 	                    output[point.id] = point;
 	                }
 	            });
-	            debug('subset station count: ' + Object.keys(output).length);
+	            debug(points.length + ' subset count => ' + Object.keys(output).length);
 	            return output;
 	        }
-	
-	    };
-	
-	    module.exports = util;
-	})(undefined);
+	    }
+	};
 
 /***/ },
 /* 476 */
@@ -57139,46 +57126,80 @@
 
 /***/ },
 /* 478 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 	
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
+	var _debug = __webpack_require__(443);
+	
+	var _debug2 = _interopRequireDefault(_debug);
+	
+	var debug = (0, _debug2["default"])('app:data_sources:cachingDataSource');
+	
 	var CachingDataSource = (function () {
 	    function CachingDataSource() {
 	        _classCallCheck(this, CachingDataSource);
-	
-	        this.__mapListPromise = {};
 	    }
 	
 	    _createClass(CachingDataSource, [{
 	        key: "list",
 	        value: function list() {
+	            var args = arguments;
+	            if (arguments.length > 0) {
+	                return this._listAgainst(args[0], arguments);
+	            } else {
+	                return this._listGlobal();
+	            }
+	        }
+	    }, {
+	        key: "_listGlobal",
+	        value: function _listGlobal() {
 	            var _this = this;
 	
-	            var args = arguments;
-	            if (!this.__mapListPromise.hasOwnProperty(args[0])) {
-	                var listPromise = new Promise(function (resolve, reject) {
-	
-	                    _this.retrieveData.apply(_this, _toConsumableArray(args)).then(function (data) {
-	                        resolve(data);
-	                    })["catch"](function (err) {
-	                        reject(err);
-	                    });
-	                });
-	                this.__mapListPromise[args[0]] = listPromise;
+	            if (this.__data) {
+	                return Promise.resolve(this.__data);
 	            }
+	            return new Promise(function (resolve, reject) {
+	                _this.retrieveData().then(function (data) {
+	                    _this.__data = data;
+	                    resolve(data);
+	                })["catch"](function (err) {
+	                    _this.__data = undefined;
+	                    reject(err);
+	                });
+	            });
+	        }
+	    }, {
+	        key: "_listAgainst",
+	        value: function _listAgainst(arg, args) {
+	            var _this2 = this;
 	
-	            return this.__mapListPromise[args[0]];
+	            if (!this.__data) {
+	                this.__data = {};
+	            }
+	            if (this.__data[arg]) {
+	                return Promise.resolve(this.__data[arg]);
+	            }
+	            return new Promise(function (resolve, reject) {
+	                _this2.retrieveData.apply(_this2, _toConsumableArray(args)).then(function (data) {
+	                    _this2.__data[arg] = data;
+	                    resolve(data);
+	                })["catch"](function (err) {
+	                    _this2.__data[arg] = undefined;
+	                    reject(err);
+	                });
+	            });
 	        }
 	    }]);
 	
@@ -57431,17 +57452,17 @@
 	
 	var _chartsRainfall2 = _interopRequireDefault(_chartsRainfall);
 	
-	var _datasourcesMonthlyRainfallJs = __webpack_require__(483);
+	var _datasourcesMonthlyRainfall = __webpack_require__(483);
 	
-	var _datasourcesMonthlyRainfallJs2 = _interopRequireDefault(_datasourcesMonthlyRainfallJs);
+	var _datasourcesMonthlyRainfall2 = _interopRequireDefault(_datasourcesMonthlyRainfall);
 	
-	var _datasourcesAverage30RainfallJs = __webpack_require__(484);
+	var _datasourcesAverage30Rainfall = __webpack_require__(484);
 	
-	var _datasourcesAverage30RainfallJs2 = _interopRequireDefault(_datasourcesAverage30RainfallJs);
+	var _datasourcesAverage30Rainfall2 = _interopRequireDefault(_datasourcesAverage30Rainfall);
 	
-	var _datasourcesStationsJs = __webpack_require__(485);
+	var _datasourcesStations = __webpack_require__(485);
 	
-	var _datasourcesStationsJs2 = _interopRequireDefault(_datasourcesStationsJs);
+	var _datasourcesStations2 = _interopRequireDefault(_datasourcesStations);
 	
 	var _reactBootstrap = __webpack_require__(206);
 	
@@ -57449,16 +57470,18 @@
 	
 	var debug = (0, _debug2["default"])('app:components:RainfallChartComponent');
 	
-	var monthlyRainfallData = new _datasourcesMonthlyRainfallJs2["default"]();
-	var average30Source = new _datasourcesAverage30RainfallJs2["default"]();
-	var stationData = new _datasourcesStationsJs2["default"]();
+	var monthlyRainfallData = new _datasourcesMonthlyRainfall2["default"]();
+	var average30Source = new _datasourcesAverage30Rainfall2["default"]();
+	var stationData = new _datasourcesStations2["default"]();
 	
 	var RainfallChartComponent = _react2["default"].createClass({
 	    displayName: "RainfallChartComponent",
 	
 	    propTypes: {
 	        state: _react2["default"].PropTypes.string.isRequired,
-	        location: _react2["default"].PropTypes.object.isRequired
+	        lat: _react2["default"].PropTypes.number.isRequired,
+	        lng: _react2["default"].PropTypes.number.isRequired,
+	        zoom: _react2["default"].PropTypes.number.isRequired
 	    },
 	
 	    render: function render() {
@@ -57471,7 +57494,9 @@
 	                stationSource: stationData,
 	                radius: 100,
 	                state: this.props.state,
-	                location: this.props.location })
+	                lat: this.props.lat,
+	                lng: this.props.lng,
+	                zoom: this.props.zoom })
 	        );
 	    }
 	});
@@ -57534,23 +57559,11 @@
 	        this.drawChart();
 	    },
 	
-	    componentDidUpdate: function componentDidUpdate(prevProps) {
-	        if (prevProps.state !== this.props.state || prevProps.radius !== this.props.radius || prevProps.location.lat !== this.props.location.lat || prevProps.location.lng !== this.props.location.lng) {
+	    componentDidUpdate: function componentDidUpdate(nextProps) {
+	        var isRedrawn = nextProps.state !== this.props.state || nextProps.radius !== this.props.radius || nextProps.lat !== this.props.lat || nextProps.lng !== this.props.lng;
+	        if (isRedrawn) {
 	            this.drawChart();
 	        }
-	    },
-	
-	    //subsets stations by a fixed radius, so we can constrain the plotted data to a reasonable spatial range
-	    subsetStations: function subsetStations(stations, coords, radius) {
-	        return _commonUtil2["default"].geospatial.hitTestPoints(stations, coords, radius);
-	    },
-	
-	    //subsets the weather data to only include stations in the subset map
-	    subsetWeatherData: function subsetWeatherData(data, stations) {
-	        var output = data.filter(function (d) {
-	            return stations[d.id];
-	        });
-	        return output;
 	    },
 	
 	    drawChart: function drawChart() {
@@ -57563,36 +57576,41 @@
 	        //TODO: push the state/location into all of these functions, so results are already filtered
 	        //if this was done, we could reduce iteration of the monthly by 12, since each station has one row per year
 	        this.props.monthlySource.list(this.props.state), this.props.average30Source.list(), this.props.stationSource.list()]).then(function (results) {
+	            //subsets stations by a fixed radius, so we can constrain the plotted data to a reasonable spatial range
+	            var subsetStations = function subsetStations(stations, coords, radius) {
+	                return _commonUtil2["default"].geospatial.hitTestPoints(stations, coords, radius);
+	            };
+	            //subsets the weather data to only include stations in the subset map
+	            var subsetWeatherData = function subsetWeatherData(data, stations) {
+	                return data.filter(function (d) {
+	                    return stations[d.id];
+	                });
+	            };
 	
+	            function groupify(data) {
+	                var index = crossfilter(data);
+	                var dim = index.dimension(function (d) {
+	                    return d3.time.month(d.date);
+	                });
+	                var group = dim.group().reduce(_commonUtil2["default"].reducers.average.add('value'), _commonUtil2["default"].reducers.average.remove('value'), _commonUtil2["default"].reducers.average.init());
+	                return { data: data, index: index, dim: dim, group: group };
+	            }
+	
+	            debug('rainfall chart data', results);
 	            var monthlyData = results[0].data;
 	            var average30Data = results[1].data;
-	
-	            var stationSubset = _this.subsetStations(results[2].data, _this.props.location, _this.props.radius);
-	
-	            var monthlySubset = _this.subsetWeatherData(monthlyData, stationSubset);
-	            var average30Subset = _this.subsetWeatherData(average30Data, stationSubset);
-	
-	            var monthlyIndex = crossfilter(monthlySubset);
-	            var average30Index = crossfilter(average30Subset);
-	
-	            var monthlyRainDim = monthlyIndex.dimension(function (d) {
-	                return d3.time.month(d.date);
-	            });
-	            var average30RainDim = average30Index.dimension(function (d) {
-	                return d3.time.month(d.date);
-	            });
-	
-	            //this group averages all the selected stations for a monthly reading
-	            var monthlyRainGroup = monthlyRainDim.group().reduce(_commonUtil2["default"].reducers.average.add('value'), _commonUtil2["default"].reducers.average.remove('value'), _commonUtil2["default"].reducers.average.init());
-	
-	            var average30RainGroup = average30RainDim.group().reduce(_commonUtil2["default"].reducers.average.add('value'), _commonUtil2["default"].reducers.average.remove('value'), _commonUtil2["default"].reducers.average.init());
-	
+	            var stationData = results[2].data;
+	            var stationSubset = subsetStations(stationData, { lat: _this.props.lat, lng: _this.props.lng }, _this.props.radius);
+	            var monthlySubset = subsetWeatherData(monthlyData, stationSubset);
+	            var average30Subset = subsetWeatherData(average30Data, stationSubset);
+	            var monthlyRain = groupify(monthlySubset);
+	            var average30Rain = groupify(average30Subset);
 	            var timeScale = d3.time.scale().domain([new Date(2000, 1, 1), new Date(2015, 12, 31)]);
 	
 	            var compChart = dc.compositeChart(el);
-	            compChart.width($(el).innerWidth() - 30).height(250).margins({ top: 10, left: 50, right: 80, bottom: 40 }).x(timeScale).xUnits(d3.time.months).yAxisLabel('Rainfall (inches)').dimension(monthlyRainDim).brushOn(false).compose([dc.lineChart(compChart).colors(_colors2["default"].monthlyAverageRainfall).group(average30RainGroup).renderArea(true).valueAccessor(function (d) {
+	            compChart.width($(el).innerWidth() - 30).height(250).margins({ top: 10, left: 50, right: 80, bottom: 40 }).x(timeScale).xUnits(d3.time.months).yAxisLabel('Rainfall (inches)').dimension(monthlyRain.dim).brushOn(false).compose([dc.lineChart(compChart).colors(_colors2["default"].monthlyAverageRainfall).group(average30Rain.group).renderArea(true).valueAccessor(function (d) {
 	                return d.value.avg;
-	            }), dc.lineChart(compChart).colors(_colors2["default"].monthlyRainfall).group(monthlyRainGroup).valueAccessor(function (d) {
+	            }), dc.lineChart(compChart).colors(_colors2["default"].monthlyRainfall).group(monthlyRain.group).valueAccessor(function (d) {
 	                return d.value.avg;
 	            })]);
 	
@@ -57618,11 +57636,11 @@
 	            _react2["default"].createElement(
 	                "span",
 	                { className: "graphDescription" },
-	                "Historical rainfall trend ",
+	                "Historical Rainfall",
 	                _react2["default"].createElement(
 	                    "div",
 	                    { className: "graphLabel" },
-	                    " Average ",
+	                    " Average",
 	                    _react2["default"].createElement("img", { src: "src/img/icons/grey-square.png" })
 	                ),
 	                " ",
@@ -57630,7 +57648,8 @@
 	                    "div",
 	                    { className: "graphLabel" },
 	                    "Actual ",
-	                    _react2["default"].createElement("img", { src: "src/img/icons/blue-line.png" })
+	                    _react2["default"].createElement("img", {
+	                        src: "src/img/icons/blue-line.png" })
 	                )
 	            ),
 	            _react2["default"].createElement(
@@ -57691,8 +57710,9 @@
 	    _createClass(MonthlyRainfallDataSource, [{
 	        key: "retrieveData",
 	        value: function retrieveData(state) {
-	            debug('retrieving rainfall data for ', state, this);
+	            debug('retrieving monthly rainfall data for ', state, this);
 	            var dataUrl = "data/weather/state/" + state.toUpperCase() + "/rain.csv";
+	
 	            return new Promise(function (resolve, reject) {
 	                d3.csv(dataUrl, function (err, data) {
 	                    if (err) {
