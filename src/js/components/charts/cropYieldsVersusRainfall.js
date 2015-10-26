@@ -120,13 +120,16 @@ var CropYieldsVersusRainfall = React.createClass({
     },
 
     render() {
-        const imageUrl = this.props.crop.imageUrl;
+        const cropName = _.capitalize(this.props.crop.name);
+        const stateName = stateData.statesByCode[this.props.state].name;
+        const cropImgUrl = this.props.crop.imageUrl;
         const rainImgUrl = 'src/img/icons/blue-square.png';
         return (
             <div className={"cropYieldChart"} id="cropYieldsChartGeneric">
                 <div className={"graphDescription"}>
-                    <span className={"first"}>Historical {this.props.crop.name}<img src={imageUrl}/> to <img
-                        src={rainImgUrl}/> rainfall in {stateData.statesByCode[this.props.state].name}</span>
+                    <span className={"first"}>
+                        Historical {cropName}<img src={cropImgUrl}/> to Rainfall <img src={rainImgUrl}/> in {stateName}
+                    </span>
                 </div>
                 <a className={"reset"} onClick={this.reset} style={{display: "none"}}>reset</a>
             </div>
