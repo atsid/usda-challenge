@@ -52,7 +52,7 @@
 	__webpack_require__(448);
 	__webpack_require__(446);
 	__webpack_require__(205);
-	__webpack_require__(483);
+	__webpack_require__(484);
 	__webpack_require__(478);
 	__webpack_require__(506);
 	__webpack_require__(507);
@@ -60,18 +60,18 @@
 	__webpack_require__(477);
 	__webpack_require__(509);
 	__webpack_require__(510);
-	__webpack_require__(482);
+	__webpack_require__(483);
 	__webpack_require__(479);
-	__webpack_require__(484);
+	__webpack_require__(485);
 	__webpack_require__(476);
 	__webpack_require__(474);
-	__webpack_require__(481);
+	__webpack_require__(482);
 	__webpack_require__(511);
-	__webpack_require__(485);
 	__webpack_require__(486);
+	__webpack_require__(480);
 	__webpack_require__(487);
 	__webpack_require__(472);
-	__webpack_require__(480);
+	__webpack_require__(481);
 	__webpack_require__(473);
 	__webpack_require__(469);
 	__webpack_require__(470);
@@ -24092,8 +24092,10 @@
 	        var lat = parseFloat(query.lat) || 42.0046;
 	        var lng = parseFloat(query.lng) || -93.214;
 	        var zoom = parseFloat(query.zoom) || 4;
+	        var location = { lat: lat, lng: lng, zoom: zoom };
 	        var year = parseInt(query.year) || 2014;
-	        return { state: state, year: year, location: { lat: lat, lng: lng, zoom: zoom } };
+	        var crop = query.crop || 'corn';
+	        return { state: state, year: year, location: location, crop: crop };
 	    },
 	
 	    componentDidMount: function componentDidMount() {
@@ -24143,6 +24145,12 @@
 	    handleYearChange: function handleYearChange(year) {
 	        debug('handling year change');
 	        this.setState(_.merge(this.state, { year: year }));
+	        this.pushLocation();
+	    },
+	
+	    handleCropChange: function handleCropChange(crop) {
+	        debug('handling crop change');
+	        this.setState(_.merge(this.state, { crop: crop }));
 	        this.pushLocation();
 	    },
 	
@@ -24208,7 +24216,11 @@
 	            _react2["default"].createElement(
 	                "section",
 	                { id: "metrics", className: "container" },
-	                _react2["default"].createElement(_panesCropmetricsMain2["default"], { state: this.state.state, location: this.state.location })
+	                _react2["default"].createElement(_panesCropmetricsMain2["default"], {
+	                    state: this.state.state,
+	                    location: this.state.location,
+	                    crop: this.state.crop,
+	                    onCropChange: this.handleCropChange })
 	            ),
 	            _react2["default"].createElement(_Footer2["default"], null)
 	        );
@@ -24295,13 +24307,13 @@
 	
 	exports.Button = _Button3['default'];
 	
-	var _ButtonGroup2 = __webpack_require__(270);
+	var _ButtonGroup2 = __webpack_require__(266);
 	
 	var _ButtonGroup3 = _interopRequireDefault(_ButtonGroup2);
 	
 	exports.ButtonGroup = _ButtonGroup3['default'];
 	
-	var _ButtonInput2 = __webpack_require__(266);
+	var _ButtonInput2 = __webpack_require__(268);
 	
 	var _ButtonInput3 = _interopRequireDefault(_ButtonInput2);
 	
@@ -24349,7 +24361,7 @@
 	
 	exports.DropdownButton = _DropdownButton3['default'];
 	
-	var _Glyphicon2 = __webpack_require__(269);
+	var _Glyphicon2 = __webpack_require__(271);
 	
 	var _Glyphicon3 = _interopRequireDefault(_Glyphicon2);
 	
@@ -26733,9 +26745,7 @@
 	
 	var _reactPropTypesLibElementType2 = _interopRequireDefault(_reactPropTypesLibElementType);
 	
-	var _ButtonInput = __webpack_require__(266);
-	
-	var _ButtonInput2 = _interopRequireDefault(_ButtonInput);
+	var types = ['button', 'reset', 'submit'];
 	
 	var Button = _react2['default'].createClass({
 	  displayName: 'Button',
@@ -26759,7 +26769,7 @@
 	     * @type {("button"|"reset"|"submit")}
 	     * @defaultValue 'button'
 	     */
-	    type: _react2['default'].PropTypes.oneOf(_ButtonInput2['default'].types)
+	    type: _react2['default'].PropTypes.oneOf(types)
 	  },
 	
 	  getDefaultProps: function getDefaultProps() {
@@ -26832,6 +26842,8 @@
 	  }
 	});
 	
+	Button.types = types;
+	
 	exports['default'] = Button;
 	module.exports = exports['default'];
 
@@ -26887,6 +26899,122 @@
 
 	'use strict';
 	
+	var _extends = __webpack_require__(214)['default'];
+	
+	var _interopRequireDefault = __webpack_require__(207)['default'];
+	
+	exports.__esModule = true;
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _classnames = __webpack_require__(230);
+	
+	var _classnames2 = _interopRequireDefault(_classnames);
+	
+	var _BootstrapMixin = __webpack_require__(231);
+	
+	var _BootstrapMixin2 = _interopRequireDefault(_BootstrapMixin);
+	
+	var _reactPropTypesLibAll = __webpack_require__(267);
+	
+	var _reactPropTypesLibAll2 = _interopRequireDefault(_reactPropTypesLibAll);
+	
+	var ButtonGroup = _react2['default'].createClass({
+	  displayName: 'ButtonGroup',
+	
+	  mixins: [_BootstrapMixin2['default']],
+	
+	  propTypes: {
+	    vertical: _react2['default'].PropTypes.bool,
+	    justified: _react2['default'].PropTypes.bool,
+	    /**
+	     * Display block buttons, only useful when used with the "vertical" prop.
+	     * @type {bool}
+	     */
+	    block: _reactPropTypesLibAll2['default'](_react2['default'].PropTypes.bool, function (props) {
+	      if (props.block && !props.vertical) {
+	        return new Error('The block property requires the vertical property to be set to have any effect');
+	      }
+	    })
+	  },
+	
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      block: false,
+	      bsClass: 'button-group',
+	      justified: false,
+	      vertical: false
+	    };
+	  },
+	
+	  render: function render() {
+	    var classes = this.getBsClassSet();
+	    classes['btn-group'] = !this.props.vertical;
+	    classes['btn-group-vertical'] = this.props.vertical;
+	    classes['btn-group-justified'] = this.props.justified;
+	    classes['btn-block'] = this.props.block;
+	
+	    return _react2['default'].createElement(
+	      'div',
+	      _extends({}, this.props, {
+	        className: _classnames2['default'](this.props.className, classes) }),
+	      this.props.children
+	    );
+	  }
+	});
+	
+	exports['default'] = ButtonGroup;
+	module.exports = exports['default'];
+
+/***/ },
+/* 267 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	exports['default'] = all;
+	
+	function all() {
+	  for (var _len = arguments.length, propTypes = Array(_len), _key = 0; _key < _len; _key++) {
+	    propTypes[_key] = arguments[_key];
+	  }
+	
+	  if (propTypes === undefined) {
+	    throw new Error('No validations provided');
+	  }
+	
+	  if (propTypes.some(function (propType) {
+	    return typeof propType !== 'function';
+	  })) {
+	    throw new Error('Invalid arguments, must be functions');
+	  }
+	
+	  if (propTypes.length === 0) {
+	    throw new Error('No validations provided');
+	  }
+	
+	  return function validate(props, propName, componentName) {
+	    for (var i = 0; i < propTypes.length; i++) {
+	      var result = propTypes[i](props, propName, componentName);
+	
+	      if (result !== undefined && result !== null) {
+	        return result;
+	      }
+	    }
+	  };
+	}
+	
+	module.exports = exports['default'];
+
+/***/ },
+/* 268 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
 	var _inherits = __webpack_require__(252)['default'];
 	
 	var _classCallCheck = __webpack_require__(263)['default'];
@@ -26907,11 +27035,11 @@
 	
 	var _Button2 = _interopRequireDefault(_Button);
 	
-	var _FormGroup = __webpack_require__(267);
+	var _FormGroup = __webpack_require__(269);
 	
 	var _FormGroup2 = _interopRequireDefault(_FormGroup);
 	
-	var _InputBase2 = __webpack_require__(268);
+	var _InputBase2 = __webpack_require__(270);
 	
 	var _InputBase3 = _interopRequireDefault(_InputBase2);
 	
@@ -26956,7 +27084,7 @@
 	  return ButtonInput;
 	})(_InputBase3['default']);
 	
-	ButtonInput.types = ['button', 'reset', 'submit'];
+	ButtonInput.types = _Button2['default'].types;
 	
 	ButtonInput.defaultProps = {
 	  type: 'button'
@@ -26976,7 +27104,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 267 */
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27050,7 +27178,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 268 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27073,11 +27201,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _FormGroup = __webpack_require__(267);
+	var _FormGroup = __webpack_require__(269);
 	
 	var _FormGroup2 = _interopRequireDefault(_FormGroup);
 	
-	var _Glyphicon = __webpack_require__(269);
+	var _Glyphicon = __webpack_require__(271);
 	
 	var _Glyphicon2 = _interopRequireDefault(_Glyphicon);
 	
@@ -27317,7 +27445,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 269 */
+/* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27377,122 +27505,6 @@
 	});
 	
 	exports['default'] = Glyphicon;
-	module.exports = exports['default'];
-
-/***/ },
-/* 270 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _extends = __webpack_require__(214)['default'];
-	
-	var _interopRequireDefault = __webpack_require__(207)['default'];
-	
-	exports.__esModule = true;
-	
-	var _react = __webpack_require__(2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _classnames = __webpack_require__(230);
-	
-	var _classnames2 = _interopRequireDefault(_classnames);
-	
-	var _BootstrapMixin = __webpack_require__(231);
-	
-	var _BootstrapMixin2 = _interopRequireDefault(_BootstrapMixin);
-	
-	var _reactPropTypesLibAll = __webpack_require__(271);
-	
-	var _reactPropTypesLibAll2 = _interopRequireDefault(_reactPropTypesLibAll);
-	
-	var ButtonGroup = _react2['default'].createClass({
-	  displayName: 'ButtonGroup',
-	
-	  mixins: [_BootstrapMixin2['default']],
-	
-	  propTypes: {
-	    vertical: _react2['default'].PropTypes.bool,
-	    justified: _react2['default'].PropTypes.bool,
-	    /**
-	     * Display block buttons, only useful when used with the "vertical" prop.
-	     * @type {bool}
-	     */
-	    block: _reactPropTypesLibAll2['default'](_react2['default'].PropTypes.bool, function (props) {
-	      if (props.block && !props.vertical) {
-	        return new Error('The block property requires the vertical property to be set to have any effect');
-	      }
-	    })
-	  },
-	
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      block: false,
-	      bsClass: 'button-group',
-	      justified: false,
-	      vertical: false
-	    };
-	  },
-	
-	  render: function render() {
-	    var classes = this.getBsClassSet();
-	    classes['btn-group'] = !this.props.vertical;
-	    classes['btn-group-vertical'] = this.props.vertical;
-	    classes['btn-group-justified'] = this.props.justified;
-	    classes['btn-block'] = this.props.block;
-	
-	    return _react2['default'].createElement(
-	      'div',
-	      _extends({}, this.props, {
-	        className: _classnames2['default'](this.props.className, classes) }),
-	      this.props.children
-	    );
-	  }
-	});
-	
-	exports['default'] = ButtonGroup;
-	module.exports = exports['default'];
-
-/***/ },
-/* 271 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	exports.__esModule = true;
-	exports['default'] = all;
-	
-	function all() {
-	  for (var _len = arguments.length, propTypes = Array(_len), _key = 0; _key < _len; _key++) {
-	    propTypes[_key] = arguments[_key];
-	  }
-	
-	  if (propTypes === undefined) {
-	    throw new Error('No validations provided');
-	  }
-	
-	  if (propTypes.some(function (propType) {
-	    return typeof propType !== 'function';
-	  })) {
-	    throw new Error('Invalid arguments, must be functions');
-	  }
-	
-	  if (propTypes.length === 0) {
-	    throw new Error('No validations provided');
-	  }
-	
-	  return function validate(props, propName, componentName) {
-	    for (var i = 0; i < propTypes.length; i++) {
-	      var result = propTypes[i](props, propName, componentName);
-	
-	      if (result !== undefined && result !== null) {
-	        return result;
-	      }
-	    }
-	  };
-	}
-	
 	module.exports = exports['default'];
 
 /***/ },
@@ -27574,7 +27586,7 @@
 	
 	var _utilsValidComponentChildren2 = _interopRequireDefault(_utilsValidComponentChildren);
 	
-	var _Glyphicon = __webpack_require__(269);
+	var _Glyphicon = __webpack_require__(271);
 	
 	var _Glyphicon2 = _interopRequireDefault(_Glyphicon);
 	
@@ -29378,7 +29390,7 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _reactPropTypesLibAll = __webpack_require__(271);
+	var _reactPropTypesLibAll = __webpack_require__(267);
 	
 	var _reactPropTypesLibAll2 = _interopRequireDefault(_reactPropTypesLibAll);
 	
@@ -29394,7 +29406,7 @@
 	
 	var _uncontrollable2 = _interopRequireDefault(_uncontrollable);
 	
-	var _ButtonGroup = __webpack_require__(270);
+	var _ButtonGroup = __webpack_require__(266);
 	
 	var _ButtonGroup2 = _interopRequireDefault(_ButtonGroup);
 	
@@ -33918,7 +33930,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _InputBase2 = __webpack_require__(268);
+	var _InputBase2 = __webpack_require__(270);
 	
 	var _InputBase3 = _interopRequireDefault(_InputBase2);
 	
@@ -33998,7 +34010,7 @@
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
-	var _InputBase2 = __webpack_require__(268);
+	var _InputBase2 = __webpack_require__(270);
 	
 	var _InputBase3 = _interopRequireDefault(_InputBase2);
 	
@@ -34608,7 +34620,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactPropTypesLibAll = __webpack_require__(271);
+	var _reactPropTypesLibAll = __webpack_require__(267);
 	
 	var _reactPropTypesLibAll2 = _interopRequireDefault(_reactPropTypesLibAll);
 	
@@ -35828,6 +35840,7 @@
 	      this.props.closeButton && _react2['default'].createElement(
 	        'button',
 	        {
+	          type: 'button',
 	          className: 'close',
 	          onClick: this.props.onHide },
 	        _react2['default'].createElement(
@@ -36008,21 +36021,17 @@
 	
 	exports.__esModule = true;
 	
+	var _classnames = __webpack_require__(230);
+	
+	var _classnames2 = _interopRequireDefault(_classnames);
+	
 	var _react = __webpack_require__(2);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _BootstrapMixin = __webpack_require__(231);
+	var _reactPropTypesLibAll = __webpack_require__(267);
 	
-	var _BootstrapMixin2 = _interopRequireDefault(_BootstrapMixin);
-	
-	var _Collapse = __webpack_require__(282);
-	
-	var _Collapse2 = _interopRequireDefault(_Collapse);
-	
-	var _classnames = __webpack_require__(230);
-	
-	var _classnames2 = _interopRequireDefault(_classnames);
+	var _reactPropTypesLibAll2 = _interopRequireDefault(_reactPropTypesLibAll);
 	
 	var _utilsValidComponentChildren = __webpack_require__(212);
 	
@@ -36031,6 +36040,14 @@
 	var _utilsCreateChainedFunction = __webpack_require__(211);
 	
 	var _utilsCreateChainedFunction2 = _interopRequireDefault(_utilsCreateChainedFunction);
+	
+	var _BootstrapMixin = __webpack_require__(231);
+	
+	var _BootstrapMixin2 = _interopRequireDefault(_BootstrapMixin);
+	
+	var _Collapse = __webpack_require__(282);
+	
+	var _Collapse2 = _interopRequireDefault(_Collapse);
 	
 	var Nav = _react2['default'].createClass({
 	  displayName: 'Nav',
@@ -36042,7 +36059,15 @@
 	    activeKey: _react2['default'].PropTypes.any,
 	    bsStyle: _react2['default'].PropTypes.oneOf(['tabs', 'pills']),
 	    stacked: _react2['default'].PropTypes.bool,
-	    justified: _react2['default'].PropTypes.bool,
+	    /**
+	     * Make `NavItem`s equal widths on small or larger displays and stacked
+	     * otherwise. Not supported for `Nav`s in `Navbar`s.
+	     */
+	    justified: _reactPropTypesLibAll2['default'](_react2['default'].PropTypes.bool, function (_ref) {
+	      var justified = _ref.justified;
+	      var navbar = _ref.navbar;
+	      return justified && navbar ? Error('justified navbar `Nav`s are not supported') : null;
+	    }),
 	    onSelect: _react2['default'].PropTypes.func,
 	    collapsible: _react2['default'].PropTypes.bool,
 	    /**
@@ -37679,7 +37704,8 @@
 	  componentWillUnmount: function componentWillUnmount() {
 	    _reactDom2['default'].unmountComponentAtNode(this._mountNode);
 	    this._mountNode = null;
-	    clearTimeout(this._hoverDelay);
+	    clearTimeout(this._hoverShowDelay);
+	    clearTimeout(this._hoverHideDelay);
 	  },
 	
 	  componentDidUpdate: function componentDidUpdate() {
@@ -37752,9 +37778,13 @@
 	  handleDelayedShow: function handleDelayedShow() {
 	    var _this = this;
 	
-	    if (this._hoverDelay != null) {
-	      clearTimeout(this._hoverDelay);
-	      this._hoverDelay = null;
+	    if (this._hoverHideDelay != null) {
+	      clearTimeout(this._hoverHideDelay);
+	      this._hoverHideDelay = null;
+	      return;
+	    }
+	
+	    if (this.state.isOverlayShown || this._hoverShowDelay != null) {
 	      return;
 	    }
 	
@@ -37765,8 +37795,8 @@
 	      return;
 	    }
 	
-	    this._hoverDelay = setTimeout(function () {
-	      _this._hoverDelay = null;
+	    this._hoverShowDelay = setTimeout(function () {
+	      _this._hoverShowDelay = null;
 	      _this.show();
 	    }, delay);
 	  },
@@ -37774,9 +37804,13 @@
 	  handleDelayedHide: function handleDelayedHide() {
 	    var _this2 = this;
 	
-	    if (this._hoverDelay != null) {
-	      clearTimeout(this._hoverDelay);
-	      this._hoverDelay = null;
+	    if (this._hoverShowDelay != null) {
+	      clearTimeout(this._hoverShowDelay);
+	      this._hoverShowDelay = null;
+	      return;
+	    }
+	
+	    if (!this.state.isOverlayShown || this._hoverHideDelay != null) {
 	      return;
 	    }
 	
@@ -37787,8 +37821,8 @@
 	      return;
 	    }
 	
-	    this._hoverDelay = setTimeout(function () {
-	      _this2._hoverDelay = null;
+	    this._hoverHideDelay = setTimeout(function () {
+	      _this2._hoverHideDelay = null;
 	      _this2.hide();
 	    }, delay);
 	  },
@@ -56561,11 +56595,11 @@
 	
 	var _rainfall_vs_yield2 = _interopRequireDefault(_rainfall_vs_yield);
 	
-	var _monthly_rainfall = __webpack_require__(480);
+	var _monthly_rainfall = __webpack_require__(481);
 	
 	var _monthly_rainfall2 = _interopRequireDefault(_monthly_rainfall);
 	
-	var _CropSelection = __webpack_require__(485);
+	var _CropSelection = __webpack_require__(486);
 	
 	var _CropSelection2 = _interopRequireDefault(_CropSelection);
 	
@@ -56575,25 +56609,10 @@
 	    displayName: "CropMetricsPaneComponent",
 	
 	    propTypes: {
-	        state: _react2["default"].PropTypes.string,
-	        location: _react2["default"].PropTypes.object,
-	        crop: _react2["default"].PropTypes.object
-	    },
-	
-	    getInitialState: function getInitialState() {
-	        return {
-	            crop: { name: 'corn', imageUrl: 'src/img/icons/crops/corn.png' },
-	            state: 'IA'
-	        };
-	    },
-	
-	    componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-	        this.setState({ crop: this.state.crop, state: nextProps.state });
-	    },
-	
-	    handleSelect: function handleSelect(k) {
-	        debug("main: " + k + ", st:" + this.state.state);
-	        this.setState({ crop: k, state: this.state.state });
+	        state: _react2["default"].PropTypes.string.isRequired,
+	        location: _react2["default"].PropTypes.object.isRequired,
+	        crop: _react2["default"].PropTypes.string.isRequired,
+	        onCropChange: _react2["default"].PropTypes.func.isRequired
 	    },
 	
 	    render: function render() {
@@ -56608,12 +56627,12 @@
 	                    { className: "paneHeaderContent" },
 	                    "What do you grow?"
 	                ),
-	                _react2["default"].createElement(_CropSelection2["default"], { state: this.state.state, onSelect: this.handleSelect })
+	                _react2["default"].createElement(_CropSelection2["default"], { state: this.props.state, onSelect: this.props.onCropChange, crop: this.props.crop })
 	            ),
 	            _react2["default"].createElement(
 	                "div",
 	                null,
-	                _react2["default"].createElement(_rainfall_vs_yield2["default"], { crop: this.state.crop, state: this.props.state, location: this.props.location })
+	                _react2["default"].createElement(_rainfall_vs_yield2["default"], { crop: this.props.crop, state: this.props.state, location: this.props.location })
 	            ),
 	            _react2["default"].createElement(
 	                "div",
@@ -56665,11 +56684,14 @@
 	var cropYieldsDataSource = new _datasourcesCropYieldsByCrop2["default"]();
 	var rainfallDataSource = new _datasourcesRainfallJs2["default"]();
 	
+	var CropStore = __webpack_require__(480);
+	var cropStore = new CropStore();
+	
 	var RainfallVsYieldChartComponent = _react2["default"].createClass({
 	    displayName: "RainfallVsYieldChartComponent",
 	
 	    propTypes: {
-	        crop: _react2["default"].PropTypes.object.isRequired,
+	        crop: _react2["default"].PropTypes.string.isRequired,
 	        state: _react2["default"].PropTypes.string.isRequired,
 	        location: _react2["default"].PropTypes.object.isRequired
 	    },
@@ -56682,7 +56704,7 @@
 	                cropSource: cropYieldsDataSource,
 	                rainSource: rainfallDataSource,
 	                radius: 100,
-	                crop: this.props.crop,
+	                crop: cropStore.getCropDatum(this.props.crop),
 	                state: this.props.state,
 	                location: this.props.location })
 	        );
@@ -56700,6 +56722,10 @@
 	// import d3 from 'd3';
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
+	var _lodash = __webpack_require__(452);
+	
+	var _lodash2 = _interopRequireDefault(_lodash);
 	
 	var _react = __webpack_require__(2);
 	
@@ -56815,7 +56841,6 @@
 	    },
 	
 	    render: function render() {
-	        debug(this.props);
 	        var imageUrl = this.props.crop.imageUrl;
 	        var rainImgUrl = 'src/img/icons/blue-square.png';
 	        return _react2["default"].createElement(
@@ -56831,7 +56856,8 @@
 	                    this.props.crop.name,
 	                    _react2["default"].createElement("img", { src: imageUrl }),
 	                    " to ",
-	                    _react2["default"].createElement("img", { src: rainImgUrl }),
+	                    _react2["default"].createElement("img", {
+	                        src: rainImgUrl }),
 	                    " rainfall in ",
 	                    this.props.state
 	                )
@@ -57241,6 +57267,149 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, '__esModule', {
+			value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	var request = __webpack_require__(461);
+	var debug = __webpack_require__(443)('components:panes:cropmetrics:CropStore');
+	
+	var KNOWN_CROPS = {
+			barley: 'barley',
+			beans: 'beans',
+			corn: 'corn',
+			cotton: 'cotton',
+			hay: 'hay',
+			haylage: 'haylage',
+			oats: 'oats',
+			rice: 'rice',
+			sorghum: 'sorghum',
+			soybeans: 'soybeans',
+			sugarbeets: 'sugarbeets',
+			sugarcane: 'sugarcane',
+			wheat: 'wheat'
+	};
+	
+	var stateToCrops = {
+			'AK': ['barley', 'hay', 'haylage', 'oats', 'wheat'],
+			'AL': ['barley', 'beans', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'sorghum', 'soybeans', 'tobacco', 'wheat'],
+			'AR': ['barley', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'rice', 'sorghum', 'soybeans', 'wheat'],
+			'AZ': ['barley', 'beans', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'sorghum', 'wheat'],
+			'CA': ['barley', 'beans', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'rice', 'sorghum', 'soybeans', 'sugarbeets', 'wheat'],
+			'CO': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'sugarbeets', 'wheat'],
+			'CT': ['beans', 'corn', 'hay', 'haylage', 'oats', 'soybeans', 'tobacco', 'wheat'],
+			'DE': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'wheat'],
+			'FL': ['beans', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'rice', 'sorghum', 'soybeans', 'sugarcane', 'tobacco', 'wheat'],
+			'GA': ['barley', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'sorghum', 'soybeans', 'wheat'],
+			'HI': ['corn', 'hay', 'haylage', 'sorghum', 'soybeans', 'sugarcane'],
+			'IA': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'wheat'],
+			'ID': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'sugarbeets', 'wheat'],
+			'IL': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'rice', 'sorghum', 'soybeans', 'tobacco', 'wheat'],
+			'IN': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'tobacco', 'wheat'],
+			'KS': ['barley', 'beans', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'sugarbeets', 'tobacco', 'wheat'],
+			'KY': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'peanuts', 'sorghum', 'soybeans', 'wheat'],
+			'LA': ['beans', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'rice', 'sorghum', 'soybeans', 'sugarcane', 'tobacco', 'wheat'],
+			'MA': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'soybeans', 'tobacco', 'wheat'],
+			'MD': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'peanuts', 'sorghum', 'soybeans', 'tobacco', 'wheat'],
+			'ME': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'tobacco', 'wheat'],
+			'MI': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'sugarbeets', 'wheat'],
+			'MN': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'sugarbeets', 'wheat'],
+			'MO': ['barley', 'beans', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'rice', 'sorghum', 'soybeans', 'tobacco', 'wheat'],
+			'MS': ['beans', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'rice', 'sorghum', 'soybeans', 'wheat'],
+			'MT': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'soybeans', 'sugarbeets', 'wheat'],
+			'NC': ['barley', 'beans', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'sorghum', 'soybeans', 'wheat'],
+			'ND': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'sugarbeets', 'wheat'],
+			'NE': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'sugarbeets', 'wheat'],
+			'NH': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'wheat'],
+			'NJ': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'wheat'],
+			'NM': ['barley', 'beans', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'wheat'],
+			'NV': ['barley', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'wheat'],
+			'NY': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'tobacco', 'wheat'],
+			'OH': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'sugarbeets', 'tobacco', 'wheat'],
+			'OK': ['barley', 'beans', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'rice', 'sorghum', 'soybeans', 'wheat'],
+			'OR': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'sugarbeets', 'wheat'],
+			'PA': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'tobacco', 'wheat'],
+			'RI': ['corn', 'hay', 'haylage', 'oats', 'soybeans', 'wheat'],
+			'SC': ['barley', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'rice', 'sorghum', 'soybeans', 'tobacco', 'wheat'],
+			'SD': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'sugarbeets', 'wheat'],
+			'TN': ['barley', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'rice', 'sorghum', 'soybeans', 'tobacco', 'wheat'],
+			'TX': ['barley', 'beans', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'rice', 'sorghum', 'soybeans', 'sugarcane', 'wheat'],
+			'UT': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'sugarbeets', 'wheat'],
+			'VA': ['barley', 'beans', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'sorghum', 'soybeans', 'wheat'],
+			'VT': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'sugarbeets', 'wheat'],
+			'WA': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'sugarbeets', 'wheat'],
+			'WI': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'tobacco', 'wheat'],
+			'WV': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'tobacco', 'wheat'],
+			'WY': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'sugarbeets', 'wheat']
+	};
+	
+	var CropStore = (function () {
+			function CropStore() {
+					_classCallCheck(this, CropStore);
+	
+					var localCrops = [];
+					for (var key in KNOWN_CROPS) {
+							if (KNOWN_CROPS.hasOwnProperty(key)) {
+									var datum = this.getCropDatum(KNOWN_CROPS[key]);
+									localCrops.push(datum);
+							}
+					}
+					this.crops = localCrops;
+			}
+	
+			_createClass(CropStore, [{
+					key: 'getCrops',
+					value: function getCrops() {
+							return Promise.resolve(this.crops);
+					}
+			}, {
+					key: 'getCropsByState',
+					value: function getCropsByState(state) {
+							var _this = this;
+	
+							return new Promise(function (resolve, reject) {
+									var stateCrops = stateToCrops[state];
+									var croplen = _this.crops.length;
+									var retval = [];
+									for (var i = 0; i < croplen; ++i) {
+											var c = _this.crops[i];
+											if (-1 !== stateCrops.indexOf(c.name)) {
+													retval.push(c);
+											}
+									}
+									resolve(retval);
+							});
+					}
+			}, {
+					key: 'getCropDatum',
+					value: function getCropDatum(name) {
+							var imageUrl = this.getCropImageUrl(name);
+							return { name: name, imageUrl: imageUrl };
+					}
+			}, {
+					key: 'getCropImageUrl',
+					value: function getCropImageUrl(name) {
+							var lcName = name.toLowerCase();
+							var icon = KNOWN_CROPS[lcName] || 'misc';
+							return 'src/img/icons/crops/' + icon + '.png';
+					}
+			}]);
+	
+			return CropStore;
+	})();
+	
+	exports['default'] = CropStore;
+	module.exports = exports['default'];
+
+/***/ },
+/* 481 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
@@ -57256,19 +57425,19 @@
 	
 	var _debug2 = _interopRequireDefault(_debug);
 	
-	var _chartsRainfall = __webpack_require__(481);
+	var _chartsRainfall = __webpack_require__(482);
 	
 	var _chartsRainfall2 = _interopRequireDefault(_chartsRainfall);
 	
-	var _datasourcesMonthlyRainfallJs = __webpack_require__(482);
+	var _datasourcesMonthlyRainfallJs = __webpack_require__(483);
 	
 	var _datasourcesMonthlyRainfallJs2 = _interopRequireDefault(_datasourcesMonthlyRainfallJs);
 	
-	var _datasourcesAverage30RainfallJs = __webpack_require__(483);
+	var _datasourcesAverage30RainfallJs = __webpack_require__(484);
 	
 	var _datasourcesAverage30RainfallJs2 = _interopRequireDefault(_datasourcesAverage30RainfallJs);
 	
-	var _datasourcesStationsJs = __webpack_require__(484);
+	var _datasourcesStationsJs = __webpack_require__(485);
 	
 	var _datasourcesStationsJs2 = _interopRequireDefault(_datasourcesStationsJs);
 	
@@ -57307,7 +57476,7 @@
 	module.exports = RainfallChartComponent;
 
 /***/ },
-/* 481 */
+/* 482 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57475,7 +57644,7 @@
 	module.exports = Rainfall;
 
 /***/ },
-/* 482 */
+/* 483 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57545,7 +57714,7 @@
 	module.exports = MonthlyRainfallDataSource;
 
 /***/ },
-/* 483 */
+/* 484 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57609,7 +57778,7 @@
 	module.exports = Average30RainfallDataSource;
 
 /***/ },
-/* 484 */
+/* 485 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57662,7 +57831,7 @@
 	module.exports = StationsDataSource;
 
 /***/ },
-/* 485 */
+/* 486 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57685,7 +57854,7 @@
 	
 	var _mapStates2 = _interopRequireDefault(_mapStates);
 	
-	var _CropStore = __webpack_require__(486);
+	var _CropStore = __webpack_require__(480);
 	
 	var _CropStore2 = _interopRequireDefault(_CropStore);
 	
@@ -57696,16 +57865,18 @@
 	var debug = (0, _debug2["default"])('app:components:panes:cropmetrics:cropSelection');
 	
 	var cropStore = new _CropStore2["default"]();
+	
 	var CropSelectionComponent = _react2["default"].createClass({
 	    displayName: "CropSelectionComponent",
 	
 	    propTypes: {
 	        state: _react2["default"].PropTypes.string.isRequired,
-	        onSelect: _react2["default"].PropTypes.func.isRequired
+	        onSelect: _react2["default"].PropTypes.func.isRequired,
+	        crop: _react2["default"].PropTypes.string.isRequired
 	    },
 	
 	    getInitialState: function getInitialState() {
-	        return { crops: [], selectedCrop: { name: 'corn' } };
+	        return { crops: [] };
 	    },
 	
 	    componentDidMount: function componentDidMount() {
@@ -57724,193 +57895,34 @@
 	        });
 	    },
 	
-	    handleSelect: function handleSelect(k) {
-	        this.props.onSelect(k);
-	        this.setState({ selectedCrop: k, crops: this.state.crops });
+	    getStateName: function getStateName() {
+	        return _mapStates2["default"].statesByCode[this.props.state].name;
 	    },
 	
 	    render: function render() {
 	        var _this2 = this;
 	
-	        debug(this.props);
-	        var localStateName = _mapStates2["default"].statesByCode[this.props.state].name;
-	        debug(localStateName);
-	        var localStateCode = this.props.state;
-	        //        const state = "{state}";
 	        var crops = this.state.crops.map(function (crop, index) {
-	            var isSelected = _this2.state.selectedCrop.name === crop.name;
-	            return _react2["default"].createElement(_CropTile2["default"], { key: "crop" + index, crop: crop, isSelected: isSelected, onSelect: _this2.handleSelect });
+	            var isSelected = _this2.props.crop === crop.name;
+	            return _react2["default"].createElement(_CropTile2["default"], { key: "crop" + index, crop: crop, isSelected: isSelected, onSelect: _this2.props.onSelect });
 	        });
-	        var noData = "{localStateName} has data available for this.state.crop";
+	
+	        var noData = this.getStateName() + " has no data available for " + this.props.crop;
+	        var cropTiles = _react2["default"].createElement(
+	            "div",
+	            { className: "cropTileContainer" },
+	            crops
+	        );
 	        return _react2["default"].createElement(
 	            "div",
 	            null,
-	            _react2["default"].createElement(
-	                "div",
-	                { className: "cropTileContainer" },
-	                crops.length === 0 ? noData : crops
-	            )
+	            crops.length === 0 ? noData : cropTiles
 	        );
 	    }
 	});
 	
 	exports["default"] = CropSelectionComponent;
 	module.exports = exports["default"];
-
-/***/ },
-/* 486 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	var request = __webpack_require__(461);
-	var debug = __webpack_require__(443)('components:panes:cropmetrics:CropStore');
-	
-	var KNOWN_CROPS = {
-	  barley: 'barley',
-	  beans: 'beans',
-	  corn: 'corn',
-	  cotton: 'cotton',
-	  hay: 'hay',
-	  haylage: 'haylage',
-	  oats: 'oats',
-	  rice: 'rice',
-	  sorghum: 'sorghum',
-	  soybeans: 'soybeans',
-	  sugarbeets: 'sugarbeets',
-	  sugarcane: 'sugarcane',
-	  wheat: 'wheat'
-	};
-	
-	var stateToCrops = {
-	  'AK': ['barley', 'hay', 'haylage', 'oats', 'wheat'],
-	  'AL': ['barley', 'beans', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'sorghum', 'soybeans', 'tobacco', 'wheat'],
-	  'AR': ['barley', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'rice', 'sorghum', 'soybeans', 'wheat'],
-	  'AZ': ['barley', 'beans', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'sorghum', 'wheat'],
-	  'CA': ['barley', 'beans', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'rice', 'sorghum', 'soybeans', 'sugarbeets', 'wheat'],
-	  'CO': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'sugarbeets', 'wheat'],
-	  'CT': ['beans', 'corn', 'hay', 'haylage', 'oats', 'soybeans', 'tobacco', 'wheat'],
-	  'DE': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'wheat'],
-	  'FL': ['beans', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'rice', 'sorghum', 'soybeans', 'sugarcane', 'tobacco', 'wheat'],
-	  'GA': ['barley', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'sorghum', 'soybeans', 'wheat'],
-	  'HI': ['corn', 'hay', 'haylage', 'sorghum', 'soybeans', 'sugarcane'],
-	  'IA': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'wheat'],
-	  'ID': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'sugarbeets', 'wheat'],
-	  'IL': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'rice', 'sorghum', 'soybeans', 'tobacco', 'wheat'],
-	  'IN': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'tobacco', 'wheat'],
-	  'KS': ['barley', 'beans', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'sugarbeets', 'tobacco', 'wheat'],
-	  'KY': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'peanuts', 'sorghum', 'soybeans', 'wheat'],
-	  'LA': ['beans', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'rice', 'sorghum', 'soybeans', 'sugarcane', 'tobacco', 'wheat'],
-	  'MA': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'soybeans', 'tobacco', 'wheat'],
-	  'MD': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'peanuts', 'sorghum', 'soybeans', 'tobacco', 'wheat'],
-	  'ME': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'tobacco', 'wheat'],
-	  'MI': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'sugarbeets', 'wheat'],
-	  'MN': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'sugarbeets', 'wheat'],
-	  'MO': ['barley', 'beans', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'rice', 'sorghum', 'soybeans', 'tobacco', 'wheat'],
-	  'MS': ['beans', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'rice', 'sorghum', 'soybeans', 'wheat'],
-	  'MT': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'soybeans', 'sugarbeets', 'wheat'],
-	  'NC': ['barley', 'beans', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'sorghum', 'soybeans', 'wheat'],
-	  'ND': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'sugarbeets', 'wheat'],
-	  'NE': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'sugarbeets', 'wheat'],
-	  'NH': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'wheat'],
-	  'NJ': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'wheat'],
-	  'NM': ['barley', 'beans', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'wheat'],
-	  'NV': ['barley', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'wheat'],
-	  'NY': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'tobacco', 'wheat'],
-	  'OH': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'sugarbeets', 'tobacco', 'wheat'],
-	  'OK': ['barley', 'beans', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'rice', 'sorghum', 'soybeans', 'wheat'],
-	  'OR': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'sugarbeets', 'wheat'],
-	  'PA': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'tobacco', 'wheat'],
-	  'RI': ['corn', 'hay', 'haylage', 'oats', 'soybeans', 'wheat'],
-	  'SC': ['barley', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'rice', 'sorghum', 'soybeans', 'tobacco', 'wheat'],
-	  'SD': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'sugarbeets', 'wheat'],
-	  'TN': ['barley', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'rice', 'sorghum', 'soybeans', 'tobacco', 'wheat'],
-	  'TX': ['barley', 'beans', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'rice', 'sorghum', 'soybeans', 'sugarcane', 'wheat'],
-	  'UT': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'sugarbeets', 'wheat'],
-	  'VA': ['barley', 'beans', 'corn', 'cotton', 'hay', 'haylage', 'oats', 'peanuts', 'sorghum', 'soybeans', 'wheat'],
-	  'VT': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'sugarbeets', 'wheat'],
-	  'WA': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'sugarbeets', 'wheat'],
-	  'WI': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'tobacco', 'wheat'],
-	  'WV': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'tobacco', 'wheat'],
-	  'WY': ['barley', 'beans', 'corn', 'hay', 'haylage', 'oats', 'sorghum', 'soybeans', 'sugarbeets', 'wheat']
-	};
-	
-	var CropStore = (function () {
-	  function CropStore() {
-	    _classCallCheck(this, CropStore);
-	
-	    var localCrops = [];
-	    for (var key in KNOWN_CROPS) {
-	      if (KNOWN_CROPS.hasOwnProperty(key)) {
-	        var datum = this._createCropDatum(KNOWN_CROPS[key]);
-	        localCrops.push(datum);
-	      }
-	    }
-	    this.crops = localCrops;
-	  }
-	
-	  _createClass(CropStore, [{
-	    key: 'getCrops',
-	    value: function getCrops() {
-	      var _this = this;
-	
-	      return new Promise(function (resolve, reject) {
-	        resolve(_this.crops);
-	      });
-	    }
-	  }, {
-	    key: 'getCropsByState',
-	    value: function getCropsByState(state) {
-	      var _this2 = this;
-	
-	      return new Promise(function (resolve, reject) {
-	        var stateCrops = stateToCrops[state];
-	        var croplen = _this2.crops.length;
-	        var retval = [];
-	        for (var i = 0; i < croplen; ++i) {
-	          var c = _this2.crops[i];
-	          if (-1 !== stateCrops.indexOf(c.name)) {
-	            retval.push(c);
-	          }
-	        }
-	        resolve(retval);
-	      });
-	    }
-	
-	    // getCropByName(cropName) {
-	    //   return new Promise
-	    // }
-	    // getForState(stateCode) {
-	    //     return Object.keys(cache[stateCode]);
-	    // }
-	
-	  }, {
-	    key: '_createCropDatum',
-	    value: function _createCropDatum(name) {
-	      var imageUrl = this._getCropImageUrl(name);
-	      return { name: name, imageUrl: imageUrl };
-	    }
-	  }, {
-	    key: '_getCropImageUrl',
-	    value: function _getCropImageUrl(name) {
-	      var lcName = name.toLowerCase();
-	      var icon = KNOWN_CROPS[lcName] || 'misc';
-	      return 'src/img/icons/crops/' + icon + '.png';
-	    }
-	  }]);
-	
-	  return CropStore;
-	})();
-	
-	exports['default'] = CropStore;
-	module.exports = exports['default'];
 
 /***/ },
 /* 487 */
@@ -57924,6 +57936,10 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
+	var _lodash = __webpack_require__(452);
+	
+	var _lodash2 = _interopRequireDefault(_lodash);
+	
 	var _react = __webpack_require__(2);
 	
 	var _react2 = _interopRequireDefault(_react);
@@ -57936,7 +57952,13 @@
 	
 	var _debug2 = _interopRequireDefault(_debug);
 	
+	var _CropStore = __webpack_require__(480);
+	
+	var _CropStore2 = _interopRequireDefault(_CropStore);
+	
 	var debug = (0, _debug2["default"])('app:components:CropTile');
+	
+	var cropStore = new _CropStore2["default"]();
 	
 	var CropTile = _react2["default"].createClass({
 	    displayName: "CropTile",
@@ -57947,22 +57969,20 @@
 	        onSelect: _react2["default"].PropTypes.func.isRequired
 	    },
 	
-	    handleSelect: function handleSelect(e, k) {
-	        this.props.onSelect(this.props.crop);
+	    handleSelect: function handleSelect() {
+	        this.props.onSelect(this.props.crop.name);
 	    },
 	
 	    render: function render() {
-	        var name = this.props.crop.name;
-	        var imageUrl = this.props.crop.imageUrl;
-	        var tileClass = this.props.isSelected ? "cropTile selectedCropTile" : "cropTile";
+	        var tileClass = this.props.isSelected ? "cropTile selectedCropTile" : "cropTile nonselectedCropTile";
 	        return _react2["default"].createElement(
 	            "div",
 	            { className: tileClass, onClick: this.handleSelect },
-	            _react2["default"].createElement("img", { src: imageUrl }),
+	            _react2["default"].createElement("img", { src: this.props.crop.imageUrl }),
 	            _react2["default"].createElement(
 	                "div",
 	                { className: "cropName" },
-	                name
+	                _lodash2["default"].capitalize(this.props.crop.name)
 	            )
 	        );
 	    }
@@ -58025,10 +58045,15 @@
 	 * Note: In browsers that do not support the HTML5 history API full
 	 * page reloads will be used to preserve URLs.
 	 */
-	function createBrowserHistory(options) {
+	function createBrowserHistory() {
+	  var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
 	  _invariant2['default'](_ExecutionEnvironment.canUseDOM, 'Browser history needs a DOM');
 	
+	  var forceRefresh = options.forceRefresh;
+	
 	  var isSupported = _DOMUtils.supportsHistory();
+	  var useRefresh = !isSupported || forceRefresh;
 	
 	  function getCurrentLocation(historyState) {
 	    historyState = historyState || window.history.state || {};
@@ -58085,20 +58110,20 @@
 	    };
 	
 	    if (action === _Actions.PUSH) {
-	      if (isSupported) {
-	        window.history.pushState(historyState, null, path);
-	      } else {
-	        // Use a full-page reload to preserve the URL.
+	      if (useRefresh) {
 	        window.location.href = path;
-	      }
+	        return false; // Prevent location update.
+	      } else {
+	          window.history.pushState(historyState, null, path);
+	        }
 	    } else {
 	      // REPLACE
-	      if (isSupported) {
-	        window.history.replaceState(historyState, null, path);
-	      } else {
-	        // Use a full-page reload to preserve the URL.
+	      if (useRefresh) {
 	        window.location.replace(path);
-	      }
+	        return false; // Prevent location update.
+	      } else {
+	          window.history.replaceState(historyState, null, path);
+	        }
 	    }
 	  }
 	
@@ -58657,8 +58682,7 @@
 	      if (pendingLocation !== nextLocation) return; // Transition was interrupted.
 	
 	      if (ok) {
-	        finishTransition(nextLocation);
-	        updateLocation(nextLocation);
+	        if (finishTransition(nextLocation) !== false) updateLocation(nextLocation);
 	      } else if (location && nextLocation.action === _Actions.POP) {
 	        var prevIndex = allKeys.indexOf(location.key);
 	        var nextIndex = allKeys.indexOf(nextLocation.key);
@@ -58992,7 +59016,7 @@
 	var _warning2 = _interopRequireDefault(_warning);
 	
 	function extractPath(string) {
-	  var match = string.match(/https?:\/\/[^\/]*/);
+	  var match = string.match(/^https?:\/\/[^\/]*/);
 	
 	  if (match == null) return string;
 	
