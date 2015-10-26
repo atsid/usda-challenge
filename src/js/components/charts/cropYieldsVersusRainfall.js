@@ -9,6 +9,7 @@ import util from "../../common/util";
 import colors from "./colors";
 import debugFactory from "debug";
 const debug = debugFactory('app:components:CropYieldsVersusRainfall');
+const stateData = require('../../components/panes/map/states');
 
 var CropYieldsVersusRainfall = React.createClass({
     propTypes: {
@@ -66,7 +67,7 @@ var CropYieldsVersusRainfall = React.createClass({
                 .margins({top: 10, left: 50, right: 80, bottom: 40})
                 .x(timeScale)
                 .xUnits(d3.time.years)
-                .yAxisLabel('Actual Rainfall (inch)')
+                .yAxisLabel('Actual Rainfall (inches)')
                 .rightYAxisLabel(this.cropLabel(this.props.crop))
                 .dimension(yearlyYieldDim)
                 .brushOn(false)
@@ -125,7 +126,7 @@ var CropYieldsVersusRainfall = React.createClass({
             <div className={"cropYieldChart"} id="cropYieldsChartGeneric">
                 <div className={"graphDescription"}>
                     <span className={"first"}>Historical {this.props.crop.name}<img src={imageUrl}/> to <img
-                        src={rainImgUrl}/> rainfall in {this.props.state}</span>
+                        src={rainImgUrl}/> rainfall in {stateData.statesByCode[this.props.state].name}</span>
                 </div>
                 <a className={"reset"} onClick={this.reset} style={{display: "none"}}>reset</a>
             </div>
