@@ -56748,6 +56748,7 @@
 	var _debug2 = _interopRequireDefault(_debug);
 	
 	var debug = (0, _debug2["default"])('app:components:CropYieldsVersusRainfall');
+	var stateData = __webpack_require__(467);
 	
 	var CropYieldsVersusRainfall = _react2["default"].createClass({
 	    displayName: "CropYieldsVersusRainfall",
@@ -56803,7 +56804,7 @@
 	            var timeScale = d3.time.scale().domain([new Date(2000, 1, 1), new Date(2015, 12, 31)]);
 	
 	            var compChart = dc.compositeChart(el);
-	            compChart.width($(el).innerWidth() - 30).height(250).margins({ top: 10, left: 50, right: 80, bottom: 40 }).x(timeScale).xUnits(d3.time.years).yAxisLabel('Actual Rainfall (inch)').rightYAxisLabel(_this.cropLabel(_this.props.crop)).dimension(yearlyYieldDim).brushOn(false).compose([dc.barChart(compChart).colors(_colors2["default"].yearlyAverageRainfall).barPadding(0.3).group(yearlyAverageRainGroup), dc.barChart(compChart).colors(_colors2["default"]["yield"]).barPadding(0.3).useRightYAxis(true).group(yearlyYieldGroup)]);
+	            compChart.width($(el).innerWidth() - 30).height(250).margins({ top: 10, left: 50, right: 80, bottom: 40 }).x(timeScale).xUnits(d3.time.years).yAxisLabel('Actual Rainfall (inches)').rightYAxisLabel(_this.cropLabel(_this.props.crop)).dimension(yearlyYieldDim).brushOn(false).compose([dc.barChart(compChart).colors(_colors2["default"].yearlyAverageRainfall).barPadding(0.3).group(yearlyAverageRainGroup), dc.barChart(compChart).colors(_colors2["default"]["yield"]).barPadding(0.3).useRightYAxis(true).group(yearlyYieldGroup)]);
 	
 	            dc.renderAll();
 	            _this.state.myChart = compChart;
@@ -56859,7 +56860,7 @@
 	                    _react2["default"].createElement("img", {
 	                        src: rainImgUrl }),
 	                    " rainfall in ",
-	                    this.props.state
+	                    stateData.statesByCode[this.props.state].name
 	                )
 	            ),
 	            _react2["default"].createElement(
