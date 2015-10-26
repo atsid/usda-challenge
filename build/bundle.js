@@ -56842,7 +56842,9 @@
 	    },
 	
 	    render: function render() {
-	        var imageUrl = this.props.crop.imageUrl;
+	        var cropName = _lodash2["default"].capitalize(this.props.crop.name);
+	        var stateName = stateData.statesByCode[this.props.state].name;
+	        var cropImgUrl = this.props.crop.imageUrl;
 	        var rainImgUrl = 'src/img/icons/blue-square.png';
 	        return _react2["default"].createElement(
 	            "div",
@@ -56854,13 +56856,12 @@
 	                    "span",
 	                    { className: "first" },
 	                    "Historical ",
-	                    this.props.crop.name,
-	                    _react2["default"].createElement("img", { src: imageUrl }),
-	                    " to ",
-	                    _react2["default"].createElement("img", {
-	                        src: rainImgUrl }),
-	                    " rainfall in ",
-	                    stateData.statesByCode[this.props.state].name
+	                    cropName,
+	                    _react2["default"].createElement("img", { src: cropImgUrl }),
+	                    " to Rainfall ",
+	                    _react2["default"].createElement("img", { src: rainImgUrl }),
+	                    " in ",
+	                    stateName
 	                )
 	            ),
 	            _react2["default"].createElement(
