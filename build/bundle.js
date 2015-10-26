@@ -56804,7 +56804,7 @@
 	            var timeScale = d3.time.scale().domain([new Date(2000, 1, 1), new Date(2015, 12, 31)]);
 	
 	            var compChart = dc.compositeChart(el);
-	            compChart.width($(el).innerWidth() - 30).height(250).margins({ top: 10, left: 50, right: 80, bottom: 40 }).x(timeScale).xUnits(d3.time.years).yAxisLabel('Actual Rainfall (inches)').rightYAxisLabel(_this.cropLabel(_this.props.crop)).dimension(yearlyYieldDim).brushOn(false).compose([dc.barChart(compChart).colors(_colors2["default"].yearlyAverageRainfall).barPadding(0.3).group(yearlyAverageRainGroup), dc.barChart(compChart).colors(_colors2["default"]["yield"]).barPadding(0.3).useRightYAxis(true).group(yearlyYieldGroup)]);
+	            compChart.width($(el).innerWidth() - 30).height(250).margins({ top: 10, left: 50, right: 80, bottom: 40 }).x(timeScale).xUnits(d3.time.years).yAxisLabel('Actual Rainfall (inches)').rightYAxisLabel(_this.cropLabel(_this.props.crop)).dimension(yearlyYieldDim).brushOn(false).compose([dc.barChart(compChart).colors(_colors2["default"].yearlyAverageRainfall).barPadding(0.1).group(yearlyAverageRainGroup), dc.barChart(compChart).colors(_colors2["default"]["yield"]).barPadding(0.3).useRightYAxis(true).group(yearlyYieldGroup)]);
 	
 	            dc.renderAll();
 	            _this.state.myChart = compChart;
@@ -56818,7 +56818,7 @@
 	        }
 	    },
 	
-	    cropMap: {
+	    cropUnits: {
 	        BARLEY: 'Bushels / Acre',
 	        BEANS: 'CWT / Acre',
 	        CORN: 'Bushels / Acre',
@@ -56836,8 +56836,8 @@
 	
 	    //'COTTON' -> Cotton (Bales / Acre)
 	    cropLabel: function cropLabel(crop) {
-	        var units = this.cropMap[crop.name.toUpperCase()];
-	        var prefix = crop.name.substring(0, 1) + crop.name.substring(1, crop.name.length).toLowerCase();
+	        var units = this.cropUnits[crop.name.toUpperCase()];
+	        var prefix = _lodash2["default"].capitalize(crop.name);
 	        return prefix + ' (' + units + ')';
 	    },
 	
