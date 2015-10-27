@@ -56491,7 +56491,6 @@
 	            var _this = this;
 	
 	            return this._getActivitiesInState(stateCode).then(this._parseCsv).then(function (activities) {
-	                debug('received activity data', activities);
 	                cache[stateCode] = {};
 	                for (var i = 1; i < activities.data.length; i++) {
 	                    var datum = _this._createActivityDatum(activities.data[i]);
@@ -57005,7 +57004,7 @@
 	            add: function add(key) {
 	                return function (p, v) {
 	                    ++p.count;
-	                    p.sum += v[key];
+	                    p.sum += v[key] || 0;
 	                    p.avg = Math.round(p.sum / p.count);
 	                    return p;
 	                };
@@ -57013,7 +57012,7 @@
 	            remove: function remove(key) {
 	                return function (p, v) {
 	                    --p.count;
-	                    p.sum -= v[key];
+	                    p.sum -= v[key] || 0;
 	                    p.avg = p.count ? Math.round(p.sum / p.count) : 0;
 	                    return p;
 	                };
@@ -57720,7 +57719,6 @@
 	                return { data: data, index: index, dim: dim, group: group };
 	            }
 	
-	            debug('rainfall chart data', results);
 	            var monthlyData = results[0].data;
 	            var average30Data = results[1].data;
 	            var stationData = results[2].data;
@@ -57730,7 +57728,6 @@
 	            var monthlyRain = groupify(monthlySubset);
 	            var average30Rain = groupify(average30Subset);
 	            var timeScale = d3.time.scale().domain([new Date(2000, 1, 1), new Date(2015, 12, 31)]);
-	
 	            var compChart = dc.compositeChart(el);
 	            compChart.width($(el).innerWidth() - 30).height(250).margins({ top: 10, left: 50, right: 80, bottom: 40 }).x(timeScale).xUnits(d3.time.months).yAxisLabel('Rainfall (inches)').dimension(monthlyRain.dim).brushOn(false).compose([dc.lineChart(compChart).colors(_colors2["default"].monthlyAverageRainfall).group(average30Rain.group).renderArea(true).valueAccessor(function (d) {
 	                return d.value.avg;
