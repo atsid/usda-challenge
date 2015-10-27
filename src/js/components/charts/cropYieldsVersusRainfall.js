@@ -14,14 +14,17 @@ const stateData = require('../../components/panes/map/states');
 var CropYieldsVersusRainfall = React.createClass({
     propTypes: {
         crop: React.PropTypes.object.isRequired,
-        cropSource: React.PropTypes.object.isRequired,
-        rainSource: React.PropTypes.object.isRequired,
         state: React.PropTypes.string.isRequired,
         lat: React.PropTypes.number.isRequired,
         lng: React.PropTypes.number.isRequired,
         zoom: React.PropTypes.number.isRequired,
         radius: React.PropTypes.number.isRequired,
-        stationSource: React.PropTypes.object.isRequired,
+    },
+
+    contextTypes: {
+        cropYieldsDataSource: React.PropTypes.object.isRequired,
+        rainfallDataSource: React.PropTypes.object.isRequired,
+        stationDataSource: React.PropTypes.object.isRequired,
     },
 
     getInitialState() {
@@ -48,9 +51,9 @@ var CropYieldsVersusRainfall = React.createClass({
 
         //TODO: we don't need to re-get the rain data each time, only selected crop
         Promise.all([
-            this.props.cropSource.list(this.props.crop.name),
-            this.props.rainSource.list(this.props.state),
-            this.props.stationSource.list()
+            this.context.cropYieldsDataSource.list(this.props.crop.name),
+            this.context.rainfallDataSource.list(this.props.state),
+            this.context.stationDataSource.list()
         ]).then((results) => {
             const cropData = results[0].data;
             const rainData = results[1].data;

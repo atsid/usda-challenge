@@ -4,18 +4,20 @@ import React from "react";
 import debugFactory from "debug";
 import stateData from './states';
 const debug = debugFactory('app:components:ActivitiesPerformed');
-import ActivityStore from './ActivityStore';
 import ActivityTile from './ActivityTile';
 
-const activityStore = new ActivityStore();
 const ActivitiesPerformedComponent = React.createClass({
     propTypes: {
         state: React.PropTypes.string.isRequired,
         year: React.PropTypes.number.isRequired,
     },
 
+    contextTypes: {
+        activityStore: React.PropTypes.object.isRequired,
+    },
+
     getInitialState() {
-        return { activities: [], yearsForState: [] };
+        return {activities: [], yearsForState: []};
     },
 
     componentDidMount() {
@@ -28,9 +30,9 @@ const ActivitiesPerformedComponent = React.createClass({
     },
 
     loadActivities(state, year) {
-        activityStore.getActivities(state, year)
+        this.context.activityStore.getActivities(state, year)
             .then((activities) => {
-                const yearsForState = activityStore.getYearsForState(state).sort(function(a, b){return b-a});
+                const yearsForState = this.context.activityStore.getYearsForState(state).sort((a, b) => b - a);
                 this.setState({activities, yearsForState});
             });
     },
@@ -39,12 +41,14 @@ const ActivitiesPerformedComponent = React.createClass({
         const stateName = stateData.statesByCode[this.props.state].name;
         const activities = this.state.activities.map((activity, index) => {
             const isLast = index === this.state.activities.length - 1;
-            return (<ActivityTile key={`activity${index}`} activity={activity} isLast={isLast} />);
+            return (<ActivityTile key={`activity${index}`} activity={activity} isLast={isLast}/>);
         });
         const noData = `${stateName} has data available for ${this.state.yearsForState.join(', ')}`;
         return (
             <div>
-                <div className="activitiesPerformedHeader">Percentage of land in <span>{stateName}</span> where certain activities were performed (in <span>{this.props.year}</span>)</div >
+                <div className="activitiesPerformedHeader">Percentage of land in <span>{stateName}</span> where certain
+                    activities were performed (in <span>{this.props.year}</span>)
+                </div >
                 <div className="activityTileContainer">
                     {activities.length === 0 ? noData : activities}
                 </div>

@@ -6,9 +6,6 @@ import ReactDOM from "react-dom";
 
 import debugFactory from "debug";
 const debug = debugFactory('app:components:CropTile');
-import CropStore from './CropStore';
-
-const cropStore = new CropStore();
 
 const CropTile = React.createClass({
     propTypes: {
@@ -20,7 +17,6 @@ const CropTile = React.createClass({
     handleSelect() {
         this.props.onSelect(this.props.crop.name);
     },
-
 
     render() {
         const tileClass = (this.props.isSelected ? "cropTile selectedCropTile" : "cropTile nonselectedCropTile" );

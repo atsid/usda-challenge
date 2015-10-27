@@ -15,11 +15,28 @@ import MapPane from './panes/map/main';
 import CropMetricsPane from './panes/cropmetrics/main';
 import stateData from './panes/map/states';
 
+import CropStore from '../stores/CropStore';
+import ActivityStore from '../stores/ActivityStore';
+import MonthlyRainfallDataSource from "../datasources/monthlyRainfall";
+import Average30RainfallDataSource from "../datasources/average30Rainfall";
+import StationDataSource from "../datasources/stations";
+import CropYieldsDataSource from "../datasources/cropYieldsByCrop";
+import RainfallDataSource from "../datasources/rainfall";
 
 let SplashPageComponent = React.createClass({
     contextTypes: {
         location: React.PropTypes.object.isRequired,
         history: React.PropTypes.object.isRequired,
+    },
+
+    childContextTypes: {
+        cropStore: React.PropTypes.object,
+        activityStore: React.PropTypes.object,
+        monthlyRainfallDataSource: React.PropTypes.object,
+        average30RainfallDataSource: React.PropTypes.object,
+        stationDataSource: React.PropTypes.object,
+        cropYieldsDataSource: React.PropTypes.object,
+        rainfallDataSource: React.PropTypes.object,
     },
 
     getInitialState() {
@@ -32,6 +49,18 @@ let SplashPageComponent = React.createClass({
         const radius = 100;
         const crop = query.crop || 'corn';
         return {state, year, lat, lng, zoom, crop, radius};
+    },
+
+    getChildContext() {
+        return {
+            cropStore: new CropStore(),
+            activityStore: new ActivityStore(),
+            monthlyRainfallDataSource: new MonthlyRainfallDataSource(),
+            average30RainfallDataSource: new Average30RainfallDataSource(),
+            stationDataSource: new StationDataSource(),
+            cropYieldsDataSource: new CropYieldsDataSource(),
+            rainfallDataSource: new RainfallDataSource(),
+        };
     },
 
     componentDidMount() {

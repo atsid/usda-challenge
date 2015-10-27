@@ -4,16 +4,17 @@ import React from "react";
 import debugFactory from "debug";
 import stateData from '../map/states';
 const debug = debugFactory('app:components:panes:cropmetrics:cropSelection');
-import CropStore from './CropStore';
 import CropTile from './CropTile';
-
-const cropStore = new CropStore();
 
 const CropSelectionComponent = React.createClass({
     propTypes: {
         state: React.PropTypes.string.isRequired,
         onSelect: React.PropTypes.func.isRequired,
         crop: React.PropTypes.string.isRequired,
+    },
+
+    contextTypes: {
+        cropStore: React.PropTypes.object.isRequired,
     },
 
     getInitialState() {
@@ -30,7 +31,7 @@ const CropSelectionComponent = React.createClass({
     },
 
     loadCrops(state) {
-        cropStore.getCropsByState(state).then((crops) => {
+        this.context.cropStore.getCropsByState(state).then((crops) => {
             this.setState({crops, state});
         });
     },

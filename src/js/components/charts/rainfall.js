@@ -13,13 +13,16 @@ const debug = debugFactory('app:components:MonthlyRainfall');
 var Rainfall = React.createClass({
 
     propTypes: {
-        monthlySource: React.PropTypes.object.isRequired,
-        average30Source: React.PropTypes.object.isRequired,
-        stationSource: React.PropTypes.object.isRequired,
         state: React.PropTypes.string.isRequired,
         lat: React.PropTypes.number.isRequired,
         lng: React.PropTypes.number.isRequired,
         radius: React.PropTypes.number.isRequired,
+    },
+
+    contextTypes: {
+        monthlyRainfallDataSource: React.PropTypes.object.isRequired,
+        average30RainfallDataSource: React.PropTypes.object.isRequired,
+        stationDataSource: React.PropTypes.object.isRequired,
     },
 
     getInitialState() {
@@ -48,9 +51,9 @@ var Rainfall = React.createClass({
         Promise.all([
             //TODO: push the state/location into all of these functions, so results are already filtered
             //if this was done, we could reduce iteration of the monthly by 12, since each station has one row per year
-            this.props.monthlySource.list(this.props.state),
-            this.props.average30Source.list(),
-            this.props.stationSource.list()
+            this.context.monthlyRainfallDataSource.list(this.props.state),
+            this.context.average30RainfallDataSource.list(),
+            this.context.stationDataSource.list()
         ]).then((results) => {
             //subsets stations by a fixed radius, so we can constrain the plotted data to a reasonable spatial range
             const subsetStations = (stations, coords, radius) => util.geospatial.hitTestPoints(stations, coords, radius);
