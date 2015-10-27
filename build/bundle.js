@@ -24076,6 +24076,10 @@
 	
 	var _panesCropmetricsMain2 = _interopRequireDefault(_panesCropmetricsMain);
 	
+	var _panesMapStates = __webpack_require__(467);
+	
+	var _panesMapStates2 = _interopRequireDefault(_panesMapStates);
+	
 	var debug = (0, _debug2["default"])('app:components:SplashPage');
 	
 	var SplashPageComponent = _react2["default"].createClass({
@@ -24093,8 +24097,9 @@
 	        var lng = parseFloat(query.lng) || -93.214;
 	        var zoom = parseFloat(query.zoom) || 4;
 	        var year = parseInt(query.year) || 2014;
+	        var radius = 100;
 	        var crop = query.crop || 'corn';
-	        return { state: state, year: year, lat: lat, lng: lng, zoom: zoom, crop: crop };
+	        return { state: state, year: year, lat: lat, lng: lng, zoom: zoom, crop: crop, radius: radius };
 	    },
 	
 	    componentDidMount: function componentDidMount() {
@@ -24117,7 +24122,8 @@
 	            state: state.state,
 	            lat: state.lat,
 	            lng: state.lng,
-	            zoom: state.zoom
+	            zoom: state.zoom,
+	            radius: state.radius
 	        };
 	        var newQuery = _.merge(this.context.location.query, query);
 	        this.context.history.pushState(null, "/", newQuery);
@@ -24150,6 +24156,16 @@
 	    handleCropChange: function handleCropChange(crop) {
 	        debug('handling crop change');
 	        this.setState(_.merge(this.state, { crop: crop }));
+	        this.pushLocation();
+	    },
+	
+	    handleBoundsChange: function handleBoundsChange(bounds) {
+	        debug('handling bounds change');
+	        // Roughly calculate the bounding box's width and height in miles
+	        var mLat = 69.0 * Math.abs(bounds.ne.lat - bounds.sw.lat);
+	        var mLng = 54.6 * Math.abs(bounds.ne.lat - bounds.sw.lng);
+	        var radius = parseFloat(Math.max(Math.min(mLat, mLng), 100).toFixed(2));
+	        this.setState(_.merge(this.state, { radius: radius }));
 	        this.pushLocation();
 	    },
 	
@@ -24190,6 +24206,7 @@
 	                    onZoomChange: this.handleZoomChange,
 	                    onStateChange: this.handleStateChange,
 	                    onYearChange: this.handleYearChange,
+	                    onBoundsChange: this.handleBoundsChange,
 	                    year: this.state.year,
 	                    state: this.state.state,
 	                    lat: this.state.lat,
@@ -24223,6 +24240,7 @@
 	                    lng: this.state.lng,
 	                    zoom: this.state.zoom,
 	                    crop: this.state.crop,
+	                    radius: this.state.radius,
 	                    onCropChange: this.handleCropChange })
 	            ),
 	            _react2["default"].createElement(_Footer2["default"], null)
@@ -41255,6 +41273,7 @@
 	        onStateChange: _react2["default"].PropTypes.func.isRequired,
 	        onZoomChange: _react2["default"].PropTypes.func.isRequired,
 	        onYearChange: _react2["default"].PropTypes.func.isRequired,
+	        onBoundsChange: _react2["default"].PropTypes.func.isRequired,
 	        state: _react2["default"].PropTypes.string.isRequired,
 	        lat: _react2["default"].PropTypes.number.isRequired,
 	        lng: _react2["default"].PropTypes.number.isRequired,
@@ -41387,7 +41406,9 @@
 	                    lng: this.props.lng,
 	                    zoom: this.props.zoom,
 	                    onCenterChange: this.props.onCenterChange,
-	                    onZoomChange: this.props.onZoomChange })
+	                    onZoomChange: this.props.onZoomChange,
+	                    onBoundsChange: this.props.onBoundsChange
+	                })
 	            ),
 	            _react2["default"].createElement(_ActivitiesPerformed2["default"], { state: this.props.state, year: this.props.year })
 	        );
@@ -41440,6 +41461,7 @@
 	        year: _react2["default"].PropTypes.number.isRequired,
 	        onCenterChange: _react2["default"].PropTypes.func.isRequired,
 	        onZoomChange: _react2["default"].PropTypes.func.isRequired,
+	        onBoundsChange: _react2["default"].PropTypes.func.isRequired,
 	        lat: _react2["default"].PropTypes.number.isRequired,
 	        lng: _react2["default"].PropTypes.number.isRequired,
 	        zoom: _react2["default"].PropTypes.number.isRequired
@@ -41504,6 +41526,19 @@
 	            var zoom = map.zoom;
 	            _this2.props.onZoomChange(zoom);
 	        }, 150));
+	        map.addListener('bounds_changed', _lodash2["default"].debounce(function () {
+	            var bounds = map.getBounds();
+	            _this2.props.onBoundsChange({
+	                sw: {
+	                    lat: bounds.getSouthWest().lat(),
+	                    lng: bounds.getSouthWest().lng()
+	                },
+	                ne: {
+	                    lat: bounds.getNorthEast().lat(),
+	                    lng: bounds.getNorthEast().lng()
+	                }
+	            });
+	        }));
 	        return map;
 	    },
 	
@@ -56619,6 +56654,7 @@
 	        lng: _react2["default"].PropTypes.number.isRequired,
 	        zoom: _react2["default"].PropTypes.number.isRequired,
 	        crop: _react2["default"].PropTypes.string.isRequired,
+	        radius: _react2["default"].PropTypes.number.isRequired,
 	        onCropChange: _react2["default"].PropTypes.func.isRequired
 	    },
 	
@@ -56643,6 +56679,7 @@
 	                    state: this.props.state,
 	                    lat: this.props.lat,
 	                    lng: this.props.lng,
+	                    radius: this.props.radius,
 	                    zoom: this.props.zoom })
 	            ),
 	            _react2["default"].createElement(
@@ -56651,6 +56688,7 @@
 	                _react2["default"].createElement(_monthly_rainfall2["default"], { state: this.props.state,
 	                    lat: this.props.lat,
 	                    lng: this.props.lng,
+	                    radius: this.props.radius,
 	                    zoom: this.props.zoom })
 	            )
 	        );
@@ -56687,16 +56725,16 @@
 	
 	var _datasourcesCropYieldsByCrop2 = _interopRequireDefault(_datasourcesCropYieldsByCrop);
 	
-	var _datasourcesRainfallJs = __webpack_require__(479);
+	var _datasourcesRainfall = __webpack_require__(479);
 	
-	var _datasourcesRainfallJs2 = _interopRequireDefault(_datasourcesRainfallJs);
+	var _datasourcesRainfall2 = _interopRequireDefault(_datasourcesRainfall);
 	
 	var _reactBootstrap = __webpack_require__(206);
 	
 	var debug = (0, _debug2["default"])('app:components:RainfallVsYieldChartComponent');
 	
 	var cropYieldsDataSource = new _datasourcesCropYieldsByCrop2["default"]();
-	var rainfallDataSource = new _datasourcesRainfallJs2["default"]();
+	var rainfallDataSource = new _datasourcesRainfall2["default"]();
 	
 	var CropStore = __webpack_require__(480);
 	var cropStore = new CropStore();
@@ -56709,7 +56747,8 @@
 	        state: _react2["default"].PropTypes.string.isRequired,
 	        lat: _react2["default"].PropTypes.number.isRequired,
 	        lng: _react2["default"].PropTypes.number.isRequired,
-	        zoom: _react2["default"].PropTypes.number.isRequired
+	        zoom: _react2["default"].PropTypes.number.isRequired,
+	        radius: _react2["default"].PropTypes.number.isRequired
 	    },
 	
 	    render: function render() {
@@ -56719,7 +56758,7 @@
 	            _react2["default"].createElement(_chartsCropYieldsVersusRainfall2["default"], {
 	                cropSource: cropYieldsDataSource,
 	                rainSource: rainfallDataSource,
-	                radius: 100,
+	                radius: this.props.radius,
 	                crop: cropStore.getCropDatum(this.props.crop),
 	                state: this.props.state,
 	                lat: this.props.lat,
@@ -56802,8 +56841,7 @@
 	        var el = _reactDom2["default"].findDOMNode(this);
 	
 	        //TODO: we don't need to re-get the rain data each time, only selected crop
-	        Promise.all([this.props.cropSource.list(this.props.crop.name), this.props.rainSource.list()]).then(function (results) {
-	
+	        Promise.all([this.props.cropSource.list(this.props.crop.name), this.props.rainSource.list(this.props.state)]).then(function (results) {
 	            var yieldIndex = results[0].index;
 	            var rainIndex = results[1].index;
 	
@@ -57481,7 +57519,8 @@
 	        state: _react2["default"].PropTypes.string.isRequired,
 	        lat: _react2["default"].PropTypes.number.isRequired,
 	        lng: _react2["default"].PropTypes.number.isRequired,
-	        zoom: _react2["default"].PropTypes.number.isRequired
+	        zoom: _react2["default"].PropTypes.number.isRequired,
+	        radius: _react2["default"].PropTypes.number.isRequired
 	    },
 	
 	    render: function render() {
@@ -57492,7 +57531,7 @@
 	                monthlySource: monthlyRainfallData,
 	                average30Source: average30Source,
 	                stationSource: stationData,
-	                radius: 100,
+	                radius: this.props.radius,
 	                state: this.props.state,
 	                lat: this.props.lat,
 	                lng: this.props.lng,
@@ -57547,7 +57586,8 @@
 	        average30Source: _react2["default"].PropTypes.object.isRequired,
 	        stationSource: _react2["default"].PropTypes.object.isRequired,
 	        state: _react2["default"].PropTypes.string.isRequired,
-	        location: _react2["default"].PropTypes.object.isRequired,
+	        lat: _react2["default"].PropTypes.number.isRequired,
+	        lng: _react2["default"].PropTypes.number.isRequired,
 	        radius: _react2["default"].PropTypes.number.isRequired
 	    },
 	
