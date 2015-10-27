@@ -57003,17 +57003,21 @@
 	        average: {
 	            add: function add(key) {
 	                return function (p, v) {
-	                    ++p.count;
-	                    p.sum += v[key] || 0;
-	                    p.avg = Math.round(p.sum / p.count);
+	                    if (!isNaN(v[key])) {
+	                        ++p.count;
+	                        p.sum += v[key];
+	                        p.avg = Math.round(p.sum / p.count);
+	                    }
 	                    return p;
 	                };
 	            },
 	            remove: function remove(key) {
 	                return function (p, v) {
-	                    --p.count;
-	                    p.sum -= v[key] || 0;
-	                    p.avg = p.count ? Math.round(p.sum / p.count) : 0;
+	                    if (!isNaN(v[key])) {
+	                        --p.count;
+	                        p.sum -= v[key];
+	                        p.avg = p.count ? Math.round(p.sum / p.count) : 0;
+	                    }
 	                    return p;
 	                };
 	            },
