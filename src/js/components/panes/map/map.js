@@ -10,6 +10,8 @@ import MapControl from "./map_controls/MapControl";
 import OverlaySelector from "./map_controls/OverlaySelector";
 import WaitSpinner from "./map_controls/WaitSpinner";
 
+const DEBOUNCE_TIME = 500;
+
 let MapComponent = React.createClass({
     propTypes: {
         year: React.PropTypes.number.isRequired,
@@ -67,12 +69,12 @@ let MapComponent = React.createClass({
                 lng: map.center.lng()
             };
             this.props.onCenterChange(newCenter);
-        }, 150));
+        }, DEBOUNCE_TIME));
 
         map.addListener('zoom_changed', _.debounce(() => {
             const zoom = map.zoom;
             this.props.onZoomChange(zoom);
-        }, 150));
+        }, DEBOUNCE_TIME));
         map.addListener('bounds_changed', _.debounce(() => {
             const bounds = map.getBounds();
             this.props.onBoundsChange({
@@ -85,7 +87,7 @@ let MapComponent = React.createClass({
                     lng: bounds.getNorthEast().lng()
                 }
             });
-        }));
+        }, DEBOUNCE_TIME));
         return map;
     },
 
