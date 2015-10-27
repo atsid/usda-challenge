@@ -47,9 +47,9 @@ var CropYieldsVersusRainfall = React.createClass({
     },
 
     drawChart() {
-        let el = ReactDOM.findDOMNode(this);
-
+        const start = new Date().getTime();
         //TODO: we don't need to re-get the rain data each time, only selected crop
+        let el = ReactDOM.findDOMNode(this);
         Promise.all([
             this.context.cropYieldsDataSource.list(this.props.crop.name),
             this.context.rainfallDataSource.list(this.props.state),
@@ -111,6 +111,8 @@ var CropYieldsVersusRainfall = React.createClass({
 
             dc.renderAll();
             this.state.myChart = compChart;
+            const span = new Date().getTime() - start;
+            debug(`Render CropYieldsVersusRainfall - ${span}ms`);
         });
     },
 

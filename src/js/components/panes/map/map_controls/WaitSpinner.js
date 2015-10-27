@@ -23,7 +23,6 @@ const OverlaySelector = React.createClass({
     },
 
     render() {
-        debug('rendering waitspinner', this.state);
         return (
             <div style={{
                 visibility: (this.state.visible ? 'visible' : 'hidden'),

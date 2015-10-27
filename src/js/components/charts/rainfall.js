@@ -45,7 +45,7 @@ var Rainfall = React.createClass({
     },
 
     drawChart() {
-        debug('redrawing rainfall chart');
+        const start = new Date().getTime();
         const el = ReactDOM.findDOMNode(this);
 
         Promise.all([
@@ -106,6 +106,8 @@ var Rainfall = React.createClass({
 
             dc.renderAll();
             this.state.myChart = compChart;
+            const span = new Date().getTime() - start;
+            debug(`Render Rainfall - ${span}ms`);
         });
     },
     reset() {
