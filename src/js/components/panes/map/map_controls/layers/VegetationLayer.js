@@ -21,16 +21,13 @@ class VegetationLayer extends Layer {
     }
 
     setYear(year) {
-        this.year = year;
-        this.rerender();
+        if (this.year !== year) {
+            this.year = year;
+            this.rerender();
+        }
     }
 
     generateMapArtifacts(map) {
-        const zoom = map.getZoom();
-        if (zoom <= MIN_ZOOM) {
-            console.log("Zoom In!");
-        }
-
         let currentIndex = ++genIndex;
         if (postReq) {
             debug('veg post request aborted');
