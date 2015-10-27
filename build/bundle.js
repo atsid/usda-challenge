@@ -41454,6 +41454,8 @@
 	
 	var debug = (0, _debug2["default"])('app:components:Map');
 	
+	var DEBOUNCE_TIME = 500;
+	
 	var MapComponent = _react2["default"].createClass({
 	    displayName: "MapComponent",
 	
@@ -41520,12 +41522,12 @@
 	                lng: map.center.lng()
 	            };
 	            _this2.props.onCenterChange(newCenter);
-	        }, 150));
+	        }, DEBOUNCE_TIME));
 	
 	        map.addListener('zoom_changed', _lodash2["default"].debounce(function () {
 	            var zoom = map.zoom;
 	            _this2.props.onZoomChange(zoom);
-	        }, 150));
+	        }, DEBOUNCE_TIME));
 	        map.addListener('bounds_changed', _lodash2["default"].debounce(function () {
 	            var bounds = map.getBounds();
 	            _this2.props.onBoundsChange({
@@ -41538,7 +41540,7 @@
 	                    lng: bounds.getNorthEast().lng()
 	                }
 	            });
-	        }));
+	        }, DEBOUNCE_TIME));
 	        return map;
 	    },
 	
