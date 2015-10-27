@@ -56886,8 +56886,6 @@
 	            });
 	            var yearlyAverageRainGroup = yearlyRainDim.group().reduce(_commonUtil2["default"].reducers.average.add('value'), _commonUtil2["default"].reducers.average.remove('value'), _commonUtil2["default"].reducers.average.init());
 	
-	            debug("RAIN RAIN ", yearlyRainDim, yearlyAverageRainGroup);
-	
 	            var timeScale = d3.time.scale().domain([new Date(2000, 1, 1), new Date(2015, 12, 31)]);
 	
 	            var compChart = dc.compositeChart(el);
