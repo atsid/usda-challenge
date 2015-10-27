@@ -8,9 +8,6 @@ import debugFactory from "debug";
 const debug = debugFactory('app:components:SplashPage');
 
 import Navigation from './Navigation';
-import Header from './Header';
-import Info from './Info';
-import Footer from './Footer';
 import MapPane from './panes/map/main';
 import CropMetricsPane from './panes/cropmetrics/main';
 import stateData from './panes/map/states';
@@ -134,9 +131,24 @@ let SplashPageComponent = React.createClass({
         return (
             <div>
                 <Navigation />
-                <Header />
+                <header>
+                    <div className="container">
+                        <div className="intro-text">
+                            <div className="intro-lead-in">Harness the power of data to feed the world</div>
+                            <div className="intro-heading">We make USDA data meaningful to you.</div>
+                        </div>
+                    </div>
+                </header>
                 <section id="info">
-                    <Info />
+                    <div className={"mainDescriptionContainer"}>
+                        <div className={"mainDescription"}>See how soil type and crop growth are related on a map of your farm land.
+                            <img src="src/img/icons/soil.png"/>
+                        </div>
+                        <div className={"mainDescription"}>
+                            <img src="src/img/icons/drop2.png"/>
+                            Get a sense for how much your farm produces in different rainfall conditions.
+                        </div>
+                    </div>
                 </section>
                 <div className={"delimeterBar"}>
                     <section id="delimeterBar1" className="container">
@@ -179,7 +191,24 @@ let SplashPageComponent = React.createClass({
                         radius={this.state.radius}
                         onCropChange={this.handleCropChange} />
                 </section>
-                <Footer />
+                <footer>
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-md-4"><a href="datasource.html" target="_blank">Data Source Credits</a></div>
+                            <div className="col-md-4">
+                                <span className="copyright">All content copyright &copy; ATS & EchoUser 2015</span>
+                            </div>
+                            <div className="col-md-4">
+                                <ul className="list-inline quicklinks">
+                                    <li><a href="#"> </a>
+                                    </li>
+                                    <li><a href="#"> </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
             </div>);
     },
 });
