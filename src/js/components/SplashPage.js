@@ -84,6 +84,7 @@ let SplashPageComponent = React.createClass({
             lng: state.lng,
             zoom: state.zoom,
             radius: state.radius,
+            crop: state.crop,
         };
         const newQuery = _.merge(this.context.location.query, query);
         this.context.history.pushState(null, "/", newQuery);
@@ -142,20 +143,20 @@ let SplashPageComponent = React.createClass({
                     </div>
                 </header>
                 <section id="info">
-                    <div className={"mainDescriptionContainer"}>
+                    <div className="mainDescriptionContainer">
                         <div className={"mainDescription"}>See how soil type and crop growth are related on a map of your farm land.
                             <img src="src/img/icons/soil.png"/>
                         </div>
-                        <div className={"mainDescription"}>
+                        <div className="mainDescription">
                             <img src="src/img/icons/drop2.png"/>
                             Get a sense for how much your farm produces in different rainfall conditions.
                         </div>
                     </div>
                 </section>
-                <div className={"delimeterBar"}>
+                <div className="delimeterBar">
                     <section id="delimeterBar1" className="container">
-                        <div className={"headingNumber"}>1</div>
-                        <div className={"headingText"}>Get a bird’s eye view of the land in your community. Discover how
+                        <div className="headingNumber">1</div>
+                        <div className="headingText">Get a bird’s eye view of the land in your community. Discover how
                             densely
                             crops grow in different soil types and what activities are performed in your state.
                         </div>
