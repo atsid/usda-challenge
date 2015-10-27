@@ -87,6 +87,21 @@ module.exports = {
             return output;
         },
 
+        yearly(data) {
+            const output = [];
+            data.forEach((d) =>{
+                //push a set of items in for every month in the row
+                let totalRainInYear = 0;
+                Object.keys(months).forEach((month) => totalRainInYear += parseFloat(d[month]));
+                output.push({
+                    id: d.id1,
+                    date: new Date(d.Year * 1, 1, 1), //first day of the year
+                    value: totalRainInYear
+                });
+            });
+            return output;
+        },
+
         //this function does the same as monthly, but duplicates the 30-year average '0000' readings for each year in the dataset
         monthlyAverage30(data) {
             const output = [];

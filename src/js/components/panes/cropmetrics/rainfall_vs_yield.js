@@ -11,7 +11,9 @@ import RainfallDataSource from "../../../datasources/rainfall";
 import {Glyphicon, Button, DropdownButton, MenuItem} from "react-bootstrap";
 
 const cropYieldsDataSource = new CropYieldsDataSource();
-const rainfallDataSource = new RainfallDataSource();
+const rainfallDataSource = new RainfallDataSource()
+import StationDataSource from "../../../datasources/stations";
+const stationData = new StationDataSource();
 
 const CropStore = require('./CropStore');
 const cropStore = new CropStore();
@@ -33,6 +35,7 @@ let RainfallVsYieldChartComponent = React.createClass({
                 <CropYieldsChart
                     cropSource={cropYieldsDataSource}
                     rainSource={rainfallDataSource}
+                    stationSource={stationData}
                     radius={this.props.radius}
                     crop={cropStore.getCropDatum(this.props.crop)}
                     state={this.props.state}

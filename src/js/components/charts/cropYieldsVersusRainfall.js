@@ -21,6 +21,7 @@ var CropYieldsVersusRainfall = React.createClass({
         lng: React.PropTypes.number.isRequired,
         zoom: React.PropTypes.number.isRequired,
         radius: React.PropTypes.number.isRequired,
+        stationSource: React.PropTypes.object.isRequired,
     },
 
     getInitialState() {
@@ -48,16 +49,36 @@ var CropYieldsVersusRainfall = React.createClass({
         //TODO: we don't need to re-get the rain data each time, only selected crop
         Promise.all([
             this.props.cropSource.list(this.props.crop.name),
-            this.props.rainSource.list(this.props.state)
+            this.props.rainSource.list(this.props.state),
+            this.props.stationSource.list()
         ]).then((results) => {
+            const cropData = results[0].data;
+            const rainData = results[1].data;
+            const stationData = results[2].data;
+
             var yieldIndex = results[0].index;
             var rainIndex = results[1].index;
+
+            //subsets stations by a fixed radius, so we can constrain the plotted data to a reasonable spatial range
+            const subsetStations = (stations, coords, radius) => util.geospatial.hitTestPoints(stations, coords, radius);
+            //subsets the weather data to only include stations in the subset map
+            const subsetWeatherData = (data, stations) => data.filter((d) => stations[d.id]);
+
+            const stationSubset = subsetStations(stationData, {lat: this.props.lat, lng: this.props.lng}, this.props.radius);
+            const rainDataSubset = subsetWeatherData(rainData, stationSubset);
+            const rainDataSubsetIndex = crossfilter(rainDataSubset);
 
             var yearlyYieldDim = yieldIndex.dimension((d) => d3.time.month(d.date));
             var yearlyYieldGroup = yearlyYieldDim.group().reduceSum((d) => d.yield);
 
-            var yearlyRainDim = rainIndex.dimension((d) => d3.time.year(d.date));
-            var yearlyAverageRainGroup = yearlyRainDim.group().reduceSum((d) => d.high);
+            var yearlyRainDim = rainDataSubsetIndex.dimension((d) => d3.time.year(d.date));
+            const yearlyAverageRainGroup = yearlyRainDim.group().reduce(
+                util.reducers.average.add('value'),
+                util.reducers.average.remove('value'),
+                util.reducers.average.init()
+            );
+
+            debug("RAIN RAIN ", yearlyRainDim, yearlyAverageRainGroup);
 
             var timeScale = d3.time.scale().domain([new Date(2000, 1, 1), new Date(2015, 12, 31)]);
 
@@ -76,7 +97,9 @@ var CropYieldsVersusRainfall = React.createClass({
                     dc.barChart(compChart)
                         .colors(colors.yearlyAverageRainfall)
                         .barPadding(0.3)
-                        .group(yearlyAverageRainGroup),
+                        .group(yearlyAverageRainGroup)
+                        .valueAccessor((d) => d.value.avg),
+
                     dc.barChart(compChart)
                         .colors(colors.yield)
                         .barPadding(0.3)
