@@ -7,6 +7,10 @@ import util from '../common/util';
  * A datasource wrapping the hi-low data
  */
 class RainfallDataSource extends CachingDataSource {
+    getName() {
+        return "RainfallDataSource";
+    }
+
     retrieveData(state) {
         return new Promise((resolve, reject) => {
             d3.csv(`data/weather/state/${state.toUpperCase()}/rain.csv`, (err, data) => {

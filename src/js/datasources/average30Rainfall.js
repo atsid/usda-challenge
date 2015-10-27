@@ -8,6 +8,10 @@ import CachingDataSource from './cachingDataSource';
  * A datasource wrapping the monthly average 30-year rainfall
  */
 class Average30RainfallDataSource extends CachingDataSource {
+    getName() {
+        return "Average30RainfallDataSource";
+    }
+
     retrieveData() {
         return new Promise((resolve, reject) => {
             d3.csv('data/monthly-precip-avg.csv', (err, data) => {

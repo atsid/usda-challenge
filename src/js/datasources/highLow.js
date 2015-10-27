@@ -6,6 +6,10 @@ import CachingDataSource from './cachingDataSource';
  * A datasource wrapping the hi-low data
  */
 class HighLowDataSource extends CachingDataSource {
+    getName() {
+        return "HighLowDataSource";
+    }
+
     retrieveData() {
         return new Promise((resolve, reject) => {
             const dateFormat = d3.time.format("%m/%d/%y");

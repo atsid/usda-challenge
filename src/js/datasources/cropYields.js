@@ -6,6 +6,9 @@ import CachingDataSource from './cachingDataSource';
  * A datasource wrapping the Cropy Yield, by Tons/Acre
  */
 class CropYieldsDataSource extends CachingDataSource {
+    getName() {
+        return "CropYieldsDataSource";
+    }
 
     retrieveData() {
         return new Promise((resolve, reject) => {

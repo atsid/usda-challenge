@@ -10,8 +10,11 @@ const debug = debugFactory('app:data_sources:MonthlyRainfall');
  * A datasource wrapping the monthly average rainfall
  */
 class MonthlyRainfallDataSource extends CachingDataSource {
+    getName() {
+        return "MonthlyRainfallDataSource";
+    }
+
     retrieveData(state) {
-        debug('retrieving monthly rainfall data for ', state, this);
         const dataUrl = `data/weather/state/${state.toUpperCase()}/rain.csv`;
 
         return new Promise((resolve, reject) => {

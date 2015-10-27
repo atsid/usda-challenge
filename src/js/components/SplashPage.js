@@ -20,6 +20,16 @@ import StationDataSource from "../datasources/stations";
 import CropYieldsDataSource from "../datasources/cropYieldsByCrop";
 import RainfallDataSource from "../datasources/rainfall";
 
+const childContext = {
+    cropStore: new CropStore(),
+    activityStore: new ActivityStore(),
+    monthlyRainfallDataSource: new MonthlyRainfallDataSource(),
+    average30RainfallDataSource: new Average30RainfallDataSource(),
+    stationDataSource: new StationDataSource(),
+    cropYieldsDataSource: new CropYieldsDataSource(),
+    rainfallDataSource: new RainfallDataSource(),
+};
+
 let SplashPageComponent = React.createClass({
     contextTypes: {
         location: React.PropTypes.object.isRequired,
@@ -49,15 +59,7 @@ let SplashPageComponent = React.createClass({
     },
 
     getChildContext() {
-        return {
-            cropStore: new CropStore(),
-            activityStore: new ActivityStore(),
-            monthlyRainfallDataSource: new MonthlyRainfallDataSource(),
-            average30RainfallDataSource: new Average30RainfallDataSource(),
-            stationDataSource: new StationDataSource(),
-            cropYieldsDataSource: new CropYieldsDataSource(),
-            rainfallDataSource: new RainfallDataSource(),
-        };
+        return childContext;
     },
 
     componentDidMount() {

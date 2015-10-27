@@ -132,6 +132,7 @@ module.exports = {
         hitTestPoints(points, center, radius) {
             const output = {};
             //uses Great Circle distance to check if point diff is within radius
+            const start = new Date().getTime();
             points.forEach((point) => {
                 //http://andrew.hedges.name/experiments/haversine/
                 //dlon = lon2 - lon1
@@ -153,7 +154,8 @@ module.exports = {
                     output[point.id] = point;
                 }
             });
-            debug(`${points.length} subset count => ${Object.keys(output).length}`);
+            const span = new Date().getTime() - start;
+            debug(`${points.length} subset count => ${Object.keys(output).length}; ${span}ms`);
             return output;
         }
     }

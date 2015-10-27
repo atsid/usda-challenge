@@ -6,6 +6,9 @@ import CachingDataSource from './cachingDataSource';
  * A datasource wrapping the Cropy Yield, by Ba/Acre
  */
 class CropYieldsByCropDataSource extends CachingDataSource {
+    getName() {
+        return "CropYieldsByCropDataSource";
+    }
     retrieveData(crop) {
         return new Promise((resolve, reject) => {
             d3.csv('data/crops/' + crop.toUpperCase() + '-yield.csv',
