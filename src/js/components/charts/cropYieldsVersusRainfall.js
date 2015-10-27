@@ -48,9 +48,8 @@ var CropYieldsVersusRainfall = React.createClass({
         //TODO: we don't need to re-get the rain data each time, only selected crop
         Promise.all([
             this.props.cropSource.list(this.props.crop.name),
-            this.props.rainSource.list()
+            this.props.rainSource.list(this.props.state)
         ]).then((results) => {
-
             var yieldIndex = results[0].index;
             var rainIndex = results[1].index;
 

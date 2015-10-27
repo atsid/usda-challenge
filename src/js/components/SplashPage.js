@@ -13,6 +13,7 @@ import Info from './Info';
 import Footer from './Footer';
 import MapPane from './panes/map/main';
 import CropMetricsPane from './panes/cropmetrics/main';
+import stateData from './panes/map/states';
 
 
 let SplashPageComponent = React.createClass({
@@ -28,8 +29,9 @@ let SplashPageComponent = React.createClass({
         const lng = parseFloat(query.lng) || -93.214;
         const zoom = parseFloat(query.zoom) || 4;
         const year = parseInt(query.year) || 2014;
+        const radius = 100;
         const crop = query.crop || 'corn';
-        return {state, year, lat, lng, zoom, crop};
+        return {state, year, lat, lng, zoom, crop, radius};
     },
 
     componentDidMount() {
@@ -53,6 +55,7 @@ let SplashPageComponent = React.createClass({
             lat: state.lat,
             lng: state.lng,
             zoom: state.zoom,
+            radius: state.radius,
         };
         const newQuery = _.merge(this.context.location.query, query);
         this.context.history.pushState(null, "/", newQuery);
@@ -88,6 +91,16 @@ let SplashPageComponent = React.createClass({
         this.pushLocation();
     },
 
+    handleBoundsChange(bounds) {
+        debug('handling bounds change');
+        // Roughly calculate the bounding box's width and height in miles
+        const mLat = 69.0 * Math.abs(bounds.ne.lat - bounds.sw.lat);
+        const mLng = 54.6 * Math.abs(bounds.ne.lat - bounds.sw.lng);
+        const radius = parseFloat(Math.max(Math.min(mLat, mLng), 100).toFixed(2));
+        this.setState(_.merge(this.state, {radius}));
+        this.pushLocation();
+    },
+
     render() {
         return (
             <div>
@@ -111,6 +124,7 @@ let SplashPageComponent = React.createClass({
                         onZoomChange={this.handleZoomChange}
                         onStateChange={this.handleStateChange}
                         onYearChange={this.handleYearChange}
+                        onBoundsChange={this.handleBoundsChange}
                         year={this.state.year}
                         state={this.state.state}
                         lat={this.state.lat}
@@ -133,6 +147,7 @@ let SplashPageComponent = React.createClass({
                         lng={this.state.lng}
                         zoom={this.state.zoom}
                         crop={this.state.crop}
+                        radius={this.state.radius}
                         onCropChange={this.handleCropChange} />
                 </section>
                 <Footer />

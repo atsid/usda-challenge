@@ -6,7 +6,7 @@ const debug = debugFactory('app:components:RainfallVsYieldChartComponent');
 
 import CropYieldsChart from "../../charts/cropYieldsVersusRainfall";
 import CropYieldsDataSource from "../../../datasources/cropYieldsByCrop";
-import RainfallDataSource from "../../../datasources/rainfall.js";
+import RainfallDataSource from "../../../datasources/rainfall";
 
 import {Glyphicon, Button, DropdownButton, MenuItem} from "react-bootstrap";
 
@@ -24,6 +24,7 @@ let RainfallVsYieldChartComponent = React.createClass({
         lat: React.PropTypes.number.isRequired,
         lng: React.PropTypes.number.isRequired,
         zoom: React.PropTypes.number.isRequired,
+        radius: React.PropTypes.number.isRequired
     },
 
     render() {
@@ -32,7 +33,7 @@ let RainfallVsYieldChartComponent = React.createClass({
                 <CropYieldsChart
                     cropSource={cropYieldsDataSource}
                     rainSource={rainfallDataSource}
-                    radius={100}
+                    radius={this.props.radius}
                     crop={cropStore.getCropDatum(this.props.crop)}
                     state={this.props.state}
                     lat={this.props.lat}

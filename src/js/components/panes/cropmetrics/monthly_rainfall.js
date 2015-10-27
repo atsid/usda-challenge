@@ -23,6 +23,7 @@ let RainfallChartComponent = React.createClass({
         lat: React.PropTypes.number.isRequired,
         lng: React.PropTypes.number.isRequired,
         zoom: React.PropTypes.number.isRequired,
+        radius: React.PropTypes.number.isRequired
     },
 
     render() {
@@ -32,7 +33,7 @@ let RainfallChartComponent = React.createClass({
                     monthlySource={monthlyRainfallData}
                     average30Source={average30Source}
                     stationSource={stationData}
-                    radius={100}
+                    radius={this.props.radius}
                     state={this.props.state}
                     lat={this.props.lat}
                     lng={this.props.lng}

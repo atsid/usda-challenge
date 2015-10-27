@@ -18,6 +18,7 @@ let MapPaneComponent = React.createClass({
         onStateChange: React.PropTypes.func.isRequired,
         onZoomChange: React.PropTypes.func.isRequired,
         onYearChange: React.PropTypes.func.isRequired,
+        onBoundsChange: React.PropTypes.func.isRequired,
         state: React.PropTypes.string.isRequired,
         lat: React.PropTypes.number.isRequired,
         lng: React.PropTypes.number.isRequired,
@@ -137,7 +138,9 @@ let MapPaneComponent = React.createClass({
                          lng={this.props.lng}
                          zoom={this.props.zoom}
                          onCenterChange={this.props.onCenterChange}
-                         onZoomChange={this.props.onZoomChange}/>
+                         onZoomChange={this.props.onZoomChange}
+                         onBoundsChange={this.props.onBoundsChange}
+                    />
                 </div>
                 <ActivitiesPerformed state={this.props.state} year={this.props.year} />
             </div>

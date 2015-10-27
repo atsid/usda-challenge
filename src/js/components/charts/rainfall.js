@@ -17,7 +17,8 @@ var Rainfall = React.createClass({
         average30Source: React.PropTypes.object.isRequired,
         stationSource: React.PropTypes.object.isRequired,
         state: React.PropTypes.string.isRequired,
-        location: React.PropTypes.object.isRequired,
+        lat: React.PropTypes.number.isRequired,
+        lng: React.PropTypes.number.isRequired,
         radius: React.PropTypes.number.isRequired,
     },
 

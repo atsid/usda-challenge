@@ -17,6 +17,7 @@ let CropMetricsPaneComponent = React.createClass({
         lng: React.PropTypes.number.isRequired,
         zoom: React.PropTypes.number.isRequired,
         crop: React.PropTypes.string.isRequired,
+        radius: React.PropTypes.number.isRequired,
         onCropChange: React.PropTypes.func.isRequired
     },
 
@@ -32,13 +33,15 @@ let CropMetricsPaneComponent = React.createClass({
                                           state={this.props.state}
                                           lat={this.props.lat}
                                           lng={this.props.lng}
+                                          radius={this.props.radius}
                                           zoom={this.props.zoom} />
                 </div>
                 <div>
                     <MonthlyRainfallChart state={this.props.state}
                                           lat={this.props.lat}
                                           lng={this.props.lng}
-                                          zoom={this.props.zoom}/>
+                                          radius={this.props.radius}
+                                          zoom={this.props.zoom} />
                 </div>
             </div>
         );

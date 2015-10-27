@@ -15,6 +15,7 @@ let MapComponent = React.createClass({
         year: React.PropTypes.number.isRequired,
         onCenterChange: React.PropTypes.func.isRequired,
         onZoomChange: React.PropTypes.func.isRequired,
+        onBoundsChange: React.PropTypes.func.isRequired,
         lat: React.PropTypes.number.isRequired,
         lng: React.PropTypes.number.isRequired,
         zoom: React.PropTypes.number.isRequired,
@@ -72,6 +73,19 @@ let MapComponent = React.createClass({
             const zoom = map.zoom;
             this.props.onZoomChange(zoom);
         }, 150));
+        map.addListener('bounds_changed', _.debounce(() => {
+            const bounds = map.getBounds();
+            this.props.onBoundsChange({
+                sw: {
+                    lat: bounds.getSouthWest().lat(),
+                    lng: bounds.getSouthWest().lng()
+                },
+                ne: {
+                    lat: bounds.getNorthEast().lat(),
+                    lng: bounds.getNorthEast().lng()
+                }
+            });
+        }));
         return map;
     },
 
