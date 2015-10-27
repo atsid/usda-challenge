@@ -28,7 +28,6 @@ export default class ActivityStore {
         return this._getActivitiesInState(stateCode)
             .then(this._parseCsv)
             .then((activities) => {
-                debug('received activity data', activities);
                 cache[stateCode] = {};
                 for (let i = 1; i < activities.data.length; i++) {
                     const datum = this._createActivityDatum(activities.data[i]);

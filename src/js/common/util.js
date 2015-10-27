@@ -29,7 +29,7 @@ module.exports = {
             add(key) {
                 return function (p, v) {
                     ++p.count;
-                    p.sum += v[key];
+                    p.sum += (v[key] || 0);
                     p.avg = Math.round(p.sum / p.count);
                     return p;
                 };
@@ -37,7 +37,7 @@ module.exports = {
             remove(key) {
                 return function (p, v) {
                     --p.count;
-                    p.sum -= v[key];
+                    p.sum -= (v[key] || 0);
                     p.avg = p.count ? Math.round(p.sum / p.count) : 0;
                     return p;
                 };

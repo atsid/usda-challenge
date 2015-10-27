@@ -68,7 +68,6 @@ var Rainfall = React.createClass({
                 return {data, index, dim, group};
             }
 
-            debug('rainfall chart data', results);
             const monthlyData = results[0].data;
             const average30Data = results[1].data;
             const stationData = results[2].data;
@@ -78,7 +77,6 @@ var Rainfall = React.createClass({
             const monthlyRain = groupify(monthlySubset);
             const average30Rain = groupify(average30Subset);
             const timeScale = d3.time.scale().domain([new Date(2000, 1, 1), new Date(2015, 12, 31)]);
-
             const compChart = dc.compositeChart(el);
             compChart
                 .width($(el).innerWidth() - 30)
